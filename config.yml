@@ -16,29 +16,31 @@ index:
   output_directory: site
 
 categories:
+  # Topic audit: pharo (22), smalltalk (7), pharo-smalltalk (3), plus the
+  # one-off topics currently used by the configured repositories.
   - name: Language & Compiler
-    keywords: [compiler, compiler-tool, language]
+    keywords: [compiler, compiler-tool, language, smalltalk, pharo-smalltalk, parser]
   - name: Development Environment
-    keywords: [ide, development-environment]
+    keywords: [ide, development-environment, pharo, pharo-smalltalk]
   - name: Source Code & Version Control
     keywords: [git, version-control, source-code]
   - name: Testing
     keywords: [test, testing, unittest, tdd]
   - name: Build & Deployment
-    keywords: [build, deployment, ci, cd]
+    keywords: [build, deployment, ci, cd, docker, alpine-linux]
   - name: Web
-    keywords: [web, http, https, rest, html]
+    keywords: [web, http, https, rest, html, css, cascading-style-sheets, scraping, stylesheet]
   - name: Networking
-    keywords: [networking, network, tcp, udp]
+    keywords: [networking, network, tcp, udp, cryptography]
   - name: UI
     keywords: [ui, gui, user-interface]
   - name: Graphics & Visualization
-    keywords: [graphics, visualization, rendering]
+    keywords: [graphics, visualization, rendering, graph]
   - name: Data & Databases
-    keywords: [data, database, sql]
+    keywords: [data, database, sql, collection, collections, hashtable]
   - name: System & OS
-    keywords: [system, operating-system, os]
+    keywords: [system, operating-system, os, file-manager]
   - name: Tools
-    keywords: [tool, tools, utility]
+    keywords: [tool, tools, utility, command-line, command-line-parser, pdf, deprecated, style]
   - name: Education
-    keywords: [education, teaching, learning]
+    keywords: [education, teaching, learning, natural-language-processing, nlp]

@@ -59,6 +59,7 @@ class GenerateTests(unittest.TestCase):
     def test_category_matching_is_exact_and_case_insensitive(self):
         rules = [{"name": "Web", "keywords": {"http", "rest"}}]
         self.assertEqual(generate.derive_categories(["HTTP", "http-client"], rules), ["Web"])
+        self.assertEqual(generate.derive_categories(["json"], rules), [generate.OTHER_CATEGORY])
 
     def test_registry_entry_overrides_discovered_metadata(self):
         project = generate.merge_project_metadata(
@@ -119,6 +120,9 @@ class GenerateTests(unittest.TestCase):
         self.assertIn("hideNonStandard.checked", site)
         self.assertIn("filter(([, count]) => count > 0)", site)
         self.assertNotIn('id="tag-list"', site)
+        self.assertIn("hiddenProjects", site)
+        self.assertIn("['Hidden', hiddenProjects.length]", site)
+        self.assertNotIn("|| 'All'", site)
         self.assertIn('type="application/json"', site)
 
     def test_documentation_page_contains_requested_guidance(self):

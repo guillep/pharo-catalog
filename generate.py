@@ -37,6 +37,8 @@ CONTROLLED_CATEGORIES = {
     "Tools",
     "Education",
 }
+OTHER_CATEGORY = "Other"
+HIDDEN_CATEGORY = "Hidden"
 
 
 class GitHubError(RuntimeError):
@@ -157,7 +159,8 @@ def load_category_rules(config: dict) -> list[dict]:
 
 def derive_categories(tags: list[str], rules: list[dict]) -> list[str]:
     tag_set = {tag.casefold() for tag in tags}
-    return [rule["name"] for rule in rules if tag_set.intersection(rule["keywords"])]
+    categories = [rule["name"] for rule in rules if tag_set.intersection(rule["keywords"])]
+    return categories or [OTHER_CATEGORY]
 
 
 def merge_tags(topics: list[str], explicit_tags: list[str]) -> list[str]:
@@ -613,15 +616,16 @@ function baseProjects() {
   const query = search.value.trim().toLowerCase();
     return data.projects.filter((project) => {
         const searchable = `${project.name} ${project.description} ${(project.categories || []).join(' ')} ${(project.tags || []).join(' ')}`.toLowerCase();
-        const hasNoRelease = project.status === 'no-release' || project.status === 'error';
-        const isNonStandard = project.status !== 'standard';
-        return searchable.includes(query)
-            && (!hideNoRelease.checked || !hasNoRelease)
-            && (!hideNonStandard.checked || !isNonStandard);
+                return searchable.includes(query);
     });
 }
+function isHidden(project) {
+    const hasNoRelease = project.status === 'no-release' || project.status === 'error';
+    const isNonStandard = project.status !== 'standard';
+    return (hideNoRelease.checked && hasNoRelease) || (hideNonStandard.checked && isNonStandard);
+}
 function renderFilterList(container, values, selected, setter) {
-    container.innerHTML = values.map(([value, count]) => `<button class="filter-option ${selected === value ? 'active' : ''}" data-value="${escapeHtml(value)}"><span>${escapeHtml(value || 'All')}</span><span class="filter-count">${count}</span></button>`).join('');
+        container.innerHTML = values.map(([value, count]) => `<button class="filter-option ${selected === value ? 'active' : ''}" data-value="${escapeHtml(value)}"><span>${escapeHtml(value)}</span><span class="filter-count">${count}</span></button>`).join('');
     container.querySelectorAll('.filter-option').forEach((button) => button.addEventListener('click', () => {
         setter(button.dataset.value);
         currentPage = 1;
@@ -630,8 +634,16 @@ function renderFilterList(container, values, selected, setter) {
 }
 function render() {
     const candidates = baseProjects();
-    const projects = candidates.filter((project) => !selectedCategory || (project.categories || []).includes(selectedCategory));
-    const categoryCounts = [['', candidates.length], ...categoryNames.map((name) => [name, candidates.filter((project) => (project.categories || []).includes(name)).length]).filter(([, count]) => count > 0)];
+    const hiddenProjects = candidates.filter(isHidden);
+    const visibleProjects = candidates.filter((project) => !isHidden(project));
+    const categoryValues = categoryNames.map((name) => [name, visibleProjects.filter((project) => (project.categories || []).includes(name)).length]).filter(([, count]) => count > 0);
+    const otherCount = visibleProjects.filter((project) => (project.categories || []).includes('Other')).length;
+    if (otherCount > 0) categoryValues.push(['Other', otherCount]);
+    categoryValues.push(['Hidden', hiddenProjects.length]);
+    const pool = selectedCategory === 'Hidden' ? hiddenProjects : visibleProjects;
+    const projects = pool.filter((project) => !selectedCategory || (project.categories || []).includes(selectedCategory));
+    const availableCategory = categoryValues.some(([name]) => name === selectedCategory);
+    if (selectedCategory && !availableCategory) selectedCategory = '';
     renderFilterList(categoryList, categoryCounts, selectedCategory, (value) => { selectedCategory = value; localStorage.setItem('catalog-category', value); });
     const pages = Math.max(1, Math.ceil(projects.length / pageSize));
     currentPage = Math.min(currentPage, pages);
