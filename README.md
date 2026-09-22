@@ -1,0 +1,28 @@
+# Pharo Project Catalog
+
+A static, searchable catalog of Pharo projects discovered from configured GitHub organizations. One GitHub repository is treated as one project/package.
+
+## Run locally
+
+Create a GitHub token with read access to the organizations you want to scan and export it without putting it in the repository:
+
+```sh
+export GITHUB_TOKEN=...
+python3 -m pip install -r requirements.txt
+python3 generate.py --config config.yml
+open site/index.html
+```
+
+The generator handles repository pagination, latest releases, release assets, and per-repository failures. It writes the static site to `site/` and a machine-readable report to `site/catalog.json`. A release is standard when its configured index filename is present as a release asset; otherwise the project remains linked to its repository and is visibly marked.
+
+The generated site imports standard project indexes at `projects/<repository>/index.html`. It also lists GitHub's automatic source archives for each release, without uploading or embedding the authentication token.
+
+## Configuration
+
+Edit `config.yml` to change organizations, the GitHub API endpoint, the token environment variable, the index filename, or the output directory. The token is read only at generation time from `github.token_env`; it is never copied into generated files.
+
+## GitHub Pages
+
+The manual `Build and publish catalog` workflow in `.github/workflows/publish.yml` can be run from the Actions tab. It also refreshes nightly. Enable GitHub Pages for the repository using **GitHub Actions** as the source.
+
+The workflow prefers the optional `CATALOG_GITHUB_TOKEN` secret and falls back to the workflow token. A dedicated token is useful when organization repositories require access beyond the repository's default token.

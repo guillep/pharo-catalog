@@ -1,0 +1,14 @@
+organizations:
+  - pharo-project
+  - pharo-contributions
+  - pharo-graphics
+  - pharo-vcs
+
+github:
+  # The token is read from this environment variable and is never written to the site.
+  token_env: GITHUB_TOKEN
+  api_url: https://api.github.com
+
+index:
+  filename: index.html
+  output_directory: site
