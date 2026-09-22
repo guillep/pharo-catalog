@@ -561,11 +561,14 @@ const pageSize = 12;
 let currentPage = 1;
 let selectedCategory = localStorage.getItem('catalog-category') || '';
 let selectedTag = localStorage.getItem('catalog-tag') || '';
+let filtersCollapsed = localStorage.getItem('catalog-filters-collapsed') === 'true';
 const escapeHtml = (value) => String(value ?? '').replace(/[&<>\"']/g, (char) => ({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;',"'":'&#39;'}[char]));
 hideNoRelease.checked = localStorage.getItem('catalog-hide-no-release') !== 'false';
-hideNonStandard.checked = localStorage.getItem('catalog-hide-non-standard') === 'true';
+hideNonStandard.checked = localStorage.getItem('catalog-hide-non-standard') !== 'false';
 document.documentElement.dataset.theme = localStorage.getItem('catalog-theme') || 'light';
 document.getElementById('theme-toggle').checked = document.documentElement.dataset.theme === 'dark';
+if (filtersCollapsed) layout.classList.add('filters-hidden');
+if (!filtersCollapsed && window.matchMedia('(max-width: 760px)').matches) filters.classList.add('mobile-expanded');
 function baseProjects() {
   const query = search.value.trim().toLowerCase();
     return data.projects.filter((project) => {
@@ -615,9 +618,12 @@ document.getElementById('theme-toggle').addEventListener('change', (event) => { 
 document.getElementById('sidebar-toggle').addEventListener('click', () => {
     if (window.matchMedia('(max-width: 760px)').matches) {
         filters.classList.toggle('mobile-expanded');
+        filtersCollapsed = !filters.classList.contains('mobile-expanded');
     } else {
         layout.classList.toggle('filters-hidden');
+        filtersCollapsed = layout.classList.contains('filters-hidden');
     }
+    localStorage.setItem('catalog-filters-collapsed', filtersCollapsed);
 });
 document.getElementById('sidebar-close').addEventListener('click', () => filters.classList.remove('open'));
 render();

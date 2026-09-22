@@ -111,6 +111,8 @@ class GenerateTests(unittest.TestCase):
         self.assertIn("filters-hidden", site)
         self.assertIn("Hide projects without releases", site)
         self.assertIn("catalog-hide-no-release", site)
+        self.assertIn("catalog-filters-collapsed", site)
+        self.assertIn("hideNonStandard.checked", site)
         self.assertIn('type="application/json"', site)
 
     def test_shared_logo_asset_is_available(self):
