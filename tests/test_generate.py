@@ -52,6 +52,10 @@ class GenerateTests(unittest.TestCase):
             registry = generate.load_registry(path)
             self.assertEqual(registry[0]["repository"], "https://github.com/example/demo")
 
+    def test_configured_index_filename_has_a_default(self):
+        config = generate.load_config(Path(__file__).parents[1] / "config.yml")
+        self.assertEqual(config["index"].get("filename", generate.DEFAULT_INDEX_FILENAME), "index.html")
+
     def test_category_matching_is_exact_and_case_insensitive(self):
         rules = [{"name": "Web", "keywords": {"http", "rest"}}]
         self.assertEqual(generate.derive_categories(["HTTP", "http-client"], rules), ["Web"])

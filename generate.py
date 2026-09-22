@@ -447,6 +447,7 @@ def generate(config_path: Path) -> tuple[int, int]:
     config = load_config(config_path)
     github = config.get("github", {})
     index_config = config.get("index", {})
+    index_filename = index_config.get("filename", DEFAULT_INDEX_FILENAME)
     token_env = github.get("token_env", "GITHUB_TOKEN")
     token = os.environ.get(token_env)
     client = GitHubClient(github.get("api_url", DEFAULT_API_URL), token)
