@@ -1,7 +1,7 @@
 organizations:
   - name: pharo-project
     exclude:
-      - https://github.com/pharo-project/pharo-consortium-site
+      - pharo-project/pharo-consortium-site
   - pharo
   - pharo-contributions
   - pharo-graphics
@@ -27,4 +27,4 @@ packages:
     tags:
       - mutation-testing
       - Pharo
-    repository: https://github.com/pharo-contributions/mutalk
+    repository: pharo-contributions/mutalk

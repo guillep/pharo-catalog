@@ -99,15 +99,19 @@ def load_config(path: Path) -> dict:
 
 
 def normalize_repository_url(value: str) -> str:
-    parsed = urlparse(value.strip())
-    if parsed.scheme != "https" or parsed.netloc.lower() != "github.com":
-        raise ValueError(f"invalid GitHub repository URL: {value}")
-    path = parsed.path.strip("/")
+    value = value.strip()
+    if "://" not in value:
+        path = value.strip("/")
+    else:
+        parsed = urlparse(value)
+        if parsed.scheme != "https" or parsed.netloc.lower() != "github.com":
+            raise ValueError(f"invalid GitHub repository reference: {value}")
+        path = parsed.path.strip("/")
     if path.endswith(".git"):
         path = path[:-4]
     parts = [part for part in path.split("/") if part]
     if len(parts) != 2:
-        raise ValueError(f"invalid GitHub repository URL: {value}")
+        raise ValueError(f"invalid GitHub repository reference: {value}")
     return f"https://github.com/{parts[0]}/{parts[1]}"
 
 
