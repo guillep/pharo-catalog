@@ -38,6 +38,7 @@ CONTROLLED_CATEGORIES = {
     "Tools",
     "Utilities",
     "Education",
+    "AI",
 }
 OTHER_CATEGORY = "Other"
 HIDDEN_CATEGORY = "Hidden"

@@ -39,3 +39,5 @@ categories:
     keywords: [pdf, csv, json, xml, yaml, serialization, compression, zip, tar, gzip, bzip2]
   - name: Education
     keywords: [education, teaching, learning, natural-language-processing, nlp]
+  - name: AI
+    keywords: [ai, llm, nlp, natural-language-processing]
