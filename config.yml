@@ -13,7 +13,7 @@ categories:
   # Topic audit: pharo (22), smalltalk (7), pharo-smalltalk (3), plus the
   # one-off topics currently used by the configured repositories.
   - name: Language & Compiler
-    keywords: [compiler, compiler-tool, programming-language, parser]
+    keywords: [compiler, compiler-tool, programming-language, parser, concurrency]
   - name: Development Environment
     keywords: [ide, development-environment]
   - name: Source Code & Version Control

@@ -96,6 +96,12 @@ def mock_repositories() -> list[dict]:
         "description": "A mock tool without a release index.", "fork": False,
         "topics": ["pharo", "tools"],
         "release": {"tag_name": "v1.0.0", "assets": []}, "last_updated": "2024-01-01T00:00:00Z",
+    }, {
+        "name": "legacy-tool", "full_name": "pharo-project/legacy-tool",
+        "html_url": "https://github.com/pharo-project/legacy-tool",
+        "description": "A mock repository without the pharo topic.", "fork": False,
+        "topics": ["tools"],
+        "release": {"tag_name": "v1.0.0", "assets": []}, "last_updated": "2023-01-01T00:00:00Z",
     }]
 
 
@@ -521,8 +527,8 @@ def render_site(
   </main>
     <script id="catalog-data" type="application/json">{payload}</script>
     <script id="catalog-categories" type="application/json">{category_json}</script>
-  <script>{JS}</script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>{JS}</script>
 </body>
 </html>
         """
@@ -777,7 +783,7 @@ function isHidden(project) {
     return (hideNoRelease.checked && hasNoRelease) || (hideNonStandard.checked && isNonStandard);
 }
 function renderFilterList(container, values, selected, setter) {
-    container.innerHTML = values.map(([value, count]) => { const label = value === '' ? 'All' : value === 'Hidden' ? '👁 See hidden' : value; const help = value === 'Uncategorized' ? 'Tags did not match a configured category.' : value === 'Untagged' ? 'Organization repository does not have the pharo topic.' : ''; const question = help ? `<button type="button" class="btn btn-sm btn-link p-0 ml-1" data-toggle="tooltip" data-placement="right" title="${escapeHtml(help)}" aria-label="About ${escapeHtml(value)}">?</button>` : ''; return `<button type="button" class="filter-option list-group-item list-group-item-action d-flex justify-content-between align-items-center ${selected === value ? 'active' : ''} ${value === 'Hidden' ? 'hidden-option' : ''}" data-value="${escapeHtml(value)}"><span>${escapeHtml(label)}${question}</span><span class="filter-count badge bg-secondary rounded-pill">${count}</span></button>`; }).join('');
+    container.innerHTML = values.map(([value, count]) => { const label = value === '' ? 'All' : value === 'Hidden' ? '👁 See hidden' : value; const help = value === 'Uncategorized' ? 'Tags did not match a configured category.' : value === 'Untagged' ? 'Organization repository does not have the pharo topic.' : ''; const question = help ? `<span class="ms-1 text-secondary" data-bs-toggle="tooltip" data-bs-placement="right" title="${escapeHtml(help)}" aria-label="About ${escapeHtml(value)}" role="img" tabindex="0"><svg width="14" height="14" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="7" fill="currentColor"/><text x="8" y="12" text-anchor="middle" font-size="11" fill="white">?</text></svg></span>` : ''; return `<button type="button" class="filter-option list-group-item list-group-item-action d-flex justify-content-between align-items-center ${selected === value ? 'active' : ''} ${value === 'Hidden' ? 'hidden-option' : ''}" data-value="${escapeHtml(value)}"><span>${escapeHtml(label)}${question}</span><span class="filter-count badge bg-secondary rounded-pill">${count}</span></button>`; }).join('');
     container.querySelectorAll('.filter-option').forEach((button) => button.addEventListener('click', () => {
         setter(button.dataset.value);
         currentPage = 1;
@@ -793,7 +799,7 @@ function render() {
     const categoryValues = [['', catalogProjects.length], ...categoryNames.map((name) => [name, catalogProjects.filter((project) => (project.categories || []).includes(name)).length]).filter(([, count]) => count > 0)];
     const uncategorizedCount = catalogProjects.filter((project) => (project.categories || []).includes('Uncategorized')).length;
     if (uncategorizedCount > 0) categoryValues.push(['Uncategorized', uncategorizedCount]);
-    if (catalogProjects.some((project) => (project.categories || []).includes(UNTAGGED_CATEGORY))) categoryValues.push([UNTAGGED_CATEGORY, catalogProjects.filter((project) => (project.categories || []).includes(UNTAGGED_CATEGORY)).length]);
+    if (visibleProjects.some((project) => (project.categories || []).includes(UNTAGGED_CATEGORY))) categoryValues.push([UNTAGGED_CATEGORY, visibleProjects.filter((project) => (project.categories || []).includes(UNTAGGED_CATEGORY)).length]);
     categoryValues.push(['Hidden', hiddenProjects.length]);
     const pool = selectedCategory === 'Hidden' ? hiddenProjects : selectedCategory === UNTAGGED_CATEGORY ? untaggedProjects : selectedCategory ? visibleProjects : catalogProjects;
     const projects = selectedCategory === 'Hidden'
@@ -824,7 +830,7 @@ sort.addEventListener('change', () => { selectedSort = sort.value; localStorage.
 hideNoRelease.addEventListener('change', () => { localStorage.setItem('catalog-hide-no-release', hideNoRelease.checked); currentPage = 1; render(); });
 hideNonStandard.addEventListener('change', () => { localStorage.setItem('catalog-hide-non-standard', hideNonStandard.checked); currentPage = 1; render(); });
 document.getElementById('theme-toggle').addEventListener('change', (event) => { const theme = event.target.checked ? 'dark' : 'light'; document.documentElement.dataset.theme = theme; localStorage.setItem('catalog-theme', theme); });
-document.querySelectorAll('[data-toggle="tooltip"]').forEach((element) => new bootstrap.Tooltip(element));
+document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach((element) => new bootstrap.Tooltip(element));
 filters.addEventListener('shown.bs.collapse', () => { sidebarToggle.textContent = 'Toggle Categories'; });
 filters.addEventListener('hidden.bs.collapse', () => { sidebarToggle.textContent = 'Toggle Categories'; });
 filters.addEventListener('shown.bs.collapse', () => { catalogContent.classList.remove('col-md-12'); catalogContent.classList.add('col-md-9'); });
