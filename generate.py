@@ -350,10 +350,10 @@ def render_project_wrapper(
     </style>
 </head>
 <body>
-    <header><img src="../../../assets/pharo-beacon.svg" alt="Pharo"><h1>Pharo Project Catalog · {html.escape(project_name)}</h1></header>
+    <header><img src="../../../assets/pharo-beacon.svg" alt="Pharo"><h1>Pharo Project Catalog · {html.escape(project_name)}</h1><div class="ml-auto"><a class="btn btn-secondary btn-sm" href="../../../documentation.html">Documentation</a><label class="form-check form-switch d-inline-block ml-2 mb-0"><input class="form-check-input" id="theme-toggle" type="checkbox"><span class="form-check-label">Dark mode</span></label></div></header>
     <nav class="catalog-bar"><a class="btn btn-link text-white" href="../../../index.html">← Project Catalog</a><a class="btn btn-link text-white" href="{html.escape(repository_url, quote=True)}">Repository ↗</a></nav>
     <iframe src="{html.escape(source_filename, quote=True)}" title="{html.escape(project_name)} project index"></iframe>
-    <script>document.documentElement.dataset.theme = localStorage.getItem('catalog-theme') || 'light';</script>
+    <script>const theme = localStorage.getItem('catalog-theme') || 'light'; document.documentElement.dataset.theme = theme; document.getElementById('theme-toggle').checked = theme === 'dark'; document.getElementById('theme-toggle').addEventListener('change', (event) => {{ const next = event.target.checked ? 'dark' : 'light'; document.documentElement.dataset.theme = next; localStorage.setItem('catalog-theme', next); }});</script>
 </body>
 </html>
 """
@@ -687,6 +687,7 @@ CSS = """
 [data-theme="dark"] .navbar-toggler { border-color: var(--line); }
 [data-theme="dark"] .btn-secondary { background-color: #4d5660; border-color: #626d78; color: #fff; }
 [data-theme="dark"] .btn-primary { background-color: var(--blue); border-color: var(--blue); color: #17212b; }
+[data-theme="dark"] #sidebar-toggle { color: #17212b; }
 [data-theme="dark"] .form-control, [data-theme="dark"] .form-select, [data-theme="dark"] .list-group-item { background-color: var(--card); border-color: var(--line); color: var(--ink); }
 [data-theme="dark"] .form-control::placeholder { color: var(--muted); opacity: 1; }
 [data-theme="dark"] .list-group-item-action:hover, [data-theme="dark"] .list-group-item-action:focus { background-color: var(--blue-soft); color: var(--ink); }
@@ -758,8 +759,8 @@ let currentPage = 1;
 let selectedCategory = localStorage.getItem('catalog-category') || '';
 let selectedSort = localStorage.getItem('catalog-sort') || 'name';
 const escapeHtml = (value) => String(value ?? '').replace(/[&<>\"']/g, (char) => ({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;',"'":'&#39;'}[char]));
-hideNoRelease.checked = localStorage.getItem('catalog-hide-no-release') !== 'false';
-hideNonStandard.checked = localStorage.getItem('catalog-hide-non-standard') !== 'false';
+hideNoRelease.checked = localStorage.getItem('catalog-hide-no-release') === 'true';
+hideNonStandard.checked = localStorage.getItem('catalog-hide-non-standard') === 'true';
 document.documentElement.dataset.theme = localStorage.getItem('catalog-theme') || 'light';
 document.getElementById('theme-toggle').checked = document.documentElement.dataset.theme === 'dark';
 function baseProjects() {
@@ -788,9 +789,9 @@ function render() {
     const visibleProjects = candidates.filter((project) => !isHidden(project));
     const catalogProjects = visibleProjects.filter((project) => !(project.categories || []).includes(UNTAGGED_CATEGORY));
     const untaggedProjects = visibleProjects.filter((project) => (project.categories || []).includes(UNTAGGED_CATEGORY));
-    const categoryValues = [['', catalogProjects.length], ...categoryNames.map((name) => [name, candidates.filter((project) => (project.categories || []).includes(name)).length]).filter(([, count]) => count > 0)];
-    if (candidates.some((project) => (project.categories || []).includes(UNTAGGED_CATEGORY))) categoryValues.push([UNTAGGED_CATEGORY, candidates.filter((project) => (project.categories || []).includes(UNTAGGED_CATEGORY)).length]);
-    const uncategorizedCount = candidates.filter((project) => (project.categories || []).includes('Uncategorized')).length;
+    const categoryValues = [['', catalogProjects.length], ...categoryNames.map((name) => [name, catalogProjects.filter((project) => (project.categories || []).includes(name)).length]).filter(([, count]) => count > 0)];
+    if (catalogProjects.some((project) => (project.categories || []).includes(UNTAGGED_CATEGORY))) categoryValues.push([UNTAGGED_CATEGORY, catalogProjects.filter((project) => (project.categories || []).includes(UNTAGGED_CATEGORY)).length]);
+    const uncategorizedCount = catalogProjects.filter((project) => (project.categories || []).includes('Uncategorized')).length;
     if (uncategorizedCount > 0) categoryValues.push(['Uncategorized', uncategorizedCount]);
     categoryValues.push(['Hidden', hiddenProjects.length]);
     const pool = selectedCategory === 'Hidden' ? hiddenProjects : selectedCategory === UNTAGGED_CATEGORY ? untaggedProjects : selectedCategory ? visibleProjects : catalogProjects;
