@@ -200,6 +200,38 @@ def latest_release(client: GitHubClient, full_name: str) -> dict | None:
         raise
 
 
+def render_project_wrapper(
+        project_name: str,
+        repository_url: str,
+        index_filename: str,
+        source_filename: str,
+) -> str:
+        return f"""<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{html.escape(project_name)} · Pharo Project Catalog</title>
+    <link rel="icon" href="../../assets/favicon.ico">
+    <style>
+        :root {{ color-scheme: light; --blue: #3297d4; --ink: #333; --muted: #777; --line: #ddd; --paper: #f7f7f7; }}
+        * {{ box-sizing: border-box; }}
+        body {{ margin: 0; background: var(--paper); color: var(--ink); font: 15px/1.5 "Open Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }}
+        header {{ display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: .75rem 1.25rem; border-bottom: 4px solid #f5f5f5; background: #fff; }}
+        h1 {{ margin: 0; font-size: 1.15rem; font-weight: 600; }}
+        a {{ color: var(--blue); }}
+        .back {{ font-size: .85rem; }}
+        iframe {{ display: block; width: 100%; min-height: calc(100vh - 62px); border: 0; background: #fff; }}
+    </style>
+</head>
+<body>
+    <header><h1><a href="../../index.html">Pharo Project catalog</a> · {html.escape(project_name)}</h1><a class="back" href="{html.escape(repository_url, quote=True)}">Repository</a></header>
+    <iframe src="{html.escape(source_filename, quote=True)}" title="{html.escape(project_name)} project index"></iframe>
+</body>
+</html>
+"""
+
+
 def process_repository(
     client: GitHubClient,
     repository: dict,
@@ -243,7 +275,16 @@ def process_repository(
         slug = f"{re.sub(r'[^a-zA-Z0-9._-]+', '-', owner).strip('-.').lower()}-{slug}"
     destination = output / "projects" / slug / index_filename
     destination.parent.mkdir(parents=True, exist_ok=True)
-    client.download(index_asset["browser_download_url"], destination)
+    index_path = Path(index_filename)
+    source_filename = f".{index_path.stem}-source{index_path.suffix or '.html'}"
+    source_destination = destination.parent / source_filename
+    client.download(index_asset["browser_download_url"], source_destination)
+    destination.write_text(
+        render_project_wrapper(
+            project["name"], project["repository_url"], index_filename, source_filename
+        ),
+        encoding="utf-8",
+    )
     project["standard"] = True
     project["status"] = "standard"
     project["project_url"] = f"projects/{slug}/{index_filename}"
@@ -317,7 +358,7 @@ def render_site(
     <img class="pharo-logo" src="assets/pharo-beacon.svg" alt="Pharo">
     <div class="header-copy">
         <p class="eyebrow">PHARO ECOSYSTEM</p>
-        <h1>Project catalog</h1>
+        <h1>Pharo Project catalog</h1>
         <p class="lede">Discover Pharo packages, releases, and their project indexes.</p>
       </div>
             <div class="header-actions">
@@ -348,7 +389,7 @@ def render_site(
                 {error_report}
             </section>
         </div>
-    <footer class="catalog-footer">Generated from GitHub metadata. Standard releases include a published project index.</footer>
+    <footer class="catalog-footer">Copyright © 2026 Pharo contributors. Generated from GitHub metadata by <a href="https://github.com/guillep/pharo-catalog">guillep/pharo-catalog</a>.</footer>
   </main>
     <script id="catalog-data" type="application/json">{payload}</script>
     <script id="catalog-categories" type="application/json">{category_json}</script>
@@ -456,13 +497,14 @@ input { width: 100%; margin-top: .5rem; padding: .85rem 1rem; border: 2px solid 
 input:focus { outline: 3px solid rgba(50,151,212,.2); border-color: var(--blue); }
 .catalog-layout { display: grid; grid-template-columns: 248px 1fr; gap: 2rem; }
 .catalog-layout.filters-hidden { grid-template-columns: 3.5rem 1fr; }
-.catalog-layout.filters-hidden .filters { padding: .5rem; }
+.catalog-layout.filters-hidden .filters { padding: .5rem; background: transparent; border: 0; box-shadow: none; }
 .catalog-layout.filters-hidden .filters > :not(.filter-menu-bar) { display: none; }
 .filters { padding: 0 0 1rem; margin-top: 2rem; overflow: hidden; background: var(--filter-bg); border: 1px solid rgba(50,151,212,.32); border-radius: 4px; box-shadow: 0 3px 12px rgba(0,0,0,.07); }
 .filter-menu-bar { display: flex; align-items: center; gap: .55rem; min-height: 3rem; padding: .7rem .8rem; background: var(--filter-header); color: #fff; font: bold .85rem "Open Sans", sans-serif; }
 .catalog-layout.filters-hidden .filter-menu-bar { padding: .7rem; }
 .catalog-layout.filters-hidden .filter-menu-bar > span { display: none; }
 .filter-menu-bar .sidebar-close { margin-left: auto; }
+.filter-menu-bar .burger { border-color: rgba(255,255,255,.65); background: transparent; color: #fff; }
 .filters h2 { margin: 1.3rem 1rem .45rem; color: var(--ink); font-size: .95rem; }
 .sidebar-close { display: none; }
 .toggle-row { position: relative; justify-content: flex-start; margin: 1rem; text-align: left; }
@@ -477,6 +519,8 @@ input:focus { outline: 3px solid rgba(50,151,212,.2); border-color: var(--blue);
 .project-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: 1rem; }
 .project-card { display: flex; flex-direction: column; min-height: 220px; padding: 1.2rem; background: var(--card); border: 1px solid var(--line); border-top: 3px solid var(--blue); border-radius: 2px; box-shadow: 0 2px 8px rgba(0,0,0,.04); }
 .project-card h2 { margin: 0; font-size: 1.35rem; line-height: 1.15; }
+.project-card h2 a { color: inherit; text-decoration: none; }
+.project-card h2 a:hover { color: var(--blue); }
 .project-card p { color: var(--muted); margin: .7rem 0; }
 .metadata { font-size: .86rem; color: var(--blue) !important; }
 .tags { display: flex; flex-wrap: wrap; gap: .35rem; }
@@ -490,7 +534,7 @@ a { color: var(--blue); }
 .error-report { margin-top: 1.5rem; padding: 1rem; border: 1px solid #f0c5a9; border-radius: 2px; background: #fff8f3; color: #7e3e1f; font: .9rem "Open Sans", sans-serif; }
 .error-report summary { cursor: pointer; font-weight: bold; }
 .error-report li { margin-top: .4rem; overflow-wrap: anywhere; }
-@media (max-width: 760px) { .catalog-shell { padding-top: 1.5rem; } .catalog-header { align-items: flex-start; } .pharo-logo { width: 56px; height: 56px; flex-basis: 56px; } .catalog-layout { display: block; } .filters { position: static; width: auto; margin: 1.25rem 0 0; transform: none; } .filters.open { transform: none; } .sidebar-close { display: none; } .burger { display: block; } }
+@media (max-width: 760px) { .catalog-shell { padding-top: 1.5rem; } .catalog-header { align-items: flex-start; } .pharo-logo { width: 56px; height: 56px; flex-basis: 56px; } .catalog-layout { display: block; } .filters { position: static; width: auto; max-height: 3rem; margin: 1.25rem 0 0; transform: none; transition: max-height .2s ease; } .filters.mobile-expanded { max-height: 1000px; } .filters.open { transform: none; } .sidebar-close { display: none; } .burger { display: block; } }
 """
 
 
@@ -563,7 +607,13 @@ search.addEventListener('input', render);
 hideNoRelease.addEventListener('change', () => { localStorage.setItem('catalog-hide-no-release', hideNoRelease.checked); currentPage = 1; render(); });
 hideNonStandard.addEventListener('change', () => { localStorage.setItem('catalog-hide-non-standard', hideNonStandard.checked); currentPage = 1; render(); });
 document.getElementById('theme-toggle').addEventListener('change', (event) => { const theme = event.target.checked ? 'dark' : 'light'; document.documentElement.dataset.theme = theme; localStorage.setItem('catalog-theme', theme); });
-document.getElementById('sidebar-toggle').addEventListener('click', () => layout.classList.toggle('filters-hidden'));
+document.getElementById('sidebar-toggle').addEventListener('click', () => {
+    if (window.matchMedia('(max-width: 760px)').matches) {
+        filters.classList.toggle('mobile-expanded');
+    } else {
+        layout.classList.toggle('filters-hidden');
+    }
+});
 document.getElementById('sidebar-close').addEventListener('click', () => filters.classList.remove('open'));
 render();
 """

@@ -103,6 +103,9 @@ class GenerateTests(unittest.TestCase):
         self.assertIn("Project without standard release", site)
         self.assertIn("<h2><a href=", site)
         self.assertIn("filter-menu-bar", site)
+        self.assertIn("Copyright © 2026 Pharo contributors", site)
+        self.assertIn("guillep/pharo-catalog", site)
+        self.assertIn("mobile-expanded", site)
         self.assertIn("pagination", site)
         self.assertIn("sidebar-toggle", site)
         self.assertIn("filters-hidden", site)
@@ -113,6 +116,14 @@ class GenerateTests(unittest.TestCase):
     def test_shared_logo_asset_is_available(self):
         self.assertTrue(generate.LOGO_PATH.is_file())
         self.assertIn("<svg", generate.LOGO_PATH.read_text(encoding="utf-8"))
+
+    def test_project_index_has_catalog_wrapper(self):
+        wrapper = generate.render_project_wrapper(
+            "Demo", "https://github.com/example/demo", "index.html", ".index-source.html"
+        )
+        self.assertIn("Pharo Project catalog", wrapper)
+        self.assertIn("https://github.com/example/demo", wrapper)
+        self.assertIn(".index-source.html", wrapper)
 
 
 if __name__ == "__main__":
