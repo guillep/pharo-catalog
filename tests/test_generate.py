@@ -67,6 +67,12 @@ class GenerateTests(unittest.TestCase):
         self.assertEqual(generate.derive_categories(["HTTP", "http-client"], rules), ["Web"])
         self.assertEqual(generate.derive_categories(["json"], rules), [generate.OTHER_CATEGORY])
 
+    def test_special_repositories_are_excluded_from_organization_discovery(self):
+        self.assertTrue(generate.is_special_repository({"name": ".github"}))
+        self.assertTrue(generate.is_special_repository({"name": "pharo-project.github.io"}))
+        self.assertTrue(generate.is_special_repository({"name": "github-pages"}))
+        self.assertFalse(generate.is_special_repository({"name": "pharo"}))
+
     def test_registry_entry_overrides_discovered_metadata(self):
         project = generate.merge_project_metadata(
             {"name": "demo", "description": "GitHub", "categories": [], "tags": []},

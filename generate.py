@@ -267,6 +267,11 @@ def project_slug(repository: dict) -> str:
     return slug or "project"
 
 
+def is_special_repository(repository: dict) -> bool:
+    name = repository.get("name", "").casefold()
+    return name == ".github" or name == "github-pages" or name.endswith(".github.io")
+
+
 def latest_release(client: GitHubClient, full_name: str) -> dict | None:
     try:
         return client.request_json(f"repos/{full_name}/releases/latest")
@@ -566,7 +571,7 @@ def generate(config_path: Path, mock: bool = False) -> tuple[int, int]:
             errors.append({"organization": organization_name, "error": str(error)})
             continue
         for repository in organization_repositories:
-            if repository.get("fork"):
+            if repository.get("fork") or is_special_repository(repository):
                 continue
             try:
                 identity = normalize_repository_url(repository["html_url"])
