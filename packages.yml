@@ -1,4 +1,7 @@
 organizations:
+  - name: pharo-project
+    exclude:
+      - https://github.com/pharo-project/pharo-consortium-site
   - pharo
   - pharo-contributions
   - pharo-graphics

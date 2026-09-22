@@ -116,6 +116,20 @@ def load_registry_data(path: Path) -> dict:
     organizations = raw.get("organizations", [])
     if not isinstance(organizations, list):
         raise ValueError("registry organizations must be a list")
+    normalized_organizations = []
+    for organization in organizations:
+        if isinstance(organization, str):
+            normalized_organizations.append({"name": organization, "exclude": set()})
+            continue
+        if not isinstance(organization, dict) or not isinstance(organization.get("name"), str):
+            raise ValueError("organizations must be names or mappings with a name")
+        excluded = organization.get("exclude", [])
+        if not isinstance(excluded, list):
+            raise ValueError(f"exclude for {organization['name']} must be a list")
+        normalized_organizations.append({
+            "name": organization["name"],
+            "exclude": {normalize_repository_url(url) for url in excluded},
+        })
     packages = raw.get("packages")
     if not isinstance(packages, list):
         raise ValueError("registry must define a packages list")
@@ -135,7 +149,7 @@ def load_registry_data(path: Path) -> dict:
             raise ValueError(f"duplicate repository in registry: {identity}")
         identities.add(identity)
         registry.append({**entry, "tags": tags, "repository": identity})
-    return {"organizations": organizations, "packages": registry}
+    return {"organizations": normalized_organizations, "packages": registry}
 
 
 def load_registry(path: Path) -> list[dict]:
@@ -484,16 +498,20 @@ def generate(config_path: Path) -> tuple[int, int]:
         entry["repository"]: repository_from_registry(entry) for entry in registry
     }
     for organization in organizations:
+        organization_name = organization["name"]
+        excluded = organization["exclude"]
         try:
-            organization_repositories = paged_repositories(client, organization)
+            organization_repositories = paged_repositories(client, organization_name)
         except GitHubError as error:
-            errors.append({"organization": organization, "error": str(error)})
+            errors.append({"organization": organization_name, "error": str(error)})
             continue
         for repository in organization_repositories:
             if repository.get("fork"):
                 continue
             try:
                 identity = normalize_repository_url(repository["html_url"])
+                if identity in excluded:
+                    continue
                 repositories.setdefault(identity, repository)
             except ValueError as error:
                 errors.append({"repository": repository.get("full_name", "unknown"), "error": str(error)})
