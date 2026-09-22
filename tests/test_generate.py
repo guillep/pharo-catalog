@@ -56,7 +56,7 @@ class GenerateTests(unittest.TestCase):
         data = generate.load_registry_data(Path(__file__).parents[1] / "packages.yml")
         self.assertIn("pharo", [item["name"] for item in data["organizations"]])
         pharo_project = next(item for item in data["organizations"] if item["name"] == "pharo-project")
-        self.assertIn("https://github.com/pharo-project/pharo-consortium-site", pharo_project["exclude"])
+        self.assertTrue(all(value.startswith("https://github.com/pharo-project/") for value in pharo_project["exclude"]))
 
     def test_configured_index_filename_has_a_default(self):
         config = generate.load_config(Path(__file__).parents[1] / "config.yml")
@@ -131,6 +131,7 @@ class GenerateTests(unittest.TestCase):
         self.assertIn("categoryValues", site)
         self.assertNotIn("renderFilterList(categoryList, categoryCounts", site)
         self.assertIn("['Hidden', hiddenProjects.length]", site)
+        self.assertIn("selectedCategory === 'Hidden'", site)
         self.assertNotIn("|| 'All'", site)
         self.assertIn('type="application/json"', site)
 

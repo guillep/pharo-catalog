@@ -698,7 +698,9 @@ function render() {
     if (otherCount > 0) categoryValues.push(['Other', otherCount]);
     categoryValues.push(['Hidden', hiddenProjects.length]);
     const pool = selectedCategory === 'Hidden' ? hiddenProjects : visibleProjects;
-    const projects = pool.filter((project) => !selectedCategory || (project.categories || []).includes(selectedCategory));
+    const projects = selectedCategory === 'Hidden'
+        ? hiddenProjects
+        : pool.filter((project) => !selectedCategory || (project.categories || []).includes(selectedCategory));
     const availableCategory = categoryValues.some(([name]) => name === selectedCategory);
     if (selectedCategory && !availableCategory) selectedCategory = '';
     renderFilterList(categoryList, categoryValues, selectedCategory, (value) => { selectedCategory = value; localStorage.setItem('catalog-category', value); });
