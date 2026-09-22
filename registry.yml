@@ -2,8 +2,6 @@ organizations:
   - name: pharo-project
     exclude:
       - isloop
-  - name: pharo-testing
-    tags: [testing]
   - name: pharo
   - name: pharo-contributions
   - name: pharo-graphics
@@ -22,14 +20,10 @@ organizations:
     tags: [database]
   - name: pharo-nosql
     tags: [database]
-  - name: pharo-web
+  - name: SeasideSt
     tags: [web]
-  - name: pharo-crypto
-    tags: [cryptography]
   - name: pharo-ide
     tags: [ide]
-  - name: pharo-utilities
-    tags: [utilities]
   - name: pharo-pkg
     tags: [package-management]
   - name: pharo-completion
