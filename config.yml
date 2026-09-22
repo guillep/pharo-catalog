@@ -1,4 +1,4 @@
-registry: packages.yml
+registry: registry.yml
 
 github:
   # The token is read from this environment variable and is never written to the site.
