@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import csv
 import html
 import json
 import os
@@ -368,6 +369,8 @@ def render_site(
         <p class="lede">Discover Pharo packages, releases, and their project indexes.</p>
       </div>
             <div class="header-actions">
+                <a class="documentation-link" href="catalog.json">JSON</a>
+                <a class="documentation-link" href="catalog.csv">CSV</a>
                 <label class="theme-toggle"><input id="theme-toggle" type="checkbox"> Dark mode</label>
             </div>
     </header>
@@ -389,8 +392,8 @@ def render_site(
                     <p id="summary" class="summary"></p>
                 </section>
                 <section id="projects" class="project-grid" aria-live="polite"></section>
+                <p id="empty" class="empty-state" hidden>☹ No projects match your filters.</p>
                 <nav id="pagination" class="pagination" aria-label="Project pages"></nav>
-                <p id="empty" class="empty-state" hidden>No projects match your filters.</p>
                 {error_report}
             </section>
         </div>
@@ -511,6 +514,19 @@ def generate(config_path: Path) -> tuple[int, int]:
     (output / "documentation.html").write_text(render_documentation(), encoding="utf-8")
     report = {"projects": projects, "errors": errors}
     (output / "catalog.json").write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
+    with (output / "catalog.csv").open("w", newline="", encoding="utf-8") as handle:
+        writer = csv.DictWriter(handle, fieldnames=["name", "description", "categories", "tags", "status", "project_url", "repository_url"])
+        writer.writeheader()
+        for project in projects:
+            writer.writerow({
+                "name": project.get("name", ""),
+                "description": project.get("description", ""),
+                "categories": ";".join(project.get("categories", [])),
+                "tags": ";".join(project.get("tags", [])),
+                "status": project.get("status", ""),
+                "project_url": project.get("project_url", ""),
+                "repository_url": project.get("repository_url", ""),
+            })
     for error in errors:
         print(f"error: {error}", file=sys.stderr)
     print(f"Generated {len(projects)} projects with {len(errors)} errors in {output}")
@@ -584,7 +600,7 @@ a { color: var(--blue); }
 .error-report { margin-top: 1.5rem; padding: 1rem; border: 1px solid #f0c5a9; border-radius: 2px; background: #fff8f3; color: #7e3e1f; font: .9rem "Open Sans", sans-serif; }
 .error-report summary { cursor: pointer; font-weight: bold; }
 .error-report li { margin-top: .4rem; overflow-wrap: anywhere; }
-@media (max-width: 760px) { .catalog-shell { padding-top: 1.5rem; } .catalog-header { align-items: flex-start; } .pharo-logo { width: 56px; height: 56px; flex-basis: 56px; } .catalog-layout { display: block; } .filters { position: static; width: auto; max-height: 3.5rem; margin: 1.25rem 0 0; transform: none; transition: max-height .2s ease; } .catalog-layout.filters-hidden .filters { padding: 0; } .filters.mobile-expanded { max-height: 1000px; } .filters.open { transform: none; } .sidebar-close { display: none; } .burger { display: block; } }
+@media (max-width: 760px) { .catalog-shell { padding-top: 1.5rem; } .catalog-header { align-items: flex-start; } .pharo-logo { width: 56px; height: 56px; flex-basis: 56px; } .catalog-layout { display: block; } .filters { position: static; width: auto; min-height: 3.5rem; max-height: 3.5rem; margin: 1.25rem 0 0; transform: none; transition: max-height .2s ease; } .catalog-layout.filters-hidden .filters { padding: 0; min-height: 3.5rem; } .filters.mobile-expanded { max-height: 1000px; } .filters.open { transform: none; } .sidebar-close { display: none; } .burger { display: block; } }
 """
 
 
@@ -636,7 +652,7 @@ function render() {
     const candidates = baseProjects();
     const hiddenProjects = candidates.filter(isHidden);
     const visibleProjects = candidates.filter((project) => !isHidden(project));
-    const categoryValues = categoryNames.map((name) => [name, visibleProjects.filter((project) => (project.categories || []).includes(name)).length]).filter(([, count]) => count > 0);
+    const categoryValues = [['', visibleProjects.length], ...categoryNames.map((name) => [name, visibleProjects.filter((project) => (project.categories || []).includes(name)).length]).filter(([, count]) => count > 0)];
     const otherCount = visibleProjects.filter((project) => (project.categories || []).includes('Other')).length;
     if (otherCount > 0) categoryValues.push(['Other', otherCount]);
     categoryValues.push(['Hidden', hiddenProjects.length]);
