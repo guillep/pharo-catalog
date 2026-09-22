@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import csv
+import datetime
 import html
 import json
 import os
@@ -42,6 +43,7 @@ CONTROLLED_CATEGORIES = {
 }
 OTHER_CATEGORY = "Other"
 HIDDEN_CATEGORY = "Hidden"
+UNTAGGED_CATEGORY = "Untagged"
 
 
 class GitHubError(RuntimeError):
@@ -66,10 +68,16 @@ class MockGitHubClient:
         if path.startswith("repos/") and path.endswith("/releases/latest"):
             full_name = path.split("/")[1] + "/" + path.split("/")[2]
             return next(repo["release"] for repo in self.repositories if repo["full_name"] == full_name)
+        if path.startswith("repos/") and path.endswith("/commits"):
+            full_name = path.split("/")[1] + "/" + path.split("/")[2]
+            return [{"commit": {"author": {"date": next(repo["last_updated"] for repo in self.repositories if repo["full_name"] == full_name)}}}]
         raise GitHubError(f"mock path not found: {path}")
 
     def repository_topics(self, full_name: str) -> list[str]:
         return next(repo["topics"] for repo in self.repositories if repo["full_name"] == full_name)
+
+    def latest_commit_date(self, full_name: str) -> str:
+        return next(repo["last_updated"] for repo in self.repositories if repo["full_name"] == full_name)
 
     def download(self, url: str, destination: Path) -> None:
         destination.write_text("<h1>Mock Pharo project index</h1>", encoding="utf-8")
@@ -81,13 +89,13 @@ def mock_repositories() -> list[dict]:
         "html_url": "https://github.com/pharo-contributions/mutalk",
         "description": "Mutation testing for Pharo.", "fork": False,
         "topics": ["pharo", "testing", "mutation-testing"],
-        "release": {"tag_name": "v3.0.8", "assets": [{"name": "index.html", "browser_download_url": "mock://mutalk/index.html"}]},
+        "release": {"tag_name": "v3.0.8", "assets": [{"name": "index.html", "browser_download_url": "mock://mutalk/index.html"}]}, "last_updated": "2026-09-20T00:00:00Z",
     }, {
         "name": "example-tool", "full_name": "pharo-project/example-tool",
         "html_url": "https://github.com/pharo-project/example-tool",
         "description": "A mock tool without a release index.", "fork": False,
         "topics": ["pharo", "tools"],
-        "release": {"tag_name": "v1.0.0", "assets": []},
+        "release": {"tag_name": "v1.0.0", "assets": []}, "last_updated": "2024-01-01T00:00:00Z",
     }]
 
 
@@ -127,6 +135,10 @@ class GitHubClient:
         if not isinstance(topics, list) or not all(isinstance(topic, str) for topic in topics):
             raise GitHubError(f"GET repos/{full_name}/topics: invalid topic response")
         return topics
+
+    def latest_commit_date(self, full_name: str) -> str:
+        commits = self.request_json(f"repos/{full_name}/commits", {"per_page": "1"})
+        return commits[0]["commit"]["author"]["date"] if commits else ""
 
     def _headers(self, accept: str) -> dict[str, str]:
         headers = {
@@ -286,6 +298,20 @@ def has_pharo_topic(client, repository: dict) -> bool:
     return any(topic.casefold() == "pharo" for topic in client.repository_topics(repository["full_name"]))
 
 
+def update_age(date_text: str) -> str:
+    if not date_text:
+        return "Unknown"
+    date = datetime.datetime.fromisoformat(date_text.replace("Z", "+00:00"))
+    age_days = (datetime.datetime.now(datetime.timezone.utc) - date).days
+    if age_days < 30:
+        return "Recently"
+    if age_days < 90:
+        return "In the past 3 months"
+    if age_days < 365:
+        return "In the past year"
+    return "More than a year ago"
+
+
 def latest_release(client: GitHubClient, full_name: str) -> dict | None:
     try:
         return client.request_json(f"repos/{full_name}/releases/latest")
@@ -346,12 +372,15 @@ def process_repository(
         "repository_url": repository.get("html_url", ""),
         "project_url": repository.get("html_url", ""),
         "organization": full_name.split("/", 1)[0] if "/" in full_name else "",
-        "categories": derive_categories(tags, category_rules or []),
+        "stars": repository.get("stargazers_count", 0),
+        "categories": [UNTAGGED_CATEGORY] if repository.get("untagged") else derive_categories(tags, category_rules or []),
         "tags": tags,
         "standard": False,
         "status": "no-release",
         "artifacts": [],
+        "last_updated": client.latest_commit_date(full_name) if hasattr(client, "latest_commit_date") else "",
     }
+    project["update_age"] = update_age(project["last_updated"])
     release = latest_release(client, full_name)
     if release is None:
         project["status"] = "no-release"
@@ -481,6 +510,8 @@ def render_site(
                 <section class="catalog-controls" aria-label="Catalog controls">
                     <label class="search-label" for="search">Search projects</label>
                     <input id="search" type="search" placeholder="Search name, description, category, or tag" autocomplete="off">
+                    <label class="sort-label" for="sort">Sort</label>
+                    <select id="sort"><option value="name">Alphabetically</option><option value="stars">By stars</option><option value="updated">Last updated</option></select>
                     <p id="summary" class="summary"></p>
                 </section>
                 <section id="projects" class="project-grid" aria-live="polite"></section>
@@ -593,8 +624,7 @@ def generate(config_path: Path, mock: bool = False) -> tuple[int, int]:
                 continue
             try:
                 identity = normalize_repository_url(repository["html_url"])
-                if not has_pharo_topic(client, repository):
-                    continue
+                repository["untagged"] = not has_pharo_topic(client, repository)
                 if identity in excluded:
                     continue
                 repositories.setdefault(identity, repository)
@@ -629,7 +659,7 @@ def generate(config_path: Path, mock: bool = False) -> tuple[int, int]:
     report = {"projects": projects, "errors": errors}
     (output / "catalog.json").write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
     with (output / "catalog.csv").open("w", newline="", encoding="utf-8") as handle:
-        writer = csv.DictWriter(handle, fieldnames=["name", "description", "categories", "tags", "status", "project_url", "repository_url"])
+        writer = csv.DictWriter(handle, fieldnames=["name", "description", "categories", "tags", "status", "last_updated", "update_age", "stars", "project_url", "repository_url"])
         writer.writeheader()
         for project in projects:
             writer.writerow({
@@ -638,6 +668,9 @@ def generate(config_path: Path, mock: bool = False) -> tuple[int, int]:
                 "categories": ";".join(project.get("categories", [])),
                 "tags": ";".join(project.get("tags", [])),
                 "status": project.get("status", ""),
+                "last_updated": project.get("last_updated", ""),
+                "update_age": project.get("update_age", "Unknown"),
+                "stars": project.get("stars", 0),
                 "project_url": project.get("project_url", ""),
                 "repository_url": project.get("repository_url", ""),
             })
@@ -726,8 +759,10 @@ a { color: var(--blue); }
 JS = """
 const data = JSON.parse(document.getElementById('catalog-data').textContent);
 const categoryNames = JSON.parse(document.getElementById('catalog-categories').textContent);
+const UNTAGGED_CATEGORY = 'Untagged';
 const grid = document.getElementById('projects');
 const search = document.getElementById('search');
+const sort = document.getElementById('sort');
 const summary = document.getElementById('summary');
 const empty = document.getElementById('empty');
 const pagination = document.getElementById('pagination');
@@ -739,6 +774,7 @@ const layout = document.getElementById('catalog-layout');
 const pageSize = 12;
 let currentPage = 1;
 let selectedCategory = localStorage.getItem('catalog-category') || '';
+let selectedSort = localStorage.getItem('catalog-sort') || 'name';
 let filtersCollapsed = localStorage.getItem('catalog-filters-collapsed') === 'true';
 const escapeHtml = (value) => String(value ?? '').replace(/[&<>\"']/g, (char) => ({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;',"'":'&#39;'}[char]));
 hideNoRelease.checked = localStorage.getItem('catalog-hide-no-release') !== 'false';
@@ -771,11 +807,14 @@ function render() {
     const candidates = baseProjects();
     const hiddenProjects = candidates.filter(isHidden);
     const visibleProjects = candidates.filter((project) => !isHidden(project));
-    const categoryValues = [['', visibleProjects.length], ...categoryNames.map((name) => [name, visibleProjects.filter((project) => (project.categories || []).includes(name)).length]).filter(([, count]) => count > 0)];
+    const catalogProjects = visibleProjects.filter((project) => !(project.categories || []).includes(UNTAGGED_CATEGORY));
+    const untaggedProjects = visibleProjects.filter((project) => (project.categories || []).includes(UNTAGGED_CATEGORY));
+    const categoryValues = [['', catalogProjects.length], ...categoryNames.map((name) => [name, catalogProjects.filter((project) => (project.categories || []).includes(name)).length]).filter(([, count]) => count > 0)];
+    if (untaggedProjects.length) categoryValues.push([UNTAGGED_CATEGORY, untaggedProjects.length]);
     const otherCount = visibleProjects.filter((project) => (project.categories || []).includes('Other')).length;
     if (otherCount > 0) categoryValues.push(['Other', otherCount]);
     categoryValues.push(['Hidden', hiddenProjects.length]);
-    const pool = selectedCategory === 'Hidden' ? hiddenProjects : visibleProjects;
+    const pool = selectedCategory === 'Hidden' ? hiddenProjects : selectedCategory === UNTAGGED_CATEGORY ? untaggedProjects : selectedCategory ? visibleProjects : catalogProjects;
     const projects = selectedCategory === 'Hidden'
         ? hiddenProjects
         : pool.filter((project) => !selectedCategory || (project.categories || []).includes(selectedCategory));
@@ -784,13 +823,14 @@ function render() {
     renderFilterList(categoryList, categoryValues, selectedCategory, (value) => { selectedCategory = value; localStorage.setItem('catalog-category', value); });
     const pages = Math.max(1, Math.ceil(projects.length / pageSize));
     currentPage = Math.min(currentPage, pages);
-    const visible = projects.slice((currentPage - 1) * pageSize, currentPage * pageSize);
+    const sorted = [...projects].sort((a, b) => selectedSort === 'stars' ? (b.stars || 0) - (a.stars || 0) : selectedSort === 'updated' ? String(b.last_updated || '').localeCompare(String(a.last_updated || '')) : a.name.localeCompare(b.name));
+    const visible = sorted.slice((currentPage - 1) * pageSize, currentPage * pageSize);
     grid.innerHTML = visible.map((project) => {
     const standard = project.status === 'standard';
     const status = standard ? 'Standard release' : project.status === 'no-release' || project.status === 'error' ? 'Project without release' : 'Project without standard release';
     const categories = (project.categories || []).map(escapeHtml).join(' · ');
     const tags = (project.tags || []).map((value) => `<span class="tag">${escapeHtml(value)}</span>`).join(' ');
-    return `<article class="project-card"><h2><a href="${escapeHtml(project.project_url)}">${escapeHtml(project.name)}</a></h2><p>${escapeHtml(project.description)}</p><p class="metadata">${categories}</p><div class="tags">${tags}</div>${standard ? '' : `<span class="badge" title="${escapeHtml(status)}">⚠ ${escapeHtml(status)}</span>`}<div class="links"><a href="${escapeHtml(project.repository_url)}">Repository</a></div></article>`;
+    return `<article class="project-card"><h2><a href="${escapeHtml(project.project_url)}">${escapeHtml(project.name)}</a></h2><p>${escapeHtml(project.description)}</p><p class="metadata">${categories}</p><div class="tags">${tags}</div><p class="metadata">Last updated: ${escapeHtml(project.update_age || 'Unknown')}</p>${standard ? '' : `<span class="badge" title="${escapeHtml(status)}">⚠ ${escapeHtml(status)}</span>`}<div class="links"><a href="${escapeHtml(project.repository_url)}">Repository</a></div></article>`;
   }).join('');
     pagination.innerHTML = Array.from({length: pages}, (_, index) => `<button class="page-button ${currentPage === index + 1 ? 'active' : ''}" data-page="${index + 1}">${index + 1}</button>`).join('');
     pagination.querySelectorAll('.page-button').forEach((button) => button.addEventListener('click', () => { currentPage = Number(button.dataset.page); render(); window.scrollTo({top: 0, behavior: 'smooth'}); }));
@@ -798,6 +838,8 @@ function render() {
   empty.hidden = projects.length !== 0;
 }
 search.addEventListener('input', render);
+sort.value = selectedSort;
+sort.addEventListener('change', () => { selectedSort = sort.value; localStorage.setItem('catalog-sort', selectedSort); currentPage = 1; render(); });
 hideNoRelease.addEventListener('change', () => { localStorage.setItem('catalog-hide-no-release', hideNoRelease.checked); currentPage = 1; render(); });
 hideNonStandard.addEventListener('change', () => { localStorage.setItem('catalog-hide-non-standard', hideNonStandard.checked); currentPage = 1; render(); });
 document.getElementById('theme-toggle').addEventListener('change', (event) => { const theme = event.target.checked ? 'dark' : 'light'; document.documentElement.dataset.theme = theme; localStorage.setItem('catalog-theme', theme); });
