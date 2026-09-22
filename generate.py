@@ -64,20 +64,20 @@ class MockGitHubClient:
             return [repo for repo in self.repositories if repo["full_name"].startswith(f"{organization}/")]
         if path.startswith("repos/") and path.endswith("/topics"):
             full_name = path.split("/")[1] + "/" + path.split("/")[2]
-            return {"names": next(repo["topics"] for repo in self.repositories if repo["full_name"] == full_name)}
+            return {"names": next((repo["topics"] for repo in self.repositories if repo["full_name"] == full_name), [])}
         if path.startswith("repos/") and path.endswith("/releases/latest"):
             full_name = path.split("/")[1] + "/" + path.split("/")[2]
-            return next(repo["release"] for repo in self.repositories if repo["full_name"] == full_name)
+            return next((repo["release"] for repo in self.repositories if repo["full_name"] == full_name), None)
         if path.startswith("repos/") and path.endswith("/commits"):
             full_name = path.split("/")[1] + "/" + path.split("/")[2]
             return [{"commit": {"author": {"date": next(repo["last_updated"] for repo in self.repositories if repo["full_name"] == full_name)}}}]
         raise GitHubError(f"mock path not found: {path}")
 
     def repository_topics(self, full_name: str) -> list[str]:
-        return next(repo["topics"] for repo in self.repositories if repo["full_name"] == full_name)
+        return next((repo["topics"] for repo in self.repositories if repo["full_name"] == full_name), [])
 
     def latest_commit_date(self, full_name: str) -> str:
-        return next(repo["last_updated"] for repo in self.repositories if repo["full_name"] == full_name)
+        return next((repo["last_updated"] for repo in self.repositories if repo["full_name"] == full_name), "")
 
     def download(self, url: str, destination: Path) -> None:
         destination.write_text("<h1>Mock Pharo project index</h1>", encoding="utf-8")
@@ -474,6 +474,7 @@ def render_site(
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="A searchable catalog of Pharo projects.">
     <link rel="icon" href="assets/favicon.ico">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
   <title>Pharo Project Catalog</title>
   <style>{CSS}</style>
 </head>
@@ -488,30 +489,35 @@ def render_site(
       </div>
             <div class="header-actions">
                 <nav class="data-nav" aria-label="Catalog resources">
-                    <a href="documentation.html">Documentation</a>
-                    <a href="catalog.json">JSON</a>
-                    <a href="catalog.csv">CSV</a>
+                    <a class="btn btn-outline-primary btn-sm" href="documentation.html">Documentation</a>
+                    <a class="btn btn-outline-primary btn-sm" href="catalog.json">JSON</a>
+                    <a class="btn btn-outline-primary btn-sm" href="catalog.csv">CSV</a>
                 </nav>
-                <label class="theme-toggle"><input id="theme-toggle" type="checkbox"> Dark mode</label>
+                <label class="theme-toggle custom-control custom-switch mb-0"><input class="custom-control-input" id="theme-toggle" type="checkbox"><span class="custom-control-label">Dark mode</span></label>
             </div>
     </header>
         <div id="catalog-layout" class="catalog-layout">
             <aside id="filters" class="filters" aria-label="Project filters">
                 <div class="filter-menu-bar">
-                    <button id="sidebar-toggle" class="icon-button burger" type="button" aria-label="Toggle filters">☰</button>
+                    <button id="sidebar-toggle" class="icon-button burger btn btn-light" type="button" aria-label="Toggle filters">☰</button>
                     <span>Filters</span>
-                    <button id="sidebar-close" class="sidebar-close" type="button" aria-label="Close filters">×</button>
+                    <button id="sidebar-close" class="sidebar-close btn btn-light" type="button" aria-label="Close filters">×</button>
                 </div>
-                <label class="toggle-row"><input id="hide-no-release" type="checkbox"> Hide projects without releases</label>
-                <label class="toggle-row"><input id="hide-non-standard" type="checkbox"> Hide non-standard projects</label>
+                <label class="toggle-row custom-control custom-switch"><input class="custom-control-input" id="hide-no-release" type="checkbox"><span class="custom-control-label">Hide projects without releases</span></label>
+                <label class="toggle-row custom-control custom-switch"><input class="custom-control-input" id="hide-non-standard" type="checkbox"><span class="custom-control-label">Hide non-standard projects</span></label>
                 <h2>Categories</h2><div id="category-list" class="filter-list"></div>
             </aside>
             <section class="catalog-content">
                 <section class="catalog-controls" aria-label="Catalog controls">
-                    <label class="search-label" for="search">Search projects</label>
-                    <input id="search" type="search" placeholder="Search name, description, category, or tag" autocomplete="off">
-                    <label class="sort-label" for="sort">Sort</label>
-                    <select id="sort"><option value="name">Alphabetically</option><option value="stars">By stars</option><option value="updated">Last updated</option></select>
+                    <div class="form-row align-items-center">
+                        <div class="col-md">
+                            <label class="search-label" for="search">Search projects</label>
+                            <input class="form-control" id="search" type="search" placeholder="Search name, description, category, or tag" autocomplete="off">
+                        </div>
+                        <div class="col-md-4 mt-3 mt-md-0">
+                            <select class="custom-select" id="sort" aria-label="Sort projects"><option value="name">Alphabetically</option><option value="stars">By stars</option><option value="updated">Last updated</option></select>
+                        </div>
+                    </div>
                     <p id="summary" class="summary"></p>
                 </section>
                 <section id="projects" class="project-grid" aria-live="polite"></section>
@@ -606,7 +612,7 @@ def generate(config_path: Path, mock: bool = False) -> tuple[int, int]:
     errors: list[dict] = []
     registry_by_identity = {entry["repository"]: entry for entry in registry}
     organization_tags: dict[str, list[str]] = {
-        organization["name"]: organization["tags"] for organization in organizations
+        organization["name"]: organization.get("tags", []) for organization in organizations
     }
     repositories: dict[str, dict] = {
         entry["repository"]: repository_from_registry(entry) for entry in registry
@@ -690,11 +696,11 @@ body { margin: 0; background: var(--paper); color: var(--ink); font: 16px/1.55 "
 .header-copy { flex: 1; }
 .header-actions { display: flex; gap: .5rem; align-self: flex-start; }
 .data-nav { display: flex; gap: .3rem; padding: .25rem; border: 1px solid var(--line); border-radius: 3px; background: var(--card); }
-.data-nav a { padding: .35rem .55rem; border-radius: 2px; color: var(--blue); text-decoration: none; font: .78rem "Open Sans", sans-serif; }
+.data-nav a { color: var(--blue); text-decoration: none; font: .78rem "Open Sans", sans-serif; }
 .data-nav a:hover { background: var(--blue-soft); }
-.icon-button, .sidebar-close { border: 1px solid var(--line); border-radius: 2px; background: var(--card); color: var(--ink); padding: .45rem .65rem; cursor: pointer; font: .9rem "Open Sans", sans-serif; }
+.icon-button, .sidebar-close { cursor: pointer; font: .9rem "Open Sans", sans-serif; }
 .theme-toggle, .toggle-row { position: relative; display: flex; align-items: center; gap: .55rem; color: var(--muted); cursor: pointer; font: .82rem "Open Sans", sans-serif; }
-.theme-toggle input, .toggle-row input { position: absolute; opacity: 0; pointer-events: none; }
+.theme-toggle input, .toggle-row input { position: static; opacity: 1; pointer-events: auto; }
 .theme-toggle::before, .toggle-row::before { content: ""; width: 2.25rem; height: 1.25rem; flex: 0 0 2.25rem; border-radius: 999px; background: #c7c7c7; box-shadow: inset 0 0 0 1px rgba(0,0,0,.12); transition: background .2s ease; }
 .theme-toggle::after, .toggle-row::after { content: ""; position: absolute; width: .95rem; height: .95rem; margin-left: .15rem; border-radius: 50%; background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,.25); transition: transform .2s ease; }
 .theme-toggle:has(input:checked)::before, .toggle-row:has(input:checked)::before { background: var(--blue); }
@@ -707,7 +713,7 @@ h1 { margin: 0; color: var(--ink); font-size: clamp(2.2rem, 6vw, 4rem); line-hei
 .lede { margin: .7rem 0 0; color: var(--muted); max-width: 42rem; }
 .catalog-controls { margin: 2rem 0 1.5rem; padding: 1rem 1.1rem 1.1rem; border: 1px solid var(--line); border-radius: 3px; background: var(--card); box-shadow: 0 2px 8px rgba(0,0,0,.04); }
 .search-label { display: block; color: var(--muted); font: bold .75rem "Open Sans", sans-serif; letter-spacing: .1em; text-transform: uppercase; }
-input { width: 100%; margin-top: .5rem; padding: .85rem 1rem; border: 2px solid #dddddd; border-radius: 2px; color: var(--ink); background: var(--card); font: 1rem "Open Sans", sans-serif; }
+input { margin-top: .5rem; color: var(--ink); background: var(--card); font: 1rem "Open Sans", sans-serif; }
 input:focus { outline: 3px solid rgba(50,151,212,.2); border-color: var(--blue); }
 .catalog-layout { display: grid; grid-template-columns: 248px 1fr; gap: 2rem; }
 .catalog-layout.filters-hidden { grid-template-columns: 3.5rem 1fr; }
@@ -725,13 +731,13 @@ input:focus { outline: 3px solid rgba(50,151,212,.2); border-color: var(--blue);
 .sidebar-close { display: none; }
 .toggle-row { position: relative; justify-content: flex-start; margin: 1rem; text-align: left; }
 .filter-list { display: grid; gap: .2rem; padding: 0 .65rem; }
-.filter-option { display: flex; justify-content: space-between; gap: .5rem; width: 100%; padding: .3rem .4rem; border: 0; border-radius: 2px; background: transparent; color: var(--muted); text-align: left; cursor: pointer; font: .82rem "Open Sans", sans-serif; }
+.filter-option { display: flex; justify-content: space-between; gap: .5rem; width: 100%; text-align: left; cursor: pointer; font: .82rem "Open Sans", sans-serif; }
 .filter-option:hover, .filter-option.active { background: var(--card); color: var(--blue); }
 .filter-option.hidden-option { color: var(--orange); }
 .filter-option.hidden-option:hover, .filter-option.hidden-option.active { color: var(--orange); background: var(--card); }
 .filter-count { color: var(--muted); }
 .pagination { display: flex; flex-wrap: wrap; justify-content: center; gap: .35rem; margin-top: 1.5rem; }
-.page-button { min-width: 2.2rem; padding: .4rem .6rem; border: 1px solid var(--line); border-radius: 2px; background: var(--card); color: var(--blue); cursor: pointer; }
+.page-button { min-width: 2.2rem; cursor: pointer; }
 .page-button.active { background: var(--blue); color: #fff; }
 .summary { margin: .7rem 0 0; color: var(--muted); font: .9rem "Open Sans", sans-serif; }
 .project-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: 1rem; }
@@ -796,7 +802,7 @@ function isHidden(project) {
     return (hideNoRelease.checked && hasNoRelease) || (hideNonStandard.checked && isNonStandard);
 }
 function renderFilterList(container, values, selected, setter) {
-    container.innerHTML = values.map(([value, count]) => { const label = value === '' ? 'All' : value === 'Hidden' ? '👁 See hidden' : value; return `<button class="filter-option ${selected === value ? 'active' : ''} ${value === 'Hidden' ? 'hidden-option' : ''}" data-value="${escapeHtml(value)}"><span>${escapeHtml(label)}</span><span class="filter-count">${count}</span></button>`; }).join('');
+    container.innerHTML = values.map(([value, count]) => { const label = value === '' ? 'All' : value === 'Hidden' ? '👁 See hidden' : value; return `<button class="filter-option btn btn-link btn-block text-left ${selected === value ? 'active' : ''} ${value === 'Hidden' ? 'hidden-option' : ''}" data-value="${escapeHtml(value)}"><span>${escapeHtml(label)}</span><span class="filter-count">${count}</span></button>`; }).join('');
     container.querySelectorAll('.filter-option').forEach((button) => button.addEventListener('click', () => {
         setter(button.dataset.value);
         currentPage = 1;
@@ -832,7 +838,7 @@ function render() {
     const tags = (project.tags || []).map((value) => `<span class="tag">${escapeHtml(value)}</span>`).join(' ');
     return `<article class="project-card"><h2><a href="${escapeHtml(project.project_url)}">${escapeHtml(project.name)}</a></h2><p>${escapeHtml(project.description)}</p><p class="metadata">${categories}</p><div class="tags">${tags}</div><p class="metadata">Last updated: ${escapeHtml(project.update_age || 'Unknown')}</p>${standard ? '' : `<span class="badge" title="${escapeHtml(status)}">⚠ ${escapeHtml(status)}</span>`}<div class="links"><a href="${escapeHtml(project.repository_url)}">Repository</a></div></article>`;
   }).join('');
-    pagination.innerHTML = Array.from({length: pages}, (_, index) => `<button class="page-button ${currentPage === index + 1 ? 'active' : ''}" data-page="${index + 1}">${index + 1}</button>`).join('');
+    pagination.innerHTML = Array.from({length: pages}, (_, index) => `<button class="page-button btn ${currentPage === index + 1 ? 'btn-primary' : 'btn-outline-primary'}" data-page="${index + 1}">${index + 1}</button>`).join('');
     pagination.querySelectorAll('.page-button').forEach((button) => button.addEventListener('click', () => { currentPage = Number(button.dataset.page); render(); window.scrollTo({top: 0, behavior: 'smooth'}); }));
     summary.textContent = `${projects.length} of ${data.projects.length} projects${data.errors.length ? ` · ${data.errors.length} discovery errors` : ''}`;
   empty.hidden = projects.length !== 0;
