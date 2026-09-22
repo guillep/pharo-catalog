@@ -90,6 +90,30 @@ class GenerateTests(unittest.TestCase):
         client = TopicClient()
         self.assertTrue(generate.has_pharo_topic(client, {"full_name": "example/demo"}))
 
+    def test_organization_tags_are_applied_to_discovered_repositories(self):
+        class TopicClient:
+            def repository_topics(self, full_name):
+                return ["pharo"]
+
+            def request_json(self, path):
+                return {"tag_name": "v1", "assets": []}
+
+        project = generate.process_repository(
+            TopicClient(),
+            {
+                "name": "Basys",
+                "full_name": "pharo-ide/Basys",
+                "html_url": "https://github.com/pharo-ide/Basys",
+                "description": "IDE project",
+            },
+            Path(tempfile.mkdtemp()),
+            "index.html",
+            [{"name": "Development Environment", "keywords": {"ide"}}],
+            ["ide"],
+        )
+        self.assertIn("ide", project["tags"])
+        self.assertEqual(project["categories"], ["Development Environment"])
+
     def test_registry_entry_overrides_discovered_metadata(self):
         project = generate.merge_project_metadata(
             {"name": "demo", "description": "GitHub", "categories": [], "tags": []},
