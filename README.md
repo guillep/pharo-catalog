@@ -19,7 +19,7 @@ The generated site imports standard project indexes at `projects/<repository>/in
 
 ## Configuration
 
-Add packages to `packages.yml` to register them. The registry requires `name`, `description`, and `repository`; `tags` are optional explicit tags and categories are never stored there. Edit the `categories` section in `config.yml` to add or change exact topic keywords without changing application code. GitHub repository topics and explicit registry tags are merged, de-duplicated, and matched case-insensitively against those keywords. Edit `config.yml` to change organizations, the registry path, the GitHub API endpoint, the token environment variable, the index filename, or the output directory. The token is read only at generation time from `github.token_env`; it is never copied into generated files.
+Add packages to `registry.yml` to register them. The registry requires `name`, `description`, and `repository`; `tags` are optional explicit tags and categories are never stored there. Edit the `categories` section in `config.yml` to add or change exact topic keywords without changing application code. GitHub repository topics and explicit registry tags are merged, de-duplicated, and matched case-insensitively against those keywords. Edit `config.yml` to change organizations, the registry path, the GitHub API endpoint, the token environment variable, the index filename, or the output directory. The token is read only at generation time from `github.token_env`; it is never copied into generated files.
 
 ## GitHub Pages
 

@@ -44,7 +44,7 @@ class FakeClient:
 class GenerateTests(unittest.TestCase):
     def test_registry_normalizes_urls_and_validates_categories(self):
         with tempfile.TemporaryDirectory() as directory:
-            path = Path(directory) / "packages.yml"
+            path = Path(directory) / "registry.yml"
             path.write_text(
                 "packages:\n  - name: Demo\n    description: Demo\n    tags: [demo]\n    repository: https://github.com/example/demo/\n",
                 encoding="utf-8",
@@ -53,7 +53,7 @@ class GenerateTests(unittest.TestCase):
             self.assertEqual(registry[0]["repository"], "https://github.com/example/demo")
 
     def test_registry_contains_organizations(self):
-        data = generate.load_registry_data(Path(__file__).parents[1] / "packages.yml")
+        data = generate.load_registry_data(Path(__file__).parents[1] / "registry.yml")
         self.assertIn("pharo", [item["name"] for item in data["organizations"]])
         pharo_project = next(item for item in data["organizations"] if item["name"] == "pharo-project")
         self.assertTrue(all(value.startswith("https://github.com/pharo-project/") for value in pharo_project["exclude"]))

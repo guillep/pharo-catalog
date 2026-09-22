@@ -520,7 +520,7 @@ def render_documentation() -> str:
     </article>
     <footer class="catalog-footer">Copyright © 2026 Pharo contributors. <a href="https://github.com/guillep/pharo-catalog">guillep/pharo-catalog</a>.</footer>
 </main></body></html>
-"""
+""".replace("packages.yml", "registry.yml")
 
 
 def generate(config_path: Path, mock: bool = False) -> tuple[int, int]:
@@ -533,7 +533,7 @@ def generate(config_path: Path, mock: bool = False) -> tuple[int, int]:
     mock_data = mock_repositories() if mock else None
     client = MockGitHubClient(mock_data) if mock else GitHubClient(github.get("api_url", DEFAULT_API_URL), token)
     category_rules = load_category_rules(config)
-    registry_path = config_path.parent / config.get("registry", "packages.yml")
+    registry_path = config_path.parent / config.get("registry", "registry.yml")
     registry_data = load_registry_data(registry_path)
     registry = registry_data["packages"]
     organizations = (
