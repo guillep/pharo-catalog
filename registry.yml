@@ -1,14 +1,11 @@
 organizations:
   - name: pharo-project
-    tags: [pharo]
     exclude:
       - isloop
   - name: pharo-testing
     tags: [testing]
   - name: pharo
-    tags: [pharo]
   - name: pharo-contributions
-    tags: [pharo]
   - name: pharo-graphics
     tags: [graphics]
   - name: pharo-vcs
@@ -20,7 +17,7 @@ organizations:
   - name: pharo-spec
     tags: [ui]
   - name: pharo-cig
-    tags: [development-environment]
+    tags: [utilities,system]
   - name: pharo-rdbms
     tags: [database]
   - name: pharo-nosql
