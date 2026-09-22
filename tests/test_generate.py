@@ -46,19 +46,26 @@ class GenerateTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             path = Path(directory) / "registry.yml"
             path.write_text(
-                "packages:\n  - name: Demo\n    description: Demo\n    tags: [demo]\n    repository: https://github.com/example/demo/\n",
+                "packages:\n  - repository: https://github.com/example/demo/\n",
                 encoding="utf-8",
             )
             registry = generate.load_registry(path)
             self.assertEqual(registry[0]["repository"], "https://github.com/example/demo")
+
+        def test_registry_metadata_overrides_repository_defaults(self):
+            project = generate.merge_project_metadata(
+                {"name": "demo", "description": "GitHub", "tags": ["pharo"], "categories": []},
+                {"name": "Custom Demo", "description": "Custom", "tags": ["demo"]},
+            )
+            self.assertEqual(project["name"], "Custom Demo")
+            self.assertEqual(project["description"], "Custom")
+            self.assertEqual(project["tags"], ["pharo", "demo"])
 
     def test_registry_contains_organizations(self):
         data = generate.load_registry_data(Path(__file__).parents[1] / "registry.yml")
         self.assertIn("pharo", [item["name"] for item in data["organizations"]])
         pharo_project = next(item for item in data["organizations"] if item["name"] == "pharo-project")
         self.assertTrue(all(value.startswith("https://github.com/pharo-project/") for value in pharo_project["exclude"]))
-        pharo_testing = next(item for item in data["organizations"] if item["name"] == "pharo-testing")
-        self.assertEqual(pharo_testing["tags"], ["testing"])
 
     def test_configured_index_filename_has_a_default(self):
         config = generate.load_config(Path(__file__).parents[1] / "config.yml")

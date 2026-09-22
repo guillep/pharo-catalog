@@ -196,12 +196,12 @@ def load_registry_data(path: Path) -> dict:
     for entry in packages:
         if not isinstance(entry, dict):
             raise ValueError("every registry package must be a mapping")
-        missing = {"name", "description", "repository"} - entry.keys()
+        missing = {"repository"} - entry.keys()
         if missing:
             raise ValueError(f"registry entry is missing: {', '.join(sorted(missing))}")
         tags = entry.get("tags", [])
         if not isinstance(tags, list) or not all(isinstance(tag, str) for tag in tags):
-            raise ValueError(f"tags for {entry['name']} must be a list of strings")
+            raise ValueError(f"tags for {entry.get('repository', 'package')} must be a list of strings")
         identity = normalize_repository_url(entry["repository"])
         if identity in identities:
             raise ValueError(f"duplicate repository in registry: {identity}")
@@ -388,10 +388,10 @@ def repository_from_registry(entry: dict) -> dict:
     parsed = urlparse(repository_url)
     owner, name = parsed.path.strip("/").split("/")
     return {
-        "name": name,
+        "name": entry.get("name") or name,
         "full_name": f"{owner}/{name}",
         "html_url": repository_url,
-        "description": entry["description"],
+        "description": entry.get("description") or "",
         "fork": False,
     }
 
@@ -404,8 +404,8 @@ def merge_project_metadata(
     if not entry:
         return project
     project.update({
-        "name": entry["name"],
-        "description": entry["description"],
+        "name": entry.get("name") or project["name"],
+        "description": entry.get("description") or project["description"],
         "tags": merge_tags(project.get("tags", []), entry.get("tags", [])),
     })
     project["categories"] = derive_categories(project["tags"], category_rules or [])
