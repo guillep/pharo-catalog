@@ -36,6 +36,7 @@ CONTROLLED_CATEGORIES = {
     "Data & Databases",
     "System & OS",
     "Tools",
+    "Utilities",
     "Education",
 }
 OTHER_CATEGORY = "Other"
@@ -44,6 +45,49 @@ HIDDEN_CATEGORY = "Hidden"
 
 class GitHubError(RuntimeError):
     """An API or download failure with enough context for the report."""
+
+
+class MockGitHubClient:
+    """Small deterministic client for local previews without GitHub requests."""
+
+    def __init__(self, repositories: list[dict]):
+        self.repositories = repositories
+
+    def request_json(self, path: str, query: dict | None = None):
+        if path.startswith("orgs/"):
+            organization = path.split("/")[1]
+            if query and str(query.get("page")) != "1":
+                return []
+            return [repo for repo in self.repositories if repo["full_name"].startswith(f"{organization}/")]
+        if path.startswith("repos/") and path.endswith("/topics"):
+            full_name = path.split("/")[1] + "/" + path.split("/")[2]
+            return {"names": next(repo["topics"] for repo in self.repositories if repo["full_name"] == full_name)}
+        if path.startswith("repos/") and path.endswith("/releases/latest"):
+            full_name = path.split("/")[1] + "/" + path.split("/")[2]
+            return next(repo["release"] for repo in self.repositories if repo["full_name"] == full_name)
+        raise GitHubError(f"mock path not found: {path}")
+
+    def repository_topics(self, full_name: str) -> list[str]:
+        return next(repo["topics"] for repo in self.repositories if repo["full_name"] == full_name)
+
+    def download(self, url: str, destination: Path) -> None:
+        destination.write_text("<h1>Mock Pharo project index</h1>", encoding="utf-8")
+
+
+def mock_repositories() -> list[dict]:
+    return [{
+        "name": "mutalk", "full_name": "pharo-contributions/mutalk",
+        "html_url": "https://github.com/pharo-contributions/mutalk",
+        "description": "Mutation testing for Pharo.", "fork": False,
+        "topics": ["pharo", "testing", "mutation-testing"],
+        "release": {"tag_name": "v3.0.8", "assets": [{"name": "index.html", "browser_download_url": "mock://mutalk/index.html"}]},
+    }, {
+        "name": "example-tool", "full_name": "pharo-project/example-tool",
+        "html_url": "https://github.com/pharo-project/example-tool",
+        "description": "A mock tool without a release index.", "fork": False,
+        "topics": ["pharo", "tools"],
+        "release": {"tag_name": "v1.0.0", "assets": []},
+    }]
 
 
 class GitHubClient:
@@ -479,19 +523,23 @@ def render_documentation() -> str:
 """
 
 
-def generate(config_path: Path) -> tuple[int, int]:
+def generate(config_path: Path, mock: bool = False) -> tuple[int, int]:
     config = load_config(config_path)
     github = config.get("github", {})
     index_config = config.get("index", {})
     index_filename = index_config.get("filename", DEFAULT_INDEX_FILENAME)
     token_env = github.get("token_env", "GITHUB_TOKEN")
     token = os.environ.get(token_env)
-    client = GitHubClient(github.get("api_url", DEFAULT_API_URL), token)
+    mock_data = mock_repositories() if mock else None
+    client = MockGitHubClient(mock_data) if mock else GitHubClient(github.get("api_url", DEFAULT_API_URL), token)
     category_rules = load_category_rules(config)
     registry_path = config_path.parent / config.get("registry", "packages.yml")
     registry_data = load_registry_data(registry_path)
     registry = registry_data["packages"]
-    organizations = registry_data["organizations"]
+    organizations = (
+        [{"name": owner, "exclude": set()} for owner in sorted({repo["full_name"].split("/", 1)[0] for repo in mock_data})]
+        if mock else registry_data["organizations"]
+    )
     output = Path(index_config.get("output_directory", "site"))
     if output.exists():
         shutil.rmtree(output)
@@ -741,9 +789,10 @@ render();
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--config", default="config.yml")
+    parser.add_argument("--mock", action="store_true", help="generate locally without GitHub requests")
     args = parser.parse_args()
     try:
-        generate(Path(args.config))
+        generate(Path(args.config), mock=args.mock)
     except (OSError, ValueError, yaml.YAMLError) as error:
         print(f"generation failed: {error}", file=sys.stderr)
         return 1
