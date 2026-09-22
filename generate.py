@@ -538,7 +538,10 @@ def render_documentation() -> str:
     </article>
     <footer class="catalog-footer">Copyright © 2026 Pharo contributors. <a href="https://github.com/guillep/pharo-catalog">guillep/pharo-catalog</a>.</footer>
 </main></body></html>
-""".replace("packages.yml", "registry.yml")
+""".replace("packages.yml", "registry.yml").replace(
+    "Projects hosted in one of the managed GitHub organizations are discovered automatically.",
+    "Projects hosted in one of the managed GitHub organizations are discovered automatically when their repository has the exact <code>pharo</code> topic.",
+)
 
 
 def generate(config_path: Path, mock: bool = False) -> tuple[int, int]:
@@ -604,7 +607,7 @@ def generate(config_path: Path, mock: bool = False) -> tuple[int, int]:
                 client, repository, output, index_filename, category_rules,
                 [
                     *(entry.get("tags", []) if entry else []),
-                    *organization_tags.get(identity.split("/", 1)[0], []),
+                    *organization_tags.get(repository["full_name"].split("/", 1)[0], []),
                 ],
             )
             projects.append(merge_project_metadata(project, entry, category_rules))
