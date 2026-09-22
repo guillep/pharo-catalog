@@ -577,6 +577,8 @@ input:focus { outline: 3px solid rgba(50,151,212,.2); border-color: var(--blue);
 .filter-list { display: grid; gap: .2rem; padding: 0 .65rem; }
 .filter-option { display: flex; justify-content: space-between; gap: .5rem; width: 100%; padding: .3rem .4rem; border: 0; border-radius: 2px; background: transparent; color: var(--muted); text-align: left; cursor: pointer; font: .82rem "Open Sans", sans-serif; }
 .filter-option:hover, .filter-option.active { background: var(--card); color: var(--blue); }
+.filter-option.hidden-option { color: var(--orange); }
+.filter-option.hidden-option:hover, .filter-option.hidden-option.active { color: var(--orange); background: var(--card); }
 .filter-count { color: var(--muted); }
 .pagination { display: flex; flex-wrap: wrap; justify-content: center; gap: .35rem; margin-top: 1.5rem; }
 .page-button { min-width: 2.2rem; padding: .4rem .6rem; border: 1px solid var(--line); border-radius: 2px; background: var(--card); color: var(--blue); cursor: pointer; }
@@ -641,7 +643,7 @@ function isHidden(project) {
     return (hideNoRelease.checked && hasNoRelease) || (hideNonStandard.checked && isNonStandard);
 }
 function renderFilterList(container, values, selected, setter) {
-        container.innerHTML = values.map(([value, count]) => `<button class="filter-option ${selected === value ? 'active' : ''}" data-value="${escapeHtml(value)}"><span>${escapeHtml(value)}</span><span class="filter-count">${count}</span></button>`).join('');
+    container.innerHTML = values.map(([value, count]) => { const label = value === '' ? 'All' : value === 'Hidden' ? '👁 See hidden' : value; return `<button class="filter-option ${selected === value ? 'active' : ''} ${value === 'Hidden' ? 'hidden-option' : ''}" data-value="${escapeHtml(value)}"><span>${escapeHtml(label)}</span><span class="filter-count">${count}</span></button>`; }).join('');
     container.querySelectorAll('.filter-option').forEach((button) => button.addEventListener('click', () => {
         setter(button.dataset.value);
         currentPage = 1;
