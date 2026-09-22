@@ -271,6 +271,11 @@ def project_slug(repository: dict) -> str:
     return slug or "project"
 
 
+def project_path(repository: dict) -> tuple[str, str]:
+    owner = re.sub(r"[^a-zA-Z0-9._-]+", "-", repository.get("full_name", "organization/project").split("/", 1)[0]).strip("-.").lower() or "organization"
+    return owner, project_slug(repository)
+
+
 def is_special_repository(repository: dict) -> bool:
     name = repository.get("name", "").casefold()
     return name == ".github" or name == "github-pages" or name.endswith(".github.io")
@@ -301,7 +306,7 @@ def render_project_wrapper(
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{html.escape(project_name)} · Pharo Project Catalog</title>
-    <link rel="icon" href="../../assets/favicon.ico">
+    <link rel="icon" href="../../../assets/favicon.ico">
     <style>
         :root {{ color-scheme: light; --blue: #3297d4; --ink: #333; --muted: #777; --line: #ddd; --paper: #f7f7f7; }}
         * {{ box-sizing: border-box; }}
@@ -316,8 +321,8 @@ def render_project_wrapper(
     </style>
 </head>
 <body>
-    <header><img src="../../assets/pharo-beacon.svg" alt="Pharo"><h1>Pharo Project catalog · {html.escape(project_name)}</h1></header>
-    <nav class="catalog-bar"><a href="../../index.html">← Project catalog</a><a href="{html.escape(repository_url, quote=True)}">Repository ↗</a></nav>
+    <header><img src="../../../assets/pharo-beacon.svg" alt="Pharo"><h1>Pharo Project catalog · {html.escape(project_name)}</h1></header>
+    <nav class="catalog-bar"><a href="../../../index.html">← Project catalog</a><a href="{html.escape(repository_url, quote=True)}">Repository ↗</a></nav>
     <iframe src="{html.escape(source_filename, quote=True)}" title="{html.escape(project_name)} project index"></iframe>
 </body>
 </html>
@@ -361,11 +366,9 @@ def process_repository(
         return project
 
     slug = project_slug(repository)
+    owner, slug = project_path(repository)
     destination = output / "projects" / slug / index_filename
-    if destination.parent.exists():
-        owner = full_name.split("/", 1)[0] if "/" in full_name else "repository"
-        slug = f"{re.sub(r'[^a-zA-Z0-9._-]+', '-', owner).strip('-.').lower()}-{slug}"
-    destination = output / "projects" / slug / index_filename
+    destination = output / "projects" / owner / slug / index_filename
     destination.parent.mkdir(parents=True, exist_ok=True)
     index_path = Path(index_filename)
     source_filename = f".{index_path.stem}-source{index_path.suffix or '.html'}"
@@ -379,7 +382,7 @@ def process_repository(
     )
     project["standard"] = True
     project["status"] = "standard"
-    project["project_url"] = f"projects/{slug}/{index_filename}"
+    project["project_url"] = f"projects/{owner}/{slug}/{index_filename}"
     return project
 
 

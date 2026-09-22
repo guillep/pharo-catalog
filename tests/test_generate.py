@@ -113,10 +113,10 @@ class GenerateTests(unittest.TestCase):
                 "index.html",
             )
             self.assertEqual(project["status"], "standard")
-            self.assertEqual(project["project_url"], "projects/demo/index.html")
+            self.assertEqual(project["project_url"], "projects/example/demo/index.html")
             self.assertNotIn("version", project)
             self.assertEqual(project["tags"], ["HTTP", "json", "rest"])
-            self.assertTrue((Path(directory) / "projects/demo/index.html").is_file())
+            self.assertTrue((Path(directory) / "projects/example/demo/index.html").is_file())
 
     def test_rendered_data_is_static_json(self):
         site = generate.render_site([{
