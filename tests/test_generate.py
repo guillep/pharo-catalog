@@ -71,6 +71,10 @@ class GenerateTests(unittest.TestCase):
         self.assertIn("search.addEventListener", site)
         self.assertIn('type="application/json"', site)
 
+    def test_shared_logo_asset_is_available(self):
+        self.assertTrue(generate.LOGO_PATH.is_file())
+        self.assertIn("<svg", generate.LOGO_PATH.read_text(encoding="utf-8"))
+
 
 if __name__ == "__main__":
     unittest.main()

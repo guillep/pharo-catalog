@@ -20,6 +20,7 @@ import yaml
 
 DEFAULT_API_URL = "https://api.github.com"
 DEFAULT_INDEX_FILENAME = "index.html"
+LOGO_PATH = Path(__file__).with_name("assets") / "pharo-beacon.svg"
 
 
 class GitHubError(RuntimeError):
@@ -187,7 +188,7 @@ def render_site(projects: list[dict], errors: list[dict]) -> str:
 <body>
   <main class="catalog-shell">
     <header class="catalog-header">
-      <div class="brand-mark" aria-hidden="true">P</div>
+    <img class="pharo-logo" src="assets/pharo-beacon.svg" alt="Pharo">
       <div>
         <p class="eyebrow">PHARO ECOSYSTEM</p>
         <h1>Project catalog</h1>
@@ -223,6 +224,9 @@ def generate(config_path: Path) -> tuple[int, int]:
     if output.exists():
         shutil.rmtree(output)
     output.mkdir(parents=True)
+    assets = output / "assets"
+    assets.mkdir()
+    shutil.copyfile(LOGO_PATH, assets / "pharo-beacon.svg")
 
     projects: list[dict] = []
     errors: list[dict] = []
@@ -264,34 +268,34 @@ def generate(config_path: Path) -> tuple[int, int]:
 
 
 CSS = """
-:root { --ink: #17324d; --muted: #607487; --line: #d8e3eb; --paper: #f7fafc; --card: #ffffff; --blue: #2378ad; --orange: #e67d3c; }
+:root { --ink: #333333; --muted: #777777; --line: #dddddd; --paper: #f7f7f7; --card: #ffffff; --blue: #3297d4; --blue-soft: #dcedf7; --orange: #f15a24; }
 * { box-sizing: border-box; }
-body { margin: 0; background: linear-gradient(135deg, #eef6fb 0%, #ffffff 48%, #fff8f0 100%); color: var(--ink); font: 16px/1.55 Georgia, "Times New Roman", serif; }
-.catalog-shell { max-width: 1120px; margin: auto; padding: 3rem 1.25rem 4rem; }
-.catalog-header { display: flex; align-items: center; gap: 1rem; border-bottom: 2px solid var(--line); padding-bottom: 1.5rem; }
-.brand-mark { width: 56px; height: 56px; display: grid; place-items: center; border-radius: 50%; background: linear-gradient(135deg, #174f79, #54a5d5); color: white; font: bold 2rem Georgia, serif; }
-.eyebrow { margin: 0 0 .2rem; color: var(--orange); font: bold .75rem/1.2 Arial, sans-serif; letter-spacing: .14em; }
-h1 { margin: 0; font-size: clamp(2.2rem, 6vw, 4.3rem); line-height: .98; font-weight: 700; }
+body { margin: 0; background: var(--paper); color: var(--ink); font: 16px/1.55 "Open Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+.catalog-shell { max-width: 1120px; margin: auto; padding: 2.5rem 1.25rem 4rem; }
+.catalog-header { display: flex; align-items: center; gap: 1rem; border-bottom: 5px solid #f5f5f5; padding-bottom: 1.5rem; }
+.pharo-logo { width: 72px; height: 72px; flex: 0 0 72px; object-fit: contain; }
+.eyebrow { margin: 0 0 .2rem; color: var(--blue); font: bold .75rem/1.2 "Open Sans", sans-serif; letter-spacing: .14em; }
+h1 { margin: 0; color: #111111; font-size: clamp(2.2rem, 6vw, 4rem); line-height: 1.05; font-weight: 600; }
 .lede { margin: .7rem 0 0; color: var(--muted); max-width: 42rem; }
-.catalog-controls { margin: 2rem 0 1.5rem; padding: 1.25rem; background: rgba(255,255,255,.82); border: 1px solid var(--line); border-radius: 10px; }
-.search-label { display: block; color: var(--muted); font: bold .75rem Arial, sans-serif; letter-spacing: .1em; text-transform: uppercase; }
-input { width: 100%; margin-top: .5rem; padding: .85rem 1rem; border: 2px solid var(--line); border-radius: 6px; color: var(--ink); background: var(--card); font: 1rem Arial, sans-serif; }
-input:focus { outline: 3px solid rgba(35,120,173,.2); border-color: var(--blue); }
-.summary { margin: .7rem 0 0; color: var(--muted); font: .9rem Arial, sans-serif; }
+.catalog-controls { margin: 2rem 0 1.5rem; padding: 1.25rem 0; border-bottom: 1px solid var(--line); }
+.search-label { display: block; color: var(--muted); font: bold .75rem "Open Sans", sans-serif; letter-spacing: .1em; text-transform: uppercase; }
+input { width: 100%; margin-top: .5rem; padding: .85rem 1rem; border: 2px solid #dddddd; border-radius: 2px; color: var(--ink); background: var(--card); font: 1rem "Open Sans", sans-serif; }
+input:focus { outline: 3px solid rgba(50,151,212,.2); border-color: var(--blue); }
+.summary { margin: .7rem 0 0; color: var(--muted); font: .9rem "Open Sans", sans-serif; }
 .project-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: 1rem; }
-.project-card { display: flex; flex-direction: column; min-height: 220px; padding: 1.2rem; background: var(--card); border: 1px solid var(--line); border-radius: 8px; box-shadow: 0 2px 10px rgba(23,50,77,.06); }
+.project-card { display: flex; flex-direction: column; min-height: 220px; padding: 1.2rem; background: var(--card); border: 1px solid var(--line); border-top: 3px solid var(--blue); border-radius: 2px; box-shadow: 0 2px 8px rgba(0,0,0,.04); }
 .project-card h2 { margin: 0; font-size: 1.35rem; line-height: 1.15; }
 .project-card p { color: var(--muted); margin: .7rem 0; }
-.project-card .links { display: flex; flex-wrap: wrap; gap: .7rem; margin-top: auto; padding-top: .8rem; font: .9rem Arial, sans-serif; }
+.project-card .links { display: flex; flex-wrap: wrap; gap: .7rem; margin-top: auto; padding-top: .8rem; font: .9rem "Open Sans", sans-serif; }
 a { color: var(--blue); }
-.badge { display: inline-block; margin: .7rem 0 0; padding: .2rem .5rem; border-radius: 999px; background: #fff1e8; color: #9a4b1e; font: .72rem Arial, sans-serif; }
-.badge.standard { background: #e8f4fb; color: #155d89; }
-.catalog-footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--line); color: var(--muted); font: .82rem Arial, sans-serif; }
+.badge { display: inline-block; margin: .7rem 0 0; padding: .2rem .5rem; border-radius: 2px; background: #fff0eb; color: #c43f16; font: .72rem "Open Sans", sans-serif; }
+.badge.standard { background: var(--blue-soft); color: #24719e; }
+.catalog-footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--line); color: var(--muted); font: .82rem "Open Sans", sans-serif; }
 .empty-state { padding: 2rem; text-align: center; color: var(--muted); }
-.error-report { margin-top: 1.5rem; padding: 1rem; border: 1px solid #f0c5a9; border-radius: 8px; background: #fff8f3; color: #7e3e1f; font: .9rem Arial, sans-serif; }
+.error-report { margin-top: 1.5rem; padding: 1rem; border: 1px solid #f0c5a9; border-radius: 2px; background: #fff8f3; color: #7e3e1f; font: .9rem "Open Sans", sans-serif; }
 .error-report summary { cursor: pointer; font-weight: bold; }
 .error-report li { margin-top: .4rem; overflow-wrap: anywhere; }
-@media (max-width: 600px) { .catalog-shell { padding-top: 1.5rem; } .catalog-header { align-items: flex-start; } .brand-mark { width: 44px; height: 44px; font-size: 1.5rem; flex: 0 0 44px; } }
+@media (max-width: 600px) { .catalog-shell { padding-top: 1.5rem; } .catalog-header { align-items: flex-start; } .pharo-logo { width: 56px; height: 56px; flex-basis: 56px; } }
 """
 
 
