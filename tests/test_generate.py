@@ -121,6 +121,8 @@ class GenerateTests(unittest.TestCase):
         self.assertIn("filter(([, count]) => count > 0)", site)
         self.assertNotIn('id="tag-list"', site)
         self.assertIn("hiddenProjects", site)
+        self.assertIn("categoryValues", site)
+        self.assertNotIn("renderFilterList(categoryList, categoryCounts", site)
         self.assertIn("['Hidden', hiddenProjects.length]", site)
         self.assertNotIn("|| 'All'", site)
         self.assertIn('type="application/json"', site)

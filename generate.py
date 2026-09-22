@@ -644,7 +644,7 @@ function render() {
     const projects = pool.filter((project) => !selectedCategory || (project.categories || []).includes(selectedCategory));
     const availableCategory = categoryValues.some(([name]) => name === selectedCategory);
     if (selectedCategory && !availableCategory) selectedCategory = '';
-    renderFilterList(categoryList, categoryCounts, selectedCategory, (value) => { selectedCategory = value; localStorage.setItem('catalog-category', value); });
+    renderFilterList(categoryList, categoryValues, selectedCategory, (value) => { selectedCategory = value; localStorage.setItem('catalog-category', value); });
     const pages = Math.max(1, Math.ceil(projects.length / pageSize));
     currentPage = Math.min(currentPage, pages);
     const visible = projects.slice((currentPage - 1) * pageSize, currentPage * pageSize);
