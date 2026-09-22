@@ -1,26 +1,44 @@
 organizations:
   - name: pharo-project
+    tags: [pharo]
     exclude:
       - isloop
   - name: pharo-testing
     tags: [testing]
-  - pharo
-  - pharo-contributions
-  - pharo-graphics
-  - pharo-vcs
-  - pharo-ai
-  - pharo-llm
-  - pharo-spec
-  - pharo-cig
-  - pharo-rdbms
-  - pharo-nosql
-  - pharo-web
-  - pharo-crypto
-  - pharo-ide
-  - pharo-utilities
-  - pharo-pkg
-  - pharo-completion
-  - pharo-pulsar
+  - name: pharo
+    tags: [pharo]
+  - name: pharo-contributions
+    tags: [pharo]
+  - name: pharo-graphics
+    tags: [graphics]
+  - name: pharo-vcs
+    tags: [version-control]
+  - name: pharo-ai
+    tags: [ai]
+  - name: pharo-llm
+    tags: [ai, llm]
+  - name: pharo-spec
+    tags: [ui]
+  - name: pharo-cig
+    tags: [development-environment]
+  - name: pharo-rdbms
+    tags: [database]
+  - name: pharo-nosql
+    tags: [database]
+  - name: pharo-web
+    tags: [web]
+  - name: pharo-crypto
+    tags: [cryptography]
+  - name: pharo-ide
+    tags: [ide]
+  - name: pharo-utilities
+    tags: [utilities]
+  - name: pharo-pkg
+    tags: [package-management]
+  - name: pharo-completion
+    tags: [development-environment]
+  - name: pharo-pulsar
+    tags: [development-environment]
 
 packages:
   - name: Mutalk
