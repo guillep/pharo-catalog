@@ -429,8 +429,8 @@ def generate(config_path: Path) -> tuple[int, int]:
 
 
 CSS = """
-:root { --ink: #333333; --muted: #777777; --line: #dddddd; --paper: #f7f7f7; --card: #ffffff; --blue: #3297d4; --blue-soft: #dcedf7; --orange: #f15a24; }
-[data-theme="dark"] { --ink: #f4f4f4; --muted: #b8b8b8; --line: #454b50; --paper: #20252a; --card: #2b3035; --blue: #62b1e3; --blue-soft: #294b61; --orange: #ff8a5c; }
+:root { --ink: #333333; --muted: #777777; --line: #dddddd; --paper: #f7f7f7; --card: #ffffff; --blue: #3297d4; --blue-soft: #dcedf7; --filter-bg: #e7f3fa; --filter-header: #3297d4; --orange: #f15a24; --warning-bg: #fff0eb; --warning-text: #c43f16; }
+[data-theme="dark"] { --ink: #f4f4f4; --muted: #b8b8b8; --line: #454b50; --paper: #20252a; --card: #2b3035; --blue: #62b1e3; --blue-soft: #294b61; --filter-bg: #263f50; --filter-header: #1f668f; --orange: #ff8a5c; --warning-bg: #5a3029; --warning-text: #ffc0a8; }
 * { box-sizing: border-box; }
 body { margin: 0; background: var(--paper); color: var(--ink); font: 16px/1.55 "Open Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
 .catalog-shell { max-width: 1120px; margin: auto; padding: 2.5rem 1.25rem 4rem; }
@@ -448,27 +448,27 @@ body { margin: 0; background: var(--paper); color: var(--ink); font: 16px/1.55 "
 .icon-button:hover, .sidebar-close:hover { border-color: var(--blue); color: var(--blue); }
 .pharo-logo { width: 72px; height: 72px; flex: 0 0 72px; object-fit: contain; }
 .eyebrow { margin: 0 0 .2rem; color: var(--blue); font: bold .75rem/1.2 "Open Sans", sans-serif; letter-spacing: .14em; }
-h1 { margin: 0; color: #111111; font-size: clamp(2.2rem, 6vw, 4rem); line-height: 1.05; font-weight: 600; }
+h1 { margin: 0; color: var(--ink); font-size: clamp(2.2rem, 6vw, 4rem); line-height: 1.05; font-weight: 600; }
 .lede { margin: .7rem 0 0; color: var(--muted); max-width: 42rem; }
-.catalog-controls { margin: 2rem 0 1.5rem; padding: 1rem 0 1.1rem; border-bottom: 1px solid var(--line); }
+.catalog-controls { margin: 2rem 0 1.5rem; padding: 1rem 1.1rem 1.1rem; border: 1px solid var(--line); border-radius: 3px; background: var(--card); box-shadow: 0 2px 8px rgba(0,0,0,.04); }
 .search-label { display: block; color: var(--muted); font: bold .75rem "Open Sans", sans-serif; letter-spacing: .1em; text-transform: uppercase; }
 input { width: 100%; margin-top: .5rem; padding: .85rem 1rem; border: 2px solid #dddddd; border-radius: 2px; color: var(--ink); background: var(--card); font: 1rem "Open Sans", sans-serif; }
 input:focus { outline: 3px solid rgba(50,151,212,.2); border-color: var(--blue); }
-.catalog-layout { display: grid; grid-template-columns: 230px 1fr; gap: 2rem; }
+.catalog-layout { display: grid; grid-template-columns: 248px 1fr; gap: 2rem; }
 .catalog-layout.filters-hidden { grid-template-columns: 3.5rem 1fr; }
 .catalog-layout.filters-hidden .filters { padding: .5rem; }
 .catalog-layout.filters-hidden .filters > :not(.filter-menu-bar) { display: none; }
-.filters { padding: 1rem; margin-top: 2rem; background: var(--blue-soft); border-left: 4px solid var(--blue); border-radius: 2px; }
-.filter-menu-bar { display: flex; align-items: center; gap: .55rem; padding-bottom: .9rem; border-bottom: 1px solid rgba(50,151,212,.35); color: var(--blue); font: bold .85rem "Open Sans", sans-serif; }
-.catalog-layout.filters-hidden .filter-menu-bar { padding: 0; border-bottom: 0; }
+.filters { padding: 0 0 1rem; margin-top: 2rem; overflow: hidden; background: var(--filter-bg); border: 1px solid rgba(50,151,212,.32); border-radius: 4px; box-shadow: 0 3px 12px rgba(0,0,0,.07); }
+.filter-menu-bar { display: flex; align-items: center; gap: .55rem; min-height: 3rem; padding: .7rem .8rem; background: var(--filter-header); color: #fff; font: bold .85rem "Open Sans", sans-serif; }
+.catalog-layout.filters-hidden .filter-menu-bar { padding: .7rem; }
 .catalog-layout.filters-hidden .filter-menu-bar > span { display: none; }
 .filter-menu-bar .sidebar-close { margin-left: auto; }
-.filters h2 { margin: 1.3rem 0 .45rem; color: var(--ink); font-size: .95rem; }
+.filters h2 { margin: 1.3rem 1rem .45rem; color: var(--ink); font-size: .95rem; }
 .sidebar-close { display: none; }
-.toggle-row { position: relative; justify-content: flex-start; text-align: left; }
-.filter-list { display: grid; gap: .2rem; }
+.toggle-row { position: relative; justify-content: flex-start; margin: 1rem; text-align: left; }
+.filter-list { display: grid; gap: .2rem; padding: 0 .65rem; }
 .filter-option { display: flex; justify-content: space-between; gap: .5rem; width: 100%; padding: .3rem .4rem; border: 0; border-radius: 2px; background: transparent; color: var(--muted); text-align: left; cursor: pointer; font: .82rem "Open Sans", sans-serif; }
-.filter-option:hover, .filter-option.active { background: var(--blue-soft); color: var(--blue); }
+.filter-option:hover, .filter-option.active { background: var(--card); color: var(--blue); }
 .filter-count { color: var(--muted); }
 .pagination { display: flex; flex-wrap: wrap; justify-content: center; gap: .35rem; margin-top: 1.5rem; }
 .page-button { min-width: 2.2rem; padding: .4rem .6rem; border: 1px solid var(--line); border-radius: 2px; background: var(--card); color: var(--blue); cursor: pointer; }
@@ -483,14 +483,14 @@ input:focus { outline: 3px solid rgba(50,151,212,.2); border-color: var(--blue);
 .tag { padding: .15rem .4rem; background: var(--paper); border: 1px solid var(--line); color: var(--muted); font: .75rem "Open Sans", sans-serif; }
 .project-card .links { display: flex; flex-wrap: wrap; gap: .7rem; margin-top: auto; padding-top: .8rem; font: .9rem "Open Sans", sans-serif; }
 a { color: var(--blue); }
-.badge { display: inline-block; margin: .7rem 0 0; padding: .2rem .5rem; border-radius: 2px; background: #fff0eb; color: #c43f16; font: .72rem "Open Sans", sans-serif; }
+.badge { display: inline-block; margin: .7rem 0 0; padding: .2rem .5rem; border-radius: 2px; background: var(--warning-bg); color: var(--warning-text); font: .72rem "Open Sans", sans-serif; }
 .badge.standard { background: var(--blue-soft); color: #24719e; }
 .catalog-footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--line); color: var(--muted); font: .82rem "Open Sans", sans-serif; }
 .empty-state { padding: 2rem; text-align: center; color: var(--muted); }
 .error-report { margin-top: 1.5rem; padding: 1rem; border: 1px solid #f0c5a9; border-radius: 2px; background: #fff8f3; color: #7e3e1f; font: .9rem "Open Sans", sans-serif; }
 .error-report summary { cursor: pointer; font-weight: bold; }
 .error-report li { margin-top: .4rem; overflow-wrap: anywhere; }
-@media (max-width: 760px) { .catalog-shell { padding-top: 1.5rem; } .catalog-header { align-items: flex-start; } .pharo-logo { width: 56px; height: 56px; flex-basis: 56px; } .catalog-layout { display: block; } .filters { position: fixed; z-index: 5; inset: 0 auto 0 0; width: min(290px, 84vw); padding: 1.5rem; overflow-y: auto; background: var(--blue-soft); box-shadow: 4px 0 18px rgba(0,0,0,.15); transform: translateX(-105%); transition: transform .2s ease; } .filters.open { transform: translateX(0); } .sidebar-close { display: block; } .burger { display: block; } }
+@media (max-width: 760px) { .catalog-shell { padding-top: 1.5rem; } .catalog-header { align-items: flex-start; } .pharo-logo { width: 56px; height: 56px; flex-basis: 56px; } .catalog-layout { display: block; } .filters { position: static; width: auto; margin: 1.25rem 0 0; transform: none; } .filters.open { transform: none; } .sidebar-close { display: none; } .burger { display: block; } }
 """
 
 
@@ -563,13 +563,7 @@ search.addEventListener('input', render);
 hideNoRelease.addEventListener('change', () => { localStorage.setItem('catalog-hide-no-release', hideNoRelease.checked); currentPage = 1; render(); });
 hideNonStandard.addEventListener('change', () => { localStorage.setItem('catalog-hide-non-standard', hideNonStandard.checked); currentPage = 1; render(); });
 document.getElementById('theme-toggle').addEventListener('change', (event) => { const theme = event.target.checked ? 'dark' : 'light'; document.documentElement.dataset.theme = theme; localStorage.setItem('catalog-theme', theme); });
-document.getElementById('sidebar-toggle').addEventListener('click', () => {
-    if (window.matchMedia('(max-width: 760px)').matches) {
-        filters.classList.toggle('open');
-    } else {
-        layout.classList.toggle('filters-hidden');
-    }
-});
+document.getElementById('sidebar-toggle').addEventListener('click', () => layout.classList.toggle('filters-hidden'));
 document.getElementById('sidebar-close').addEventListener('click', () => filters.classList.remove('open'));
 render();
 """
