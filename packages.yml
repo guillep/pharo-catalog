@@ -1,9 +1,6 @@
 packages:
   - name: Mutalk
     description: Mutation testing for Pharo.
-    categories:
-      - Testing
-      - Tools
     tags:
       - mutation-testing
       - Pharo

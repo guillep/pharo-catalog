@@ -73,6 +73,13 @@ class GitHubClient:
         except (urllib.error.HTTPError, urllib.error.URLError, OSError) as error:
             raise GitHubError(f"download {url}: {error}") from error
 
+    def repository_topics(self, full_name: str) -> list[str]:
+        result = self.request_json(f"repos/{full_name}/topics")
+        topics = result.get("names", [])
+        if not isinstance(topics, list) or not all(isinstance(topic, str) for topic in topics):
+            raise GitHubError(f"GET repos/{full_name}/topics: invalid topic response")
+        return topics
+
     def _headers(self, accept: str) -> dict[str, str]:
         headers = {
             "Accept": accept,
@@ -114,22 +121,54 @@ def load_registry(path: Path) -> list[dict]:
     for entry in packages:
         if not isinstance(entry, dict):
             raise ValueError("every registry package must be a mapping")
-        missing = {"name", "description", "categories", "tags", "repository"} - entry.keys()
+        missing = {"name", "description", "repository"} - entry.keys()
         if missing:
             raise ValueError(f"registry entry is missing: {', '.join(sorted(missing))}")
-        categories = entry["categories"]
-        tags = entry["tags"]
-        if not isinstance(categories, list) or not set(categories).issubset(CONTROLLED_CATEGORIES):
-            invalid = sorted(set(categories or []) - CONTROLLED_CATEGORIES)
-            raise ValueError(f"invalid categories for {entry['name']}: {invalid}")
+        tags = entry.get("tags", [])
         if not isinstance(tags, list) or not all(isinstance(tag, str) for tag in tags):
             raise ValueError(f"tags for {entry['name']} must be a list of strings")
         identity = normalize_repository_url(entry["repository"])
         if identity in identities:
             raise ValueError(f"duplicate repository in registry: {identity}")
         identities.add(identity)
-        registry.append({**entry, "repository": identity})
+        registry.append({**entry, "tags": tags, "repository": identity})
     return registry
+
+
+def load_category_rules(config: dict) -> list[dict]:
+    rules = config.get("categories", [])
+    if not isinstance(rules, list):
+        raise ValueError("config categories must be a list")
+    names = set()
+    normalized = []
+    for rule in rules:
+        if not isinstance(rule, dict) or not isinstance(rule.get("name"), str):
+            raise ValueError("every category must define a name and keywords")
+        name = rule["name"]
+        keywords = rule.get("keywords", [])
+        if name not in CONTROLLED_CATEGORIES or name in names:
+            raise ValueError(f"invalid or duplicate category: {name}")
+        if not isinstance(keywords, list) or not all(isinstance(keyword, str) for keyword in keywords):
+            raise ValueError(f"keywords for {name} must be a list of strings")
+        names.add(name)
+        normalized.append({"name": name, "keywords": {keyword.casefold() for keyword in keywords}})
+    return normalized
+
+
+def derive_categories(tags: list[str], rules: list[dict]) -> list[str]:
+    tag_set = {tag.casefold() for tag in tags}
+    return [rule["name"] for rule in rules if tag_set.intersection(rule["keywords"])]
+
+
+def merge_tags(topics: list[str], explicit_tags: list[str]) -> list[str]:
+    result = []
+    seen = set()
+    for tag in [*topics, *explicit_tags]:
+        key = tag.casefold()
+        if key not in seen:
+            seen.add(key)
+            result.append(tag)
+    return result
 
 
 def paged_repositories(client: GitHubClient, organization: str) -> list[dict]:
@@ -166,16 +205,19 @@ def process_repository(
     repository: dict,
     output: Path,
     index_filename: str,
+    category_rules: list[dict] | None = None,
+    explicit_tags: list[str] | None = None,
 ) -> dict:
     full_name = repository.get("full_name", repository.get("name", "unknown"))
+    tags = merge_tags(client.repository_topics(full_name), explicit_tags or [])
     project = {
         "name": repository.get("name", full_name),
         "description": repository.get("description") or "No description provided.",
         "repository_url": repository.get("html_url", ""),
         "project_url": repository.get("html_url", ""),
         "organization": full_name.split("/", 1)[0] if "/" in full_name else "",
-        "categories": [],
-        "tags": [],
+        "categories": derive_categories(tags, category_rules or []),
+        "tags": tags,
         "standard": False,
         "status": "no-release",
         "artifacts": [],
@@ -221,15 +263,19 @@ def repository_from_registry(entry: dict) -> dict:
     }
 
 
-def merge_project_metadata(project: dict, entry: dict | None) -> dict:
+def merge_project_metadata(
+    project: dict,
+    entry: dict | None,
+    category_rules: list[dict] | None = None,
+) -> dict:
     if not entry:
         return project
     project.update({
         "name": entry["name"],
         "description": entry["description"],
-        "categories": entry["categories"],
-        "tags": entry["tags"],
+        "tags": merge_tags(project.get("tags", []), entry.get("tags", [])),
     })
+    project["categories"] = derive_categories(project["tags"], category_rules or [])
     return project
 
 
@@ -299,6 +345,7 @@ def generate(config_path: Path) -> tuple[int, int]:
     token = os.environ.get(token_env)
     client = GitHubClient(github.get("api_url", DEFAULT_API_URL), token)
     index_filename = index_config.get("filename", DEFAULT_INDEX_FILENAME)
+    category_rules = load_category_rules(config)
     registry_path = config_path.parent / config.get("registry", "packages.yml")
     registry = load_registry(registry_path)
     output = Path(index_config.get("output_directory", "site"))
@@ -333,8 +380,11 @@ def generate(config_path: Path) -> tuple[int, int]:
     for identity, repository in repositories.items():
         entry = registry_by_identity.get(identity)
         try:
-            project = process_repository(client, repository, output, index_filename)
-            projects.append(merge_project_metadata(project, entry))
+            project = process_repository(
+                client, repository, output, index_filename, category_rules,
+                entry.get("tags", []) if entry else [],
+            )
+            projects.append(merge_project_metadata(project, entry, category_rules))
         except GitHubError as error:
             errors.append({"repository": identity, "error": str(error)})
             projects.append(merge_project_metadata({
@@ -344,7 +394,7 @@ def generate(config_path: Path) -> tuple[int, int]:
                 "project_url": repository.get("html_url", identity),
                 "categories": [], "tags": [], "standard": False,
                 "status": "error", "artifacts": [],
-            }, entry))
+            }, entry, category_rules))
 
     projects.sort(key=lambda project: project["name"].lower())
     (output / "index.html").write_text(render_site(projects, errors), encoding="utf-8")

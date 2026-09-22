@@ -29,11 +29,16 @@ class FakeClient:
                     "browser_download_url": "https://example.test/index.html",
                 }],
             }
+        if path == "repos/example/demo/topics":
+            return {"names": ["HTTP", "json", "rest"]}
         raise AssertionError(path)
 
     def download(self, url, destination):
         self.downloaded.append((url, destination))
         destination.write_text("<h1>Demo</h1>", encoding="utf-8")
+
+    def repository_topics(self, full_name):
+        return ["HTTP", "json", "rest"]
 
 
 class GenerateTests(unittest.TestCase):
@@ -41,19 +46,23 @@ class GenerateTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             path = Path(directory) / "packages.yml"
             path.write_text(
-                "packages:\n  - name: Demo\n    description: Demo\n    categories: [Tools]\n    tags: [demo]\n    repository: https://github.com/example/demo/\n",
+                "packages:\n  - name: Demo\n    description: Demo\n    tags: [demo]\n    repository: https://github.com/example/demo/\n",
                 encoding="utf-8",
             )
             registry = generate.load_registry(path)
             self.assertEqual(registry[0]["repository"], "https://github.com/example/demo")
 
+    def test_category_matching_is_exact_and_case_insensitive(self):
+        rules = [{"name": "Web", "keywords": {"http", "rest"}}]
+        self.assertEqual(generate.derive_categories(["HTTP", "http-client"], rules), ["Web"])
+
     def test_registry_entry_overrides_discovered_metadata(self):
         project = generate.merge_project_metadata(
             {"name": "demo", "description": "GitHub", "categories": [], "tags": []},
-            {"name": "Demo package", "description": "Registry", "categories": ["Tools"], "tags": ["demo"]},
+            {"name": "Demo package", "description": "Registry", "tags": ["demo"]},
         )
         self.assertEqual(project["description"], "Registry")
-        self.assertEqual(project["categories"], ["Tools"])
+        self.assertEqual(project["tags"], ["demo"])
 
     def test_standard_release_imports_index_without_version_metadata(self):
         client = FakeClient()
@@ -72,6 +81,7 @@ class GenerateTests(unittest.TestCase):
             self.assertEqual(project["status"], "standard")
             self.assertEqual(project["project_url"], "projects/demo/index.html")
             self.assertNotIn("version", project)
+            self.assertEqual(project["tags"], ["HTTP", "json", "rest"])
             self.assertTrue((Path(directory) / "projects/demo/index.html").is_file())
 
     def test_rendered_data_is_static_json(self):
@@ -80,7 +90,6 @@ class GenerateTests(unittest.TestCase):
             "description": "A package",
             "project_url": "projects/demo/index.html",
             "repository_url": "https://github.com/example/demo",
-            "version": "v1.0.0",
             "status": "standard",
             "standard": True,
             "artifacts": [],

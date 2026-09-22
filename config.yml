@@ -14,3 +14,31 @@ github:
 index:
   filename: index.html
   output_directory: site
+
+categories:
+  - name: Language & Compiler
+    keywords: [compiler, compiler-tool, language]
+  - name: Development Environment
+    keywords: [ide, development-environment]
+  - name: Source Code & Version Control
+    keywords: [git, version-control, source-code]
+  - name: Testing
+    keywords: [test, testing, unittest, tdd]
+  - name: Build & Deployment
+    keywords: [build, deployment, ci, cd]
+  - name: Web
+    keywords: [web, http, https, rest, html]
+  - name: Networking
+    keywords: [networking, network, tcp, udp]
+  - name: UI
+    keywords: [ui, gui, user-interface]
+  - name: Graphics & Visualization
+    keywords: [graphics, visualization, rendering]
+  - name: Data & Databases
+    keywords: [data, database, sql]
+  - name: System & OS
+    keywords: [system, operating-system, os]
+  - name: Tools
+    keywords: [tool, tools, utility]
+  - name: Education
+    keywords: [education, teaching, learning]
