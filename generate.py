@@ -167,13 +167,16 @@ def load_registry_data(path: Path) -> dict:
     normalized_organizations = []
     for organization in organizations:
         if isinstance(organization, str):
-            normalized_organizations.append({"name": organization, "exclude": set()})
+            normalized_organizations.append({"name": organization, "exclude": set(), "tags": []})
             continue
         if not isinstance(organization, dict) or not isinstance(organization.get("name"), str):
             raise ValueError("organizations must be names or mappings with a name")
         excluded = organization.get("exclude", [])
+        tags = organization.get("tags", [])
         if not isinstance(excluded, list):
             raise ValueError(f"exclude for {organization['name']} must be a list")
+        if not isinstance(tags, list) or not all(isinstance(tag, str) for tag in tags):
+            raise ValueError(f"tags for {organization['name']} must be a list of strings")
         organization_name = organization["name"]
         normalized_organizations.append({
             "name": organization_name,
@@ -183,6 +186,7 @@ def load_registry_data(path: Path) -> dict:
                 )
                 for url in excluded
             },
+            "tags": tags,
         })
     packages = raw.get("packages")
     if not isinstance(packages, list):
@@ -563,6 +567,9 @@ def generate(config_path: Path, mock: bool = False) -> tuple[int, int]:
     projects: list[dict] = []
     errors: list[dict] = []
     registry_by_identity = {entry["repository"]: entry for entry in registry}
+    organization_tags: dict[str, list[str]] = {
+        organization["name"]: organization["tags"] for organization in organizations
+    }
     repositories: dict[str, dict] = {
         entry["repository"]: repository_from_registry(entry) for entry in registry
     }
@@ -592,7 +599,10 @@ def generate(config_path: Path, mock: bool = False) -> tuple[int, int]:
         try:
             project = process_repository(
                 client, repository, output, index_filename, category_rules,
-                entry.get("tags", []) if entry else [],
+                [
+                    *(entry.get("tags", []) if entry else []),
+                    *organization_tags.get(identity.split("/", 1)[0], []),
+                ],
             )
             projects.append(merge_project_metadata(project, entry, category_rules))
         except GitHubError as error:

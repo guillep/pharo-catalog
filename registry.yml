@@ -2,6 +2,8 @@ organizations:
   - name: pharo-project
     exclude:
       - isloop
+  - name: pharo-testing
+    tags: [testing]
   - pharo
   - pharo-contributions
   - pharo-graphics
@@ -15,7 +17,6 @@ organizations:
   - pharo-web
   - pharo-crypto
   - pharo-ide
-  - pharo-testing
   - pharo-utilities
   - pharo-pkg
   - pharo-completion

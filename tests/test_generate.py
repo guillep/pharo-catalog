@@ -57,6 +57,8 @@ class GenerateTests(unittest.TestCase):
         self.assertIn("pharo", [item["name"] for item in data["organizations"]])
         pharo_project = next(item for item in data["organizations"] if item["name"] == "pharo-project")
         self.assertTrue(all(value.startswith("https://github.com/pharo-project/") for value in pharo_project["exclude"]))
+        pharo_testing = next(item for item in data["organizations"] if item["name"] == "pharo-testing")
+        self.assertEqual(pharo_testing["tags"], ["testing"])
 
     def test_configured_index_filename_has_a_default(self):
         config = generate.load_config(Path(__file__).parents[1] / "config.yml")
