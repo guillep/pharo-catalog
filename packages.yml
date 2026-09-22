@@ -1,0 +1,10 @@
+packages:
+  - name: Mutalk
+    description: Mutation testing for Pharo.
+    categories:
+      - Testing
+      - Tools
+    tags:
+      - mutation-testing
+      - Pharo
+    repository: https://github.com/pharo-contributions/mutalk

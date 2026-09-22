@@ -1,8 +1,10 @@
 organizations:
-  - pharo-project
+  - pharo
   - pharo-contributions
   - pharo-graphics
   - pharo-vcs
+
+registry: packages.yml
 
 github:
   # The token is read from this environment variable and is never written to the site.

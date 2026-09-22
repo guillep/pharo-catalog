@@ -37,7 +37,25 @@ class FakeClient:
 
 
 class GenerateTests(unittest.TestCase):
-    def test_standard_release_imports_index_and_adds_archives(self):
+    def test_registry_normalizes_urls_and_validates_categories(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "packages.yml"
+            path.write_text(
+                "packages:\n  - name: Demo\n    description: Demo\n    categories: [Tools]\n    tags: [demo]\n    repository: https://github.com/example/demo/\n",
+                encoding="utf-8",
+            )
+            registry = generate.load_registry(path)
+            self.assertEqual(registry[0]["repository"], "https://github.com/example/demo")
+
+    def test_registry_entry_overrides_discovered_metadata(self):
+        project = generate.merge_project_metadata(
+            {"name": "demo", "description": "GitHub", "categories": [], "tags": []},
+            {"name": "Demo package", "description": "Registry", "categories": ["Tools"], "tags": ["demo"]},
+        )
+        self.assertEqual(project["description"], "Registry")
+        self.assertEqual(project["categories"], ["Tools"])
+
+    def test_standard_release_imports_index_without_version_metadata(self):
         client = FakeClient()
         with tempfile.TemporaryDirectory() as directory:
             project = generate.process_repository(
@@ -53,7 +71,7 @@ class GenerateTests(unittest.TestCase):
             )
             self.assertEqual(project["status"], "standard")
             self.assertEqual(project["project_url"], "projects/demo/index.html")
-            self.assertEqual(len(project["artifacts"]), 3)
+            self.assertNotIn("version", project)
             self.assertTrue((Path(directory) / "projects/demo/index.html").is_file())
 
     def test_rendered_data_is_static_json(self):

@@ -14,6 +14,7 @@ import urllib.error
 import urllib.parse
 import urllib.request
 from pathlib import Path
+from urllib.parse import urlparse
 
 import yaml
 
@@ -21,6 +22,21 @@ import yaml
 DEFAULT_API_URL = "https://api.github.com"
 DEFAULT_INDEX_FILENAME = "index.html"
 LOGO_PATH = Path(__file__).with_name("assets") / "pharo-beacon.svg"
+CONTROLLED_CATEGORIES = {
+    "Language & Compiler",
+    "Development Environment",
+    "Source Code & Version Control",
+    "Testing",
+    "Build & Deployment",
+    "Web",
+    "Networking",
+    "UI",
+    "Graphics & Visualization",
+    "Data & Databases",
+    "System & OS",
+    "Tools",
+    "Education",
+}
 
 
 class GitHubError(RuntimeError):
@@ -70,9 +86,50 @@ class GitHubClient:
 def load_config(path: Path) -> dict:
     config = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
     organizations = config.get("organizations")
-    if not isinstance(organizations, list) or not organizations:
-        raise ValueError("config must define a non-empty organizations list")
+    if not isinstance(organizations, list):
+        raise ValueError("config organizations must be a list")
     return config
+
+
+def normalize_repository_url(value: str) -> str:
+    parsed = urlparse(value.strip())
+    if parsed.scheme != "https" or parsed.netloc.lower() != "github.com":
+        raise ValueError(f"invalid GitHub repository URL: {value}")
+    path = parsed.path.strip("/")
+    if path.endswith(".git"):
+        path = path[:-4]
+    parts = [part for part in path.split("/") if part]
+    if len(parts) != 2:
+        raise ValueError(f"invalid GitHub repository URL: {value}")
+    return f"https://github.com/{parts[0]}/{parts[1]}"
+
+
+def load_registry(path: Path) -> list[dict]:
+    raw = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
+    packages = raw.get("packages")
+    if not isinstance(packages, list):
+        raise ValueError("registry must define a packages list")
+    registry = []
+    identities = set()
+    for entry in packages:
+        if not isinstance(entry, dict):
+            raise ValueError("every registry package must be a mapping")
+        missing = {"name", "description", "categories", "tags", "repository"} - entry.keys()
+        if missing:
+            raise ValueError(f"registry entry is missing: {', '.join(sorted(missing))}")
+        categories = entry["categories"]
+        tags = entry["tags"]
+        if not isinstance(categories, list) or not set(categories).issubset(CONTROLLED_CATEGORIES):
+            invalid = sorted(set(categories or []) - CONTROLLED_CATEGORIES)
+            raise ValueError(f"invalid categories for {entry['name']}: {invalid}")
+        if not isinstance(tags, list) or not all(isinstance(tag, str) for tag in tags):
+            raise ValueError(f"tags for {entry['name']} must be a list of strings")
+        identity = normalize_repository_url(entry["repository"])
+        if identity in identities:
+            raise ValueError(f"duplicate repository in registry: {identity}")
+        identities.add(identity)
+        registry.append({**entry, "repository": identity})
+    return registry
 
 
 def paged_repositories(client: GitHubClient, organization: str) -> list[dict]:
@@ -104,14 +161,6 @@ def latest_release(client: GitHubClient, full_name: str) -> dict | None:
         raise
 
 
-def archive_links(repository_url: str, tag: str) -> list[dict]:
-    base = f"{repository_url}/archive/refs/tags/{urllib.parse.quote(tag, safe='') }"
-    return [
-        {"name": "Source code (zip)", "url": f"{base}.zip"},
-        {"name": "Source code (tar.gz)", "url": f"{base}.tar.gz"},
-    ]
-
-
 def process_repository(
     client: GitHubClient,
     repository: dict,
@@ -125,7 +174,8 @@ def process_repository(
         "repository_url": repository.get("html_url", ""),
         "project_url": repository.get("html_url", ""),
         "organization": full_name.split("/", 1)[0] if "/" in full_name else "",
-        "version": None,
+        "categories": [],
+        "tags": [],
         "standard": False,
         "status": "no-release",
         "artifacts": [],
@@ -135,9 +185,6 @@ def process_repository(
         project["status"] = "no-release"
         return project
 
-    tag = release.get("tag_name") or release.get("name") or ""
-    project["version"] = tag or None
-    project["artifacts"] = archive_links(repository.get("html_url", ""), tag) if tag else []
     assets = release.get("assets", []) or []
     index_asset = next(
         (asset for asset in assets if asset.get("name") == index_filename),
@@ -149,14 +196,40 @@ def process_repository(
 
     slug = project_slug(repository)
     destination = output / "projects" / slug / index_filename
+    if destination.parent.exists():
+        owner = full_name.split("/", 1)[0] if "/" in full_name else "repository"
+        slug = f"{re.sub(r'[^a-zA-Z0-9._-]+', '-', owner).strip('-.').lower()}-{slug}"
+    destination = output / "projects" / slug / index_filename
     destination.parent.mkdir(parents=True, exist_ok=True)
     client.download(index_asset["browser_download_url"], destination)
     project["standard"] = True
     project["status"] = "standard"
     project["project_url"] = f"projects/{slug}/{index_filename}"
-    project["artifacts"].append(
-        {"name": index_filename, "url": index_asset.get("browser_download_url", "")}
-    )
+    return project
+
+
+def repository_from_registry(entry: dict) -> dict:
+    repository_url = entry["repository"]
+    parsed = urlparse(repository_url)
+    owner, name = parsed.path.strip("/").split("/")
+    return {
+        "name": name,
+        "full_name": f"{owner}/{name}",
+        "html_url": repository_url,
+        "description": entry["description"],
+        "fork": False,
+    }
+
+
+def merge_project_metadata(project: dict, entry: dict | None) -> dict:
+    if not entry:
+        return project
+    project.update({
+        "name": entry["name"],
+        "description": entry["description"],
+        "categories": entry["categories"],
+        "tags": entry["tags"],
+    })
     return project
 
 
@@ -196,8 +269,14 @@ def render_site(projects: list[dict], errors: list[dict]) -> str:
       </div>
     </header>
     <section class="catalog-controls" aria-label="Catalog controls">
-      <label class="search-label" for="search">Search projects</label>
+            <label class="search-label" for="search">Search projects</label>
       <input id="search" type="search" placeholder="Search by name or description" autocomplete="off">
+            <div class="filter-row">
+                <label for="category">Category</label>
+                <select id="category"><option value="">All Categories</option>{''.join(f'<option>{html.escape(category)}</option>' for category in sorted(CONTROLLED_CATEGORIES))}</select>
+                <label for="tag">Tag</label>
+                <select id="tag"><option value="">All Tags</option></select>
+            </div>
       <p id="summary" class="summary"></p>
     </section>
     <section id="projects" class="project-grid" aria-live="polite"></section>
@@ -209,7 +288,7 @@ def render_site(projects: list[dict], errors: list[dict]) -> str:
   <script>{JS}</script>
 </body>
 </html>
-"""
+    """
 
 
 def generate(config_path: Path) -> tuple[int, int]:
@@ -220,6 +299,8 @@ def generate(config_path: Path) -> tuple[int, int]:
     token = os.environ.get(token_env)
     client = GitHubClient(github.get("api_url", DEFAULT_API_URL), token)
     index_filename = index_config.get("filename", DEFAULT_INDEX_FILENAME)
+    registry_path = config_path.parent / config.get("registry", "packages.yml")
+    registry = load_registry(registry_path)
     output = Path(index_config.get("output_directory", "site"))
     if output.exists():
         shutil.rmtree(output)
@@ -230,32 +311,40 @@ def generate(config_path: Path) -> tuple[int, int]:
 
     projects: list[dict] = []
     errors: list[dict] = []
-    seen: set[str] = set()
+    registry_by_identity = {entry["repository"]: entry for entry in registry}
+    repositories: dict[str, dict] = {
+        entry["repository"]: repository_from_registry(entry) for entry in registry
+    }
     for organization in config["organizations"]:
         try:
-            repositories = paged_repositories(client, organization)
+            organization_repositories = paged_repositories(client, organization)
         except GitHubError as error:
             errors.append({"organization": organization, "error": str(error)})
             continue
-        for repository in repositories:
-            full_name = repository.get("full_name", "")
-            if full_name in seen:
+        for repository in organization_repositories:
+            if repository.get("fork"):
                 continue
-            seen.add(full_name)
             try:
-                projects.append(process_repository(client, repository, output, index_filename))
-            except GitHubError as error:
-                errors.append({"repository": full_name, "error": str(error)})
-                projects.append({
-                    "name": repository.get("name", full_name),
-                    "description": repository.get("description") or "Metadata unavailable.",
-                    "repository_url": repository.get("html_url", ""),
-                    "project_url": repository.get("html_url", ""),
-                    "version": None,
-                    "standard": False,
-                    "status": "error",
-                    "artifacts": [],
-                })
+                identity = normalize_repository_url(repository["html_url"])
+                repositories.setdefault(identity, repository)
+            except ValueError as error:
+                errors.append({"repository": repository.get("full_name", "unknown"), "error": str(error)})
+
+    for identity, repository in repositories.items():
+        entry = registry_by_identity.get(identity)
+        try:
+            project = process_repository(client, repository, output, index_filename)
+            projects.append(merge_project_metadata(project, entry))
+        except GitHubError as error:
+            errors.append({"repository": identity, "error": str(error)})
+            projects.append(merge_project_metadata({
+                "name": repository.get("name", identity),
+                "description": repository.get("description") or "Metadata unavailable.",
+                "repository_url": repository.get("html_url", identity),
+                "project_url": repository.get("html_url", identity),
+                "categories": [], "tags": [], "standard": False,
+                "status": "error", "artifacts": [],
+            }, entry))
 
     projects.sort(key=lambda project: project["name"].lower())
     (output / "index.html").write_text(render_site(projects, errors), encoding="utf-8")
@@ -281,11 +370,16 @@ h1 { margin: 0; color: #111111; font-size: clamp(2.2rem, 6vw, 4rem); line-height
 .search-label { display: block; color: var(--muted); font: bold .75rem "Open Sans", sans-serif; letter-spacing: .1em; text-transform: uppercase; }
 input { width: 100%; margin-top: .5rem; padding: .85rem 1rem; border: 2px solid #dddddd; border-radius: 2px; color: var(--ink); background: var(--card); font: 1rem "Open Sans", sans-serif; }
 input:focus { outline: 3px solid rgba(50,151,212,.2); border-color: var(--blue); }
+.filter-row { display: grid; grid-template-columns: auto 1fr auto 1fr; align-items: center; gap: .5rem .8rem; margin-top: 1rem; color: var(--muted); font: .82rem "Open Sans", sans-serif; }
+select { min-width: 0; padding: .65rem .75rem; border: 1px solid var(--line); border-radius: 2px; color: var(--ink); background: var(--card); font: .95rem "Open Sans", sans-serif; }
 .summary { margin: .7rem 0 0; color: var(--muted); font: .9rem "Open Sans", sans-serif; }
 .project-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: 1rem; }
 .project-card { display: flex; flex-direction: column; min-height: 220px; padding: 1.2rem; background: var(--card); border: 1px solid var(--line); border-top: 3px solid var(--blue); border-radius: 2px; box-shadow: 0 2px 8px rgba(0,0,0,.04); }
 .project-card h2 { margin: 0; font-size: 1.35rem; line-height: 1.15; }
 .project-card p { color: var(--muted); margin: .7rem 0; }
+.metadata { font-size: .86rem; color: var(--blue) !important; }
+.tags { display: flex; flex-wrap: wrap; gap: .35rem; }
+.tag { padding: .15rem .4rem; background: var(--paper); border: 1px solid var(--line); color: var(--muted); font: .75rem "Open Sans", sans-serif; }
 .project-card .links { display: flex; flex-wrap: wrap; gap: .7rem; margin-top: auto; padding-top: .8rem; font: .9rem "Open Sans", sans-serif; }
 a { color: var(--blue); }
 .badge { display: inline-block; margin: .7rem 0 0; padding: .2rem .5rem; border-radius: 2px; background: #fff0eb; color: #c43f16; font: .72rem "Open Sans", sans-serif; }
@@ -295,7 +389,7 @@ a { color: var(--blue); }
 .error-report { margin-top: 1.5rem; padding: 1rem; border: 1px solid #f0c5a9; border-radius: 2px; background: #fff8f3; color: #7e3e1f; font: .9rem "Open Sans", sans-serif; }
 .error-report summary { cursor: pointer; font-weight: bold; }
 .error-report li { margin-top: .4rem; overflow-wrap: anywhere; }
-@media (max-width: 600px) { .catalog-shell { padding-top: 1.5rem; } .catalog-header { align-items: flex-start; } .pharo-logo { width: 56px; height: 56px; flex-basis: 56px; } }
+@media (max-width: 600px) { .catalog-shell { padding-top: 1.5rem; } .catalog-header { align-items: flex-start; } .pharo-logo { width: 56px; height: 56px; flex-basis: 56px; } .filter-row { grid-template-columns: 1fr; } }
 """
 
 
@@ -303,22 +397,37 @@ JS = """
 const data = JSON.parse(document.getElementById('catalog-data').textContent);
 const grid = document.getElementById('projects');
 const search = document.getElementById('search');
+const category = document.getElementById('category');
+const tag = document.getElementById('tag');
 const summary = document.getElementById('summary');
 const empty = document.getElementById('empty');
 const escapeHtml = (value) => String(value ?? '').replace(/[&<>\"']/g, (char) => ({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;',"'":'&#39;'}[char]));
 function render() {
   const query = search.value.trim().toLowerCase();
-  const projects = data.projects.filter((project) => `${project.name} ${project.description}`.toLowerCase().includes(query));
+    const selectedCategory = category.value;
+    const selectedTag = tag.value;
+    const projects = data.projects.filter((project) => {
+        const searchable = `${project.name} ${project.description} ${(project.categories || []).join(' ')} ${(project.tags || []).join(' ')}`.toLowerCase();
+        return searchable.includes(query)
+            && (!selectedCategory || (project.categories || []).includes(selectedCategory))
+            && (!selectedTag || (project.tags || []).includes(selectedTag));
+    });
   grid.innerHTML = projects.map((project) => {
     const standard = project.status === 'standard';
     const status = standard ? 'Standard release' : project.status === 'no-release' ? 'No release' : 'Non-standard release';
-    const version = project.version ? `<span>Latest ${escapeHtml(project.version)}</span>` : '<span>No release version</span>';
-    return `<article class="project-card"><h2>${escapeHtml(project.name)}</h2><p>${escapeHtml(project.description)}</p><span class="badge ${standard ? 'standard' : ''}" title="${escapeHtml(status)}">${standard ? 'Index available' : '⚠ ' + escapeHtml(status)}</span><div class="links"><a href="${escapeHtml(project.project_url)}">Project</a><a href="${escapeHtml(project.repository_url)}">Repository</a>${version}</div></article>`;
+    const categories = (project.categories || []).map(escapeHtml).join(' · ');
+    const tags = (project.tags || []).map((value) => `<span class="tag">${escapeHtml(value)}</span>`).join(' ');
+    return `<article class="project-card"><h2>${escapeHtml(project.name)}</h2><p>${escapeHtml(project.description)}</p><p class="metadata">${categories}</p><div class="tags">${tags}</div><span class="badge ${standard ? 'standard' : ''}" title="${escapeHtml(status)}">${standard ? 'Index available' : '⚠ ' + escapeHtml(status)}</span><div class="links"><a href="${escapeHtml(project.project_url)}">Project</a><a href="${escapeHtml(project.repository_url)}">Repository</a></div></article>`;
   }).join('');
   summary.textContent = `${projects.length} of ${data.projects.length} projects${data.errors.length ? ` · ${data.errors.length} discovery errors` : ''}`;
   empty.hidden = projects.length !== 0;
 }
 search.addEventListener('input', render);
+category.addEventListener('change', render);
+tag.addEventListener('change', render);
+new Set(data.projects.flatMap((project) => project.tags || [])).forEach((value) => {
+    tag.insertAdjacentHTML('beforeend', `<option>${escapeHtml(value)}</option>`);
+});
 render();
 """
 

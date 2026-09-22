@@ -1,6 +1,6 @@
 # Pharo Project Catalog
 
-A static, searchable catalog of Pharo projects discovered from configured GitHub organizations. One GitHub repository is treated as one project/package.
+A static, searchable catalog of Pharo packages from a central registry and configured GitHub organizations. One GitHub repository is treated as one package/project.
 
 ## Run locally
 
@@ -13,13 +13,13 @@ python3 generate.py --config config.yml
 open site/index.html
 ```
 
-The generator handles repository pagination, latest releases, release assets, and per-repository failures. It writes the static site to `site/` and a machine-readable report to `site/catalog.json`. A release is standard when its configured index filename is present as a release asset; otherwise the project remains linked to its repository and is visibly marked.
+The generator handles registry validation, URL normalization, pagination, fork exclusion for automatic discovery, latest releases, index assets, deduplication, and per-package failures. It writes the static site to `site/` and a machine-readable report to `site/catalog.json`. A package is standard when its configured index filename is present as a release asset; otherwise the project remains linked to its repository and is visibly marked.
 
 The generated site imports standard project indexes at `projects/<repository>/index.html`. It also lists GitHub's automatic source archives for each release, without uploading or embedding the authentication token.
 
 ## Configuration
 
-Edit `config.yml` to change organizations, the GitHub API endpoint, the token environment variable, the index filename, or the output directory. The token is read only at generation time from `github.token_env`; it is never copied into generated files.
+Add packages to `packages.yml` to register them. The registry requires `name`, `description`, `categories`, `tags`, and `repository`; categories are validated against the controlled vocabulary in `generate.py`, while tags remain free-form. Edit `config.yml` to change organizations, the registry path, the GitHub API endpoint, the token environment variable, the index filename, or the output directory. The token is read only at generation time from `github.token_env`; it is never copied into generated files.
 
 ## GitHub Pages
 
