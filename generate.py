@@ -503,6 +503,8 @@ input:focus { outline: 3px solid rgba(50,151,212,.2); border-color: var(--blue);
 .filter-menu-bar { display: flex; align-items: center; gap: .55rem; min-height: 3rem; padding: .7rem .8rem; background: var(--filter-header); color: #fff; font: bold .85rem "Open Sans", sans-serif; }
 .catalog-layout.filters-hidden .filter-menu-bar { padding: .7rem; }
 .catalog-layout.filters-hidden .filter-menu-bar > span { display: none; }
+.catalog-layout.filters-hidden .filter-menu-bar { width: 3rem; min-height: 3rem; padding: 0; justify-content: center; border-radius: 3px; }
+.catalog-layout.filters-hidden .filter-menu-bar .burger { width: 3rem; height: 3rem; border: 0; }
 .filter-menu-bar .sidebar-close { margin-left: auto; }
 .filter-menu-bar .burger { border-color: rgba(255,255,255,.65); background: transparent; color: #fff; }
 .filters h2 { margin: 1.3rem 1rem .45rem; color: var(--ink); font-size: .95rem; }
