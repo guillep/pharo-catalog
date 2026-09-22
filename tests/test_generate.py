@@ -97,6 +97,7 @@ class GenerateTests(unittest.TestCase):
         self.assertIn("Project catalog", site)
         self.assertIn("search.addEventListener", site)
         self.assertIn("localStorage", site)
+        self.assertIn("project.status === 'error'", site)
         self.assertIn("pagination", site)
         self.assertIn("sidebar-toggle", site)
         self.assertIn("filters-hidden", site)

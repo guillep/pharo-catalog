@@ -505,7 +505,8 @@ function baseProjects() {
   const query = search.value.trim().toLowerCase();
     return data.projects.filter((project) => {
         const searchable = `${project.name} ${project.description} ${(project.categories || []).join(' ')} ${(project.tags || []).join(' ')}`.toLowerCase();
-        return searchable.includes(query) && (!hideNoRelease.checked || project.status !== 'no-release');
+        const hasNoRelease = project.status === 'no-release' || project.status === 'error';
+        return searchable.includes(query) && (!hideNoRelease.checked || !hasNoRelease);
     });
 }
 function renderFilterList(container, values, selected, setter) {
