@@ -1,7 +1,7 @@
 organizations:
   - name: pharo-project
     exclude:
-      - pharo-project/pharo-consortium-site
+      - pharo-consortium-site
   - pharo
   - pharo-contributions
   - pharo-graphics

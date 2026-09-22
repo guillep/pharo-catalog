@@ -130,9 +130,15 @@ def load_registry_data(path: Path) -> dict:
         excluded = organization.get("exclude", [])
         if not isinstance(excluded, list):
             raise ValueError(f"exclude for {organization['name']} must be a list")
+        organization_name = organization["name"]
         normalized_organizations.append({
-            "name": organization["name"],
-            "exclude": {normalize_repository_url(url) for url in excluded},
+            "name": organization_name,
+            "exclude": {
+                normalize_repository_url(
+                    url if "/" in url else f"{organization_name}/{url}"
+                )
+                for url in excluded
+            },
         })
     packages = raw.get("packages")
     if not isinstance(packages, list):
