@@ -38,14 +38,15 @@ The generator:
 1. Loads category rules and the central registry.
 2. Discovers repositories from configured organizations.
 3. Adds explicitly registered repositories from `registry.yml`.
-4. Normalizes repository identities and deduplicates the sources.
-5. Excludes forks from organization discovery, while retaining explicitly registered forks.
-6. Retrieves repository topics and combines them with explicit registry tags.
-7. Derives controlled categories using exact, case-insensitive keyword matches.
-8. Retrieves the repository's latest GitHub release.
-9. Looks for the configured release asset, normally `index.html`.
-10. Imports that asset when present and creates a catalog wrapper around it.
-11. Writes the catalog HTML, project files, `catalog.json`, `catalog.csv`, and documentation.
+4. Keeps automatically discovered repositories only when they have the exact GitHub topic `pharo`.
+5. Normalizes repository identities and deduplicates the sources.
+6. Excludes forks from organization discovery, while retaining explicitly registered forks with the `pharo` topic.
+7. Retrieves repository topics and combines them with explicit registry tags.
+8. Derives controlled categories using exact, case-insensitive keyword matches.
+9. Retrieves the repository's latest GitHub release.
+10. Looks for the configured release asset, normally `index.html`.
+11. Imports that asset when present and creates a catalog wrapper around it.
+12. Writes the catalog HTML, project files, `catalog.json`, `catalog.csv`, and documentation.
 
 ## Configuration And Registry
 
@@ -93,6 +94,7 @@ python3 generate.py --config config.yml --mock
 The catalog does not depend on a package's internal implementation or release format. A package only needs to provide:
 
 - a GitHub repository
+- the exact GitHub repository topic `pharo` when discovered through an organization
 - optionally, a registry entry when it is outside managed organizations
 - a GitHub release containing an asset named `index.html` to be standard
 

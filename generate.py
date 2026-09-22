@@ -272,6 +272,10 @@ def is_special_repository(repository: dict) -> bool:
     return name == ".github" or name == "github-pages" or name.endswith(".github.io")
 
 
+def has_pharo_topic(client, repository: dict) -> bool:
+    return any(topic.casefold() == "pharo" for topic in client.repository_topics(repository["full_name"]))
+
+
 def latest_release(client: GitHubClient, full_name: str) -> dict | None:
     try:
         return client.request_json(f"repos/{full_name}/releases/latest")
@@ -575,13 +579,15 @@ def generate(config_path: Path, mock: bool = False) -> tuple[int, int]:
                 continue
             try:
                 identity = normalize_repository_url(repository["html_url"])
+                if not has_pharo_topic(client, repository):
+                    continue
                 if identity in excluded:
                     continue
                 repositories.setdefault(identity, repository)
             except ValueError as error:
                 errors.append({"repository": repository.get("full_name", "unknown"), "error": str(error)})
 
-    for identity, repository in repositories.items():
+    for identity, repository in list(repositories.items()):
         entry = registry_by_identity.get(identity)
         try:
             project = process_repository(

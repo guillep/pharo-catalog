@@ -73,6 +73,14 @@ class GenerateTests(unittest.TestCase):
         self.assertTrue(generate.is_special_repository({"name": "github-pages"}))
         self.assertFalse(generate.is_special_repository({"name": "pharo"}))
 
+    def test_pharo_topic_matching_is_case_insensitive_and_exact(self):
+        class TopicClient:
+            def repository_topics(self, full_name):
+                return ["Pharo", "smalltalk"]
+
+        client = TopicClient()
+        self.assertTrue(generate.has_pharo_topic(client, {"full_name": "example/demo"}))
+
     def test_registry_entry_overrides_discovered_metadata(self):
         project = generate.merge_project_metadata(
             {"name": "demo", "description": "GitHub", "categories": [], "tags": []},
