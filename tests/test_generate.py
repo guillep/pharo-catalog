@@ -101,6 +101,8 @@ class GenerateTests(unittest.TestCase):
         self.assertIn("pagination", site)
         self.assertIn("sidebar-toggle", site)
         self.assertIn("filters-hidden", site)
+        self.assertIn("Hide unreleased", site)
+        self.assertIn("catalog-hide-no-release", site)
         self.assertIn('type="application/json"', site)
 
     def test_shared_logo_asset_is_available(self):
