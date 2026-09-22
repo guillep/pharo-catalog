@@ -326,14 +326,18 @@ def render_site(
     </header>
         <div id="catalog-layout" class="catalog-layout">
             <aside id="filters" class="filters" aria-label="Project filters">
-                <button id="sidebar-close" class="sidebar-close" type="button">Close filters</button>
-                <label class="toggle-row"><input id="hide-no-release" type="checkbox"> Hide unreleased</label>
+                <div class="filter-menu-bar">
+                    <button id="sidebar-toggle" class="icon-button burger" type="button" aria-label="Toggle filters">☰</button>
+                    <span>Filters</span>
+                    <button id="sidebar-close" class="sidebar-close" type="button" aria-label="Close filters">×</button>
+                </div>
+                <label class="toggle-row"><input id="hide-no-release" type="checkbox"> Hide projects without releases</label>
+                <label class="toggle-row"><input id="hide-non-standard" type="checkbox"> Hide non-standard projects</label>
                 <h2>Categories</h2><div id="category-list" class="filter-list"></div>
                 <h2>Tags</h2><div id="tag-list" class="filter-list"></div>
             </aside>
             <section class="catalog-content">
                 <section class="catalog-controls" aria-label="Catalog controls">
-                    <button id="sidebar-toggle" class="icon-button burger" type="button" aria-label="Toggle filters">☰ <span>Filters</span></button>
                     <label class="search-label" for="search">Search projects</label>
                     <input id="search" type="search" placeholder="Search name, description, category, or tag" autocomplete="off">
                     <p id="summary" class="summary"></p>
@@ -434,7 +438,7 @@ body { margin: 0; background: var(--paper); color: var(--ink); font: 16px/1.55 "
 .header-copy { flex: 1; }
 .header-actions { display: flex; gap: .5rem; align-self: flex-start; }
 .icon-button, .sidebar-close { border: 1px solid var(--line); border-radius: 2px; background: var(--card); color: var(--ink); padding: .45rem .65rem; cursor: pointer; font: .9rem "Open Sans", sans-serif; }
-.theme-toggle, .toggle-row { display: flex; align-items: center; gap: .55rem; color: var(--muted); cursor: pointer; font: .82rem "Open Sans", sans-serif; }
+.theme-toggle, .toggle-row { position: relative; display: flex; align-items: center; gap: .55rem; color: var(--muted); cursor: pointer; font: .82rem "Open Sans", sans-serif; }
 .theme-toggle input, .toggle-row input { position: absolute; opacity: 0; pointer-events: none; }
 .theme-toggle::before, .toggle-row::before { content: ""; width: 2.25rem; height: 1.25rem; flex: 0 0 2.25rem; border-radius: 999px; background: #c7c7c7; box-shadow: inset 0 0 0 1px rgba(0,0,0,.12); transition: background .2s ease; }
 .theme-toggle::after, .toggle-row::after { content: ""; position: absolute; width: .95rem; height: .95rem; margin-left: .15rem; border-radius: 50%; background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,.25); transition: transform .2s ease; }
@@ -446,17 +450,21 @@ body { margin: 0; background: var(--paper); color: var(--ink); font: 16px/1.55 "
 .eyebrow { margin: 0 0 .2rem; color: var(--blue); font: bold .75rem/1.2 "Open Sans", sans-serif; letter-spacing: .14em; }
 h1 { margin: 0; color: #111111; font-size: clamp(2.2rem, 6vw, 4rem); line-height: 1.05; font-weight: 600; }
 .lede { margin: .7rem 0 0; color: var(--muted); max-width: 42rem; }
-.catalog-controls { position: relative; margin: 2rem 0 1.5rem; padding: 1rem 1.1rem 1.1rem; border: 1px solid #b7d9eb; border-left: 4px solid var(--blue); border-radius: 2px; background: var(--blue-soft); }
-.catalog-controls .burger { float: right; margin: 0 0 .5rem .75rem; }
+.catalog-controls { margin: 2rem 0 1.5rem; padding: 1rem 0 1.1rem; border-bottom: 1px solid var(--line); }
 .search-label { display: block; color: var(--muted); font: bold .75rem "Open Sans", sans-serif; letter-spacing: .1em; text-transform: uppercase; }
 input { width: 100%; margin-top: .5rem; padding: .85rem 1rem; border: 2px solid #dddddd; border-radius: 2px; color: var(--ink); background: var(--card); font: 1rem "Open Sans", sans-serif; }
 input:focus { outline: 3px solid rgba(50,151,212,.2); border-color: var(--blue); }
 .catalog-layout { display: grid; grid-template-columns: 230px 1fr; gap: 2rem; }
-.catalog-layout.filters-hidden { display: block; }
-.catalog-layout.filters-hidden .filters { display: none; }
-.filters { padding-top: 2rem; }
+.catalog-layout.filters-hidden { grid-template-columns: 3.5rem 1fr; }
+.catalog-layout.filters-hidden .filters { padding: .5rem; }
+.catalog-layout.filters-hidden .filters > :not(.filter-menu-bar) { display: none; }
+.filters { padding: 1rem; margin-top: 2rem; background: var(--blue-soft); border-left: 4px solid var(--blue); border-radius: 2px; }
+.filter-menu-bar { display: flex; align-items: center; gap: .55rem; padding-bottom: .9rem; border-bottom: 1px solid rgba(50,151,212,.35); color: var(--blue); font: bold .85rem "Open Sans", sans-serif; }
+.catalog-layout.filters-hidden .filter-menu-bar { padding: 0; border-bottom: 0; }
+.catalog-layout.filters-hidden .filter-menu-bar > span { display: none; }
+.filter-menu-bar .sidebar-close { margin-left: auto; }
 .filters h2 { margin: 1.3rem 0 .45rem; color: var(--ink); font-size: .95rem; }
-.sidebar-close { display: none; margin-bottom: 1rem; }
+.sidebar-close { display: none; }
 .toggle-row { position: relative; justify-content: flex-start; text-align: left; }
 .filter-list { display: grid; gap: .2rem; }
 .filter-option { display: flex; justify-content: space-between; gap: .5rem; width: 100%; padding: .3rem .4rem; border: 0; border-radius: 2px; background: transparent; color: var(--muted); text-align: left; cursor: pointer; font: .82rem "Open Sans", sans-serif; }
@@ -482,7 +490,7 @@ a { color: var(--blue); }
 .error-report { margin-top: 1.5rem; padding: 1rem; border: 1px solid #f0c5a9; border-radius: 2px; background: #fff8f3; color: #7e3e1f; font: .9rem "Open Sans", sans-serif; }
 .error-report summary { cursor: pointer; font-weight: bold; }
 .error-report li { margin-top: .4rem; overflow-wrap: anywhere; }
-@media (max-width: 760px) { .catalog-shell { padding-top: 1.5rem; } .catalog-header { align-items: flex-start; } .pharo-logo { width: 56px; height: 56px; flex-basis: 56px; } .catalog-layout { display: block; } .filters { position: fixed; z-index: 5; inset: 0 auto 0 0; width: min(290px, 84vw); padding: 1.5rem; overflow-y: auto; background: var(--card); box-shadow: 4px 0 18px rgba(0,0,0,.15); transform: translateX(-105%); transition: transform .2s ease; } .filters.open { transform: translateX(0); } .sidebar-close { display: block; } .burger { display: block; } }
+@media (max-width: 760px) { .catalog-shell { padding-top: 1.5rem; } .catalog-header { align-items: flex-start; } .pharo-logo { width: 56px; height: 56px; flex-basis: 56px; } .catalog-layout { display: block; } .filters { position: fixed; z-index: 5; inset: 0 auto 0 0; width: min(290px, 84vw); padding: 1.5rem; overflow-y: auto; background: var(--blue-soft); box-shadow: 4px 0 18px rgba(0,0,0,.15); transform: translateX(-105%); transition: transform .2s ease; } .filters.open { transform: translateX(0); } .sidebar-close { display: block; } .burger { display: block; } }
 """
 
 
@@ -497,6 +505,7 @@ const pagination = document.getElementById('pagination');
 const categoryList = document.getElementById('category-list');
 const tagList = document.getElementById('tag-list');
 const hideNoRelease = document.getElementById('hide-no-release');
+const hideNonStandard = document.getElementById('hide-non-standard');
 const filters = document.getElementById('filters');
 const layout = document.getElementById('catalog-layout');
 const pageSize = 12;
@@ -505,6 +514,7 @@ let selectedCategory = localStorage.getItem('catalog-category') || '';
 let selectedTag = localStorage.getItem('catalog-tag') || '';
 const escapeHtml = (value) => String(value ?? '').replace(/[&<>\"']/g, (char) => ({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;',"'":'&#39;'}[char]));
 hideNoRelease.checked = localStorage.getItem('catalog-hide-no-release') !== 'false';
+hideNonStandard.checked = localStorage.getItem('catalog-hide-non-standard') === 'true';
 document.documentElement.dataset.theme = localStorage.getItem('catalog-theme') || 'light';
 document.getElementById('theme-toggle').checked = document.documentElement.dataset.theme === 'dark';
 function baseProjects() {
@@ -512,7 +522,10 @@ function baseProjects() {
     return data.projects.filter((project) => {
         const searchable = `${project.name} ${project.description} ${(project.categories || []).join(' ')} ${(project.tags || []).join(' ')}`.toLowerCase();
         const hasNoRelease = project.status === 'no-release' || project.status === 'error';
-        return searchable.includes(query) && (!hideNoRelease.checked || !hasNoRelease);
+        const isNonStandard = project.status !== 'standard';
+        return searchable.includes(query)
+            && (!hideNoRelease.checked || !hasNoRelease)
+            && (!hideNonStandard.checked || !isNonStandard);
     });
 }
 function renderFilterList(container, values, selected, setter) {
@@ -536,10 +549,10 @@ function render() {
     const visible = projects.slice((currentPage - 1) * pageSize, currentPage * pageSize);
     grid.innerHTML = visible.map((project) => {
     const standard = project.status === 'standard';
-    const status = standard ? 'Standard release' : project.status === 'no-release' ? 'No release' : 'Non-standard release';
+    const status = standard ? 'Standard release' : project.status === 'no-release' || project.status === 'error' ? 'Project without release' : 'Project without standard release';
     const categories = (project.categories || []).map(escapeHtml).join(' · ');
     const tags = (project.tags || []).map((value) => `<span class="tag">${escapeHtml(value)}</span>`).join(' ');
-    return `<article class="project-card"><h2>${escapeHtml(project.name)}</h2><p>${escapeHtml(project.description)}</p><p class="metadata">${categories}</p><div class="tags">${tags}</div><span class="badge ${standard ? 'standard' : ''}" title="${escapeHtml(status)}">${standard ? 'Index available' : '⚠ ' + escapeHtml(status)}</span><div class="links"><a href="${escapeHtml(project.project_url)}">Project</a><a href="${escapeHtml(project.repository_url)}">Repository</a></div></article>`;
+    return `<article class="project-card"><h2><a href="${escapeHtml(project.project_url)}">${escapeHtml(project.name)}</a></h2><p>${escapeHtml(project.description)}</p><p class="metadata">${categories}</p><div class="tags">${tags}</div>${standard ? '' : `<span class="badge" title="${escapeHtml(status)}">⚠ ${escapeHtml(status)}</span>`}<div class="links"><a href="${escapeHtml(project.repository_url)}">Repository</a></div></article>`;
   }).join('');
     pagination.innerHTML = Array.from({length: pages}, (_, index) => `<button class="page-button ${currentPage === index + 1 ? 'active' : ''}" data-page="${index + 1}">${index + 1}</button>`).join('');
     pagination.querySelectorAll('.page-button').forEach((button) => button.addEventListener('click', () => { currentPage = Number(button.dataset.page); render(); window.scrollTo({top: 0, behavior: 'smooth'}); }));
@@ -548,6 +561,7 @@ function render() {
 }
 search.addEventListener('input', render);
 hideNoRelease.addEventListener('change', () => { localStorage.setItem('catalog-hide-no-release', hideNoRelease.checked); currentPage = 1; render(); });
+hideNonStandard.addEventListener('change', () => { localStorage.setItem('catalog-hide-non-standard', hideNonStandard.checked); currentPage = 1; render(); });
 document.getElementById('theme-toggle').addEventListener('change', (event) => { const theme = event.target.checked ? 'dark' : 'light'; document.documentElement.dataset.theme = theme; localStorage.setItem('catalog-theme', theme); });
 document.getElementById('sidebar-toggle').addEventListener('click', () => {
     if (window.matchMedia('(max-width: 760px)').matches) {
