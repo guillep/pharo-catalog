@@ -32,9 +32,12 @@ organizations:
     tags: [development-environment]
 
 packages:
-  - name: Mutalk
-    description: Mutation testing for Pharo.
+  - name: Pharo Catalog
     tags:
-      - mutation-testing
-      - Pharo
-    repository: pharo-contributions/mutalk
+      - package-management
+    repository: guillep/pharo-catalog
+  - name: Pharo Release
+    description: Github action to release packages into the Pharo catalog.
+    tags:
+      - package-management
+    repository: guillep/pharo-catalog
