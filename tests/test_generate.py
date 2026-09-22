@@ -122,6 +122,8 @@ class GenerateTests(unittest.TestCase):
             "Demo", "https://github.com/example/demo", "index.html", ".index-source.html"
         )
         self.assertIn("Pharo Project catalog", wrapper)
+        self.assertIn("pharo-beacon.svg", wrapper)
+        self.assertIn("catalog-bar", wrapper)
         self.assertIn("https://github.com/example/demo", wrapper)
         self.assertIn(".index-source.html", wrapper)
 

@@ -217,15 +217,18 @@ def render_project_wrapper(
         :root {{ color-scheme: light; --blue: #3297d4; --ink: #333; --muted: #777; --line: #ddd; --paper: #f7f7f7; }}
         * {{ box-sizing: border-box; }}
         body {{ margin: 0; background: var(--paper); color: var(--ink); font: 15px/1.5 "Open Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }}
-        header {{ display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: .75rem 1.25rem; border-bottom: 4px solid #f5f5f5; background: #fff; }}
-        h1 {{ margin: 0; font-size: 1.15rem; font-weight: 600; }}
+        header {{ display: flex; align-items: center; gap: .85rem; padding: .75rem 1.25rem; border-bottom: 4px solid #f5f5f5; background: #fff; }}
+        header img {{ width: 42px; height: 42px; object-fit: contain; }}
+        h1 {{ margin: 0; font-size: 1.35rem; font-weight: 600; }}
         a {{ color: var(--blue); }}
-        .back {{ font-size: .85rem; }}
+        .catalog-bar {{ display: flex; justify-content: space-between; gap: 1rem; padding: .65rem 1.25rem; background: var(--blue); color: #fff; font-size: .85rem; }}
+        .catalog-bar a {{ color: #fff; }}
         iframe {{ display: block; width: 100%; min-height: calc(100vh - 62px); border: 0; background: #fff; }}
     </style>
 </head>
 <body>
-    <header><h1><a href="../../index.html">Pharo Project catalog</a> · {html.escape(project_name)}</h1><a class="back" href="{html.escape(repository_url, quote=True)}">Repository</a></header>
+    <header><img src="../../assets/pharo-beacon.svg" alt="Pharo"><h1>Pharo Project catalog · {html.escape(project_name)}</h1></header>
+    <nav class="catalog-bar"><a href="../../index.html">← Project catalog</a><a href="{html.escape(repository_url, quote=True)}">Repository ↗</a></nav>
     <iframe src="{html.escape(source_filename, quote=True)}" title="{html.escape(project_name)} project index"></iframe>
 </body>
 </html>
