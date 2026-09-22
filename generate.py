@@ -321,7 +321,7 @@ def render_site(
         <p class="lede">Discover Pharo packages, releases, and their project indexes.</p>
       </div>
             <div class="header-actions">
-                <button id="theme-toggle" class="icon-button" type="button" aria-label="Switch theme">☾</button>
+                <label class="theme-toggle"><input id="theme-toggle" type="checkbox"> Dark mode</label>
                 <button id="sidebar-toggle" class="icon-button burger" type="button" aria-label="Open filters">☰</button>
             </div>
     </header>
@@ -434,6 +434,7 @@ body { margin: 0; background: var(--paper); color: var(--ink); font: 16px/1.55 "
 .header-copy { flex: 1; }
 .header-actions { display: flex; gap: .5rem; align-self: flex-start; }
 .icon-button, .sidebar-close { border: 1px solid var(--line); border-radius: 2px; background: var(--card); color: var(--ink); padding: .45rem .65rem; cursor: pointer; font: .9rem "Open Sans", sans-serif; }
+.theme-toggle { display: flex; align-items: center; gap: .4rem; color: var(--muted); cursor: pointer; font: .82rem "Open Sans", sans-serif; }
 .icon-button { width: 2.4rem; height: 2.4rem; font-size: 1.2rem; }
 .icon-button:hover, .sidebar-close:hover { border-color: var(--blue); color: var(--blue); }
 .pharo-logo { width: 72px; height: 72px; flex: 0 0 72px; object-fit: contain; }
@@ -499,6 +500,7 @@ let selectedTag = localStorage.getItem('catalog-tag') || '';
 const escapeHtml = (value) => String(value ?? '').replace(/[&<>\"']/g, (char) => ({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;',"'":'&#39;'}[char]));
 hideNoRelease.checked = localStorage.getItem('catalog-hide-no-release') === 'true';
 document.documentElement.dataset.theme = localStorage.getItem('catalog-theme') || 'light';
+document.getElementById('theme-toggle').checked = document.documentElement.dataset.theme === 'dark';
 function baseProjects() {
   const query = search.value.trim().toLowerCase();
     return data.projects.filter((project) => {
@@ -539,7 +541,7 @@ function render() {
 }
 search.addEventListener('input', render);
 hideNoRelease.addEventListener('change', () => { localStorage.setItem('catalog-hide-no-release', hideNoRelease.checked); currentPage = 1; render(); });
-document.getElementById('theme-toggle').addEventListener('click', () => { const theme = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark'; document.documentElement.dataset.theme = theme; localStorage.setItem('catalog-theme', theme); });
+document.getElementById('theme-toggle').addEventListener('change', (event) => { const theme = event.target.checked ? 'dark' : 'light'; document.documentElement.dataset.theme = theme; localStorage.setItem('catalog-theme', theme); });
 document.getElementById('sidebar-toggle').addEventListener('click', () => {
     if (window.matchMedia('(max-width: 760px)').matches) {
         filters.classList.toggle('open');
