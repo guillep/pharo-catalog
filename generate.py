@@ -564,6 +564,7 @@ def render_documentation() -> str:
         <section><h2>How do I make my project not hidden</h2><p>The catalog hides projects without releases by default. Use the reusable <a href="https://github.com/guillep/pharo-release">guillep/pharo-release</a> action to publish your package release and its standard <code>index.html</code> asset.</p><p>A project with a release but no index is marked as <strong>Project without standard release</strong>.</p></section>
         <section><h2>How to make my project list correct information</h2><p>Keep the registry name and description concise and accurate. Add useful free-form tags to the registry and maintain your repository topics. Topics and explicit tags are merged for search.</p><p>Categories are derived automatically from configured topic keywords, so categories should not be added to package entries. Use the canonical repository URL and keep your release asset named <code>index.html</code>.</p></section>
         <section><h2>How do GitHub topics and tags work?</h2><p>Topics configured on your GitHub repository become tags in the catalog. Registry tags from <code>registry.yml</code> are combined with those topics, and the result is used for search and category derivation.</p><p>The topic-to-category mapping is maintained in <a href="https://github.com/guillep/pharo-catalog/blob/main/config.yml#L18">config.yml</a>. If a topic should belong to a different category, propose the mapping change with a pull request to <a href="https://github.com/guillep/pharo-catalog">guillep/pharo-catalog</a>.</p></section>
+        <section><h2>What do Uncategorized and Untagged mean?</h2><p><strong>Uncategorized</strong> means the project has tags, but none match a configured category keyword. <strong>Untagged</strong> means the project was discovered from an organization but does not have the required <code>pharo</code> topic.</p></section>
         <section><h2>How can I consume this info programmatically?</h2><p>The generated catalog exposes machine-readable exports beside the website: <a href="catalog.json"><code>catalog.json</code></a> for structured consumers and <a href="catalog.csv"><code>catalog.csv</code></a> for spreadsheets and simple data pipelines.</p><p>Each project record includes its name, description, categories, tags, status, local project URL, and repository URL. The JSON export also includes generation errors. These files are static and can be fetched directly from the published catalog without authentication.</p></section>
     </article>
     <footer class="catalog-footer">Copyright © 2026 Pharo contributors. <a href="https://github.com/guillep/pharo-catalog">guillep/pharo-catalog</a>.</footer>
@@ -776,7 +777,7 @@ function isHidden(project) {
     return (hideNoRelease.checked && hasNoRelease) || (hideNonStandard.checked && isNonStandard);
 }
 function renderFilterList(container, values, selected, setter) {
-    container.innerHTML = values.map(([value, count]) => { const label = value === '' ? 'All' : value === 'Hidden' ? '👁 See hidden' : value; return `<button type="button" class="filter-option list-group-item list-group-item-action d-flex justify-content-between align-items-center ${selected === value ? 'active' : ''} ${value === 'Hidden' ? 'hidden-option' : ''}" data-value="${escapeHtml(value)}"><span>${escapeHtml(label)}</span><span class="filter-count badge bg-secondary rounded-pill">${count}</span></button>`; }).join('');
+    container.innerHTML = values.map(([value, count]) => { const label = value === '' ? 'All' : value === 'Hidden' ? '👁 See hidden' : value; const help = value === 'Uncategorized' ? 'Tags did not match a configured category.' : value === 'Untagged' ? 'Organization repository does not have the pharo topic.' : ''; const question = help ? `<button type="button" class="btn btn-sm btn-link p-0 ml-1" data-toggle="tooltip" data-placement="right" title="${escapeHtml(help)}" aria-label="About ${escapeHtml(value)}">?</button>` : ''; return `<button type="button" class="filter-option list-group-item list-group-item-action d-flex justify-content-between align-items-center ${selected === value ? 'active' : ''} ${value === 'Hidden' ? 'hidden-option' : ''}" data-value="${escapeHtml(value)}"><span>${escapeHtml(label)}${question}</span><span class="filter-count badge bg-secondary rounded-pill">${count}</span></button>`; }).join('');
     container.querySelectorAll('.filter-option').forEach((button) => button.addEventListener('click', () => {
         setter(button.dataset.value);
         currentPage = 1;
@@ -790,9 +791,9 @@ function render() {
     const catalogProjects = visibleProjects.filter((project) => !(project.categories || []).includes(UNTAGGED_CATEGORY));
     const untaggedProjects = visibleProjects.filter((project) => (project.categories || []).includes(UNTAGGED_CATEGORY));
     const categoryValues = [['', catalogProjects.length], ...categoryNames.map((name) => [name, catalogProjects.filter((project) => (project.categories || []).includes(name)).length]).filter(([, count]) => count > 0)];
-    if (catalogProjects.some((project) => (project.categories || []).includes(UNTAGGED_CATEGORY))) categoryValues.push([UNTAGGED_CATEGORY, catalogProjects.filter((project) => (project.categories || []).includes(UNTAGGED_CATEGORY)).length]);
     const uncategorizedCount = catalogProjects.filter((project) => (project.categories || []).includes('Uncategorized')).length;
     if (uncategorizedCount > 0) categoryValues.push(['Uncategorized', uncategorizedCount]);
+    if (catalogProjects.some((project) => (project.categories || []).includes(UNTAGGED_CATEGORY))) categoryValues.push([UNTAGGED_CATEGORY, catalogProjects.filter((project) => (project.categories || []).includes(UNTAGGED_CATEGORY)).length]);
     categoryValues.push(['Hidden', hiddenProjects.length]);
     const pool = selectedCategory === 'Hidden' ? hiddenProjects : selectedCategory === UNTAGGED_CATEGORY ? untaggedProjects : selectedCategory ? visibleProjects : catalogProjects;
     const projects = selectedCategory === 'Hidden'
@@ -823,6 +824,7 @@ sort.addEventListener('change', () => { selectedSort = sort.value; localStorage.
 hideNoRelease.addEventListener('change', () => { localStorage.setItem('catalog-hide-no-release', hideNoRelease.checked); currentPage = 1; render(); });
 hideNonStandard.addEventListener('change', () => { localStorage.setItem('catalog-hide-non-standard', hideNonStandard.checked); currentPage = 1; render(); });
 document.getElementById('theme-toggle').addEventListener('change', (event) => { const theme = event.target.checked ? 'dark' : 'light'; document.documentElement.dataset.theme = theme; localStorage.setItem('catalog-theme', theme); });
+document.querySelectorAll('[data-toggle="tooltip"]').forEach((element) => new bootstrap.Tooltip(element));
 filters.addEventListener('shown.bs.collapse', () => { sidebarToggle.textContent = 'Toggle Categories'; });
 filters.addEventListener('hidden.bs.collapse', () => { sidebarToggle.textContent = 'Toggle Categories'; });
 filters.addEventListener('shown.bs.collapse', () => { catalogContent.classList.remove('col-md-12'); catalogContent.classList.add('col-md-9'); });
