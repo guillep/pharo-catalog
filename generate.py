@@ -41,7 +41,7 @@ CONTROLLED_CATEGORIES = {
     "Education",
     "AI",
 }
-OTHER_CATEGORY = "Other"
+OTHER_CATEGORY = "Uncategorized"
 HIDDEN_CATEGORY = "Hidden"
 UNTAGGED_CATEGORY = "Untagged"
 
@@ -304,12 +304,12 @@ def update_age(date_text: str) -> str:
     date = datetime.datetime.fromisoformat(date_text.replace("Z", "+00:00"))
     age_days = (datetime.datetime.now(datetime.timezone.utc) - date).days
     if age_days < 30:
-        return "Recently"
+        return "Recent"
     if age_days < 90:
-        return "In the past 3 months"
+        return "3 months"
     if age_days < 365:
-        return "In the past year"
-    return "More than a year ago"
+        return "This year"
+    return "Over a year"
 
 
 def latest_release(client: GitHubClient, full_name: str) -> dict | None:
@@ -334,23 +334,26 @@ def render_project_wrapper(
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{html.escape(project_name)} · Pharo Project Catalog</title>
     <link rel="icon" href="../../../assets/favicon.ico">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
     <style>
-        :root {{ color-scheme: light; --blue: #3297d4; --ink: #333; --muted: #777; --line: #ddd; --paper: #f7f7f7; }}
+        :root {{ color-scheme: light; --blue: #3297d4; --ink: #333; --muted: #777; --line: #ddd; --paper: #f7f7f7; --surface: #fff; }}
+        [data-theme="dark"] {{ color-scheme: dark; --ink: #f4f4f4; --muted: #b8b8b8; --line: #454b50; --paper: #20252a; --surface: #2b3035; --blue: #62b1e3; }}
         * {{ box-sizing: border-box; }}
         body {{ margin: 0; background: var(--paper); color: var(--ink); font: 15px/1.5 "Open Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }}
-        header {{ display: flex; align-items: center; gap: .85rem; padding: .75rem 1.25rem; border-bottom: 4px solid #f5f5f5; background: #fff; }}
+        header {{ display: flex; align-items: center; gap: .85rem; padding: .75rem 1.25rem; border-bottom: 1px solid var(--line); background: var(--surface); }}
         header img {{ width: 42px; height: 42px; object-fit: contain; }}
         h1 {{ margin: 0; font-size: 1.35rem; font-weight: 600; }}
         a {{ color: var(--blue); }}
         .catalog-bar {{ display: flex; justify-content: space-between; gap: 1rem; padding: .65rem 1.25rem; background: var(--blue); color: #fff; font-size: .85rem; }}
         .catalog-bar a {{ color: #fff; }}
-        iframe {{ display: block; width: 100%; min-height: calc(100vh - 62px); border: 0; background: #fff; }}
+        iframe {{ display: block; width: 100%; min-height: calc(100vh - 62px); border: 0; background: var(--surface); }}
     </style>
 </head>
 <body>
-    <header><img src="../../../assets/pharo-beacon.svg" alt="Pharo"><h1>Pharo Project catalog · {html.escape(project_name)}</h1></header>
-    <nav class="catalog-bar"><a href="../../../index.html">← Project catalog</a><a href="{html.escape(repository_url, quote=True)}">Repository ↗</a></nav>
+    <header><img src="../../../assets/pharo-beacon.svg" alt="Pharo"><h1>Pharo Project Catalog · {html.escape(project_name)}</h1></header>
+    <nav class="catalog-bar"><a class="btn btn-link text-white" href="../../../index.html">← Project Catalog</a><a class="btn btn-link text-white" href="{html.escape(repository_url, quote=True)}">Repository ↗</a></nav>
     <iframe src="{html.escape(source_filename, quote=True)}" title="{html.escape(project_name)} project index"></iframe>
+    <script>document.documentElement.dataset.theme = localStorage.getItem('catalog-theme') || 'light';</script>
 </body>
 </html>
 """
@@ -460,7 +463,7 @@ def render_site(
             for error in errors
         )
         error_report = f"""
-    <details class="error-report">
+    <details class="error-report alert alert-danger">
       <summary>{len(errors)} discovery error{'s' if len(errors) != 1 else ''}</summary>
       <ul>{error_items}</ul>
     </details>
@@ -474,54 +477,42 @@ def render_site(
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="A searchable catalog of Pharo projects.">
     <link rel="icon" href="assets/favicon.ico">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
   <title>Pharo Project Catalog</title>
   <style>{CSS}</style>
 </head>
 <body>
   <main class="catalog-shell">
-    <header class="catalog-header">
-    <img class="pharo-logo" src="assets/pharo-beacon.svg" alt="Pharo">
-    <div class="header-copy">
-        <p class="eyebrow">PHARO ECOSYSTEM</p>
-        <h1>Pharo Project catalog</h1>
-        <p class="lede">Discover Pharo packages, releases, and their project indexes.</p>
-      </div>
-            <div class="header-actions">
-                <nav class="data-nav" aria-label="Catalog resources">
-                    <a class="btn btn-outline-primary btn-sm" href="documentation.html">Documentation</a>
-                    <a class="btn btn-outline-primary btn-sm" href="catalog.json">JSON</a>
-                    <a class="btn btn-outline-primary btn-sm" href="catalog.csv">CSV</a>
-                </nav>
-                <label class="theme-toggle custom-control custom-switch mb-0"><input class="custom-control-input" id="theme-toggle" type="checkbox"><span class="custom-control-label">Dark mode</span></label>
-            </div>
-    </header>
-        <div id="catalog-layout" class="catalog-layout">
-            <aside id="filters" class="filters" aria-label="Project filters">
-                <div class="filter-menu-bar">
-                    <button id="sidebar-toggle" class="icon-button burger btn btn-light" type="button" aria-label="Toggle filters">☰</button>
-                    <span>Filters</span>
-                    <button id="sidebar-close" class="sidebar-close btn btn-light" type="button" aria-label="Close filters">×</button>
-                </div>
-                <label class="toggle-row custom-control custom-switch"><input class="custom-control-input" id="hide-no-release" type="checkbox"><span class="custom-control-label">Hide projects without releases</span></label>
-                <label class="toggle-row custom-control custom-switch"><input class="custom-control-input" id="hide-non-standard" type="checkbox"><span class="custom-control-label">Hide non-standard projects</span></label>
-                <h2>Categories</h2><div id="category-list" class="filter-list"></div>
-            </aside>
-            <section class="catalog-content">
-                <section class="catalog-controls" aria-label="Catalog controls">
-                    <div class="form-row align-items-center">
-                        <div class="col-md">
+        <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom catalog-navbar" aria-label="Main navigation">
+            <a class="navbar-brand d-flex align-items-center" href="index.html"><img class="pharo-logo mr-2" src="assets/pharo-beacon.svg" alt="Pharo"><span>Pharo Project Catalog</span></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#catalog-nav" aria-controls="catalog-nav" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+            <div class="collapse navbar-collapse" id="catalog-nav"><div class="navbar-nav align-items-lg-center ms-auto"><a class="btn btn-secondary btn-sm mx-1" href="documentation.html">Documentation</a><a class="btn btn-secondary btn-sm mx-1" href="catalog.json">JSON</a><a class="btn btn-secondary btn-sm mx-1" href="catalog.csv">CSV</a><div class="theme-toggle form-check form-switch mb-0 ms-lg-3"><input class="form-check-input" id="theme-toggle" type="checkbox"><label class="form-check-label text-secondary" for="theme-toggle">Dark mode</label></div></div></div>
+        </nav>
+                <div class="catalog-controls" aria-label="Catalog controls">
+                    <div class="row align-items-end g-2">
+                        <div class="col">
                             <label class="search-label" for="search">Search projects</label>
                             <input class="form-control" id="search" type="search" placeholder="Search name, description, category, or tag" autocomplete="off">
                         </div>
-                        <div class="col-md-4 mt-3 mt-md-0">
-                            <select class="custom-select" id="sort" aria-label="Sort projects"><option value="name">Alphabetically</option><option value="stars">By stars</option><option value="updated">Last updated</option></select>
+                        <div class="col-md-auto mt-3 mt-md-0">
+                            <select class="form-select" id="sort" aria-label="Sort projects"><option value="name">Alphabetically</option><option value="stars">By stars</option><option value="updated">Last updated</option></select>
                         </div>
                     </div>
-                    <p id="summary" class="summary"></p>
-                </section>
-                <section id="projects" class="project-grid" aria-live="polite"></section>
-                <p id="empty" class="empty-state" hidden>☹ No projects match your filters.</p>
+                    <div class="d-flex justify-content-between align-items-center mt-3">
+                        <button id="sidebar-toggle" class="btn btn-primary text-nowrap" type="button" aria-label="Toggle categories" data-bs-toggle="collapse" data-bs-target="#filters" aria-controls="filters">Toggle Categories</button>
+                        <p id="summary" class="text-end mb-0"></p>
+                    </div>
+                </div>
+                <div id="catalog-layout" class="catalog-layout row">
+                        <aside id="filters" class="filters collapse collapse-horizontal show bg-light col-md-3" aria-label="Project filters">
+                <h2>Categories</h2><div id="category-list" class="filter-list list-group"></div>
+                <div class="toggle-row form-check form-switch mt-3"><input class="form-check-input" id="hide-no-release" type="checkbox"><label class="form-check-label" for="hide-no-release">Hide projects without releases</label></div>
+                <div class="toggle-row form-check form-switch"><input class="form-check-input" id="hide-non-standard" type="checkbox"><label class="form-check-label" for="hide-non-standard">Hide non-standard projects</label></div>
+            </aside>
+            <section id="catalog-content" class="catalog-content col-md-9">
+                <section id="projects" class="project-grid row" aria-live="polite"></section>
+                <p id="empty" class="empty-state alert alert-info" hidden>☹ No projects match your filters.</p>
                 <nav id="pagination" class="pagination" aria-label="Project pages"></nav>
                 {error_report}
             </section>
@@ -531,6 +522,7 @@ def render_site(
     <script id="catalog-data" type="application/json">{payload}</script>
     <script id="catalog-categories" type="application/json">{category_json}</script>
   <script>{JS}</script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
         """
@@ -689,76 +681,58 @@ def generate(config_path: Path, mock: bool = False) -> tuple[int, int]:
 CSS = """
 :root { --ink: #333333; --muted: #777777; --line: #dddddd; --paper: #f7f7f7; --card: #ffffff; --blue: #3297d4; --blue-soft: #dcedf7; --filter-bg: #e7f3fa; --filter-header: #3297d4; --orange: #f15a24; --warning-bg: #fff0eb; --warning-text: #c43f16; }
 [data-theme="dark"] { --ink: #f4f4f4; --muted: #b8b8b8; --line: #454b50; --paper: #20252a; --card: #2b3035; --blue: #62b1e3; --blue-soft: #294b61; --filter-bg: #263f50; --filter-header: #1f668f; --orange: #ff8a5c; --warning-bg: #5a3029; --warning-text: #ffc0a8; }
+[data-theme="dark"] .catalog-navbar, [data-theme="dark"] .project-card, [data-theme="dark"] .filters { background-color: var(--card) !important; color: var(--ink); }
+[data-theme="dark"] .filters { background-color: transparent !important; }
+[data-theme="dark"] .navbar-light .navbar-brand, [data-theme="dark"] .navbar-light .nav-link { color: var(--muted); }
+[data-theme="dark"] .navbar-toggler { border-color: var(--line); }
+[data-theme="dark"] .btn-secondary { background-color: #4d5660; border-color: #626d78; color: #fff; }
+[data-theme="dark"] .btn-primary { background-color: var(--blue); border-color: var(--blue); color: #17212b; }
+[data-theme="dark"] .form-control, [data-theme="dark"] .form-select, [data-theme="dark"] .list-group-item { background-color: var(--card); border-color: var(--line); color: var(--ink); }
+[data-theme="dark"] .form-control::placeholder { color: var(--muted); opacity: 1; }
+[data-theme="dark"] .list-group-item-action:hover, [data-theme="dark"] .list-group-item-action:focus { background-color: var(--blue-soft); color: var(--ink); }
+[data-theme="dark"] .list-group-item.active { background-color: var(--blue); border-color: var(--blue); color: #17212b; }
+[data-theme="dark"] .alert-info { background-color: #263f50; border-color: #3c718e; color: #c6e8f8; }
+[data-theme="dark"] .alert-warning { background-color: #5a4530; border-color: #86673e; color: #ffe0a8; }
+[data-theme="dark"] .alert-danger { background-color: #5a3029; border-color: #8e5148; color: #ffc0a8; }
 * { box-sizing: border-box; }
+html { overflow-y: scroll; }
 body { margin: 0; background: var(--paper); color: var(--ink); font: 16px/1.55 "Open Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
-.catalog-shell { max-width: 1120px; margin: auto; padding: 2.5rem 1.25rem 4rem; }
-.catalog-header { display: flex; align-items: center; gap: 1rem; border-bottom: 5px solid #f5f5f5; padding-bottom: 1.5rem; }
-.header-copy { flex: 1; }
-.header-actions { display: flex; gap: .5rem; align-self: flex-start; }
-.data-nav { display: flex; gap: .3rem; padding: .25rem; border: 1px solid var(--line); border-radius: 3px; background: var(--card); }
-.data-nav a { color: var(--blue); text-decoration: none; font: .78rem "Open Sans", sans-serif; }
-.data-nav a:hover { background: var(--blue-soft); }
+.catalog-shell { width: 100%; margin: 0; padding: 0 2rem 4rem; }
+.catalog-navbar { margin: 0 -2rem; padding: .6rem 2rem; }
 .icon-button, .sidebar-close { cursor: pointer; font: .9rem "Open Sans", sans-serif; }
-.theme-toggle, .toggle-row { position: relative; display: flex; align-items: center; gap: .55rem; color: var(--muted); cursor: pointer; font: .82rem "Open Sans", sans-serif; }
-.theme-toggle input, .toggle-row input { position: static; opacity: 1; pointer-events: auto; }
-.theme-toggle::before, .toggle-row::before { content: ""; width: 2.25rem; height: 1.25rem; flex: 0 0 2.25rem; border-radius: 999px; background: #c7c7c7; box-shadow: inset 0 0 0 1px rgba(0,0,0,.12); transition: background .2s ease; }
-.theme-toggle::after, .toggle-row::after { content: ""; position: absolute; width: .95rem; height: .95rem; margin-left: .15rem; border-radius: 50%; background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,.25); transition: transform .2s ease; }
-.theme-toggle:has(input:checked)::before, .toggle-row:has(input:checked)::before { background: var(--blue); }
-.theme-toggle:has(input:checked)::after, .toggle-row:has(input:checked)::after { transform: translateX(1rem); }
+.theme-toggle { margin-bottom: 0; }
 .icon-button { width: 2.4rem; height: 2.4rem; font-size: 1.2rem; }
 .icon-button:hover, .sidebar-close:hover { border-color: var(--blue); color: var(--blue); }
-.pharo-logo { width: 72px; height: 72px; flex: 0 0 72px; object-fit: contain; }
+.pharo-logo { width: 42px; height: 42px; flex: 0 0 42px; object-fit: contain; }
 .eyebrow { margin: 0 0 .2rem; color: var(--blue); font: bold .75rem/1.2 "Open Sans", sans-serif; letter-spacing: .14em; }
 h1 { margin: 0; color: var(--ink); font-size: clamp(2.2rem, 6vw, 4rem); line-height: 1.05; font-weight: 600; }
 .lede { margin: .7rem 0 0; color: var(--muted); max-width: 42rem; }
 .catalog-controls { margin: 2rem 0 1.5rem; padding: 1rem 1.1rem 1.1rem; border: 1px solid var(--line); border-radius: 3px; background: var(--card); box-shadow: 0 2px 8px rgba(0,0,0,.04); }
 .search-label { display: block; color: var(--muted); font: bold .75rem "Open Sans", sans-serif; letter-spacing: .1em; text-transform: uppercase; }
 input { margin-top: .5rem; color: var(--ink); background: var(--card); font: 1rem "Open Sans", sans-serif; }
-input:focus { outline: 3px solid rgba(50,151,212,.2); border-color: var(--blue); }
-.catalog-layout { display: grid; grid-template-columns: 248px 1fr; gap: 2rem; }
-.catalog-layout.filters-hidden { grid-template-columns: 3.5rem 1fr; }
-.catalog-layout.filters-hidden .filters { padding: .5rem; background: transparent; border: 0; box-shadow: none; }
-.catalog-layout.filters-hidden .filters > :not(.filter-menu-bar) { display: none; }
-.filters { padding: 0 0 1rem; margin-top: 2rem; overflow: hidden; background: var(--filter-bg); border: 1px solid rgba(50,151,212,.32); border-radius: 4px; box-shadow: 0 3px 12px rgba(0,0,0,.07); }
-.filter-menu-bar { display: flex; align-items: center; gap: .55rem; min-height: 3rem; padding: .7rem .8rem; background: var(--filter-header); color: #fff; font: bold .85rem "Open Sans", sans-serif; }
-.catalog-layout.filters-hidden .filter-menu-bar { padding: .7rem; }
-.catalog-layout.filters-hidden .filter-menu-bar > span { display: none; }
-.catalog-layout.filters-hidden .filter-menu-bar { width: 3rem; min-height: 3rem; padding: 0; justify-content: center; border-radius: 3px; }
-.catalog-layout.filters-hidden .filter-menu-bar .burger { width: 3rem; height: 3rem; border: 0; }
+.catalog-layout { margin-left: -0.5rem; margin-right: -0.5rem; }
+.filters { overflow: hidden; }
+.filter-menu-bar { display: flex; align-items: center; gap: .55rem; min-height: 3rem; }
 .filter-menu-bar .sidebar-close { margin-left: auto; }
-.filter-menu-bar .burger { border-color: rgba(255,255,255,.65); background: transparent; color: #fff; }
+.filter-menu-bar .navbar-toggler-icon { font-size: 1.1rem; line-height: 1; }
 .filters h2 { margin: 1.3rem 1rem .45rem; color: var(--ink); font-size: .95rem; }
 .sidebar-close { display: none; }
-.toggle-row { position: relative; justify-content: flex-start; margin: 1rem; text-align: left; }
-.filter-list { display: grid; gap: .2rem; padding: 0 .65rem; }
-.filter-option { display: flex; justify-content: space-between; gap: .5rem; width: 100%; text-align: left; cursor: pointer; font: .82rem "Open Sans", sans-serif; }
-.filter-option:hover, .filter-option.active { background: var(--card); color: var(--blue); }
 .filter-option.hidden-option { color: var(--orange); }
-.filter-option.hidden-option:hover, .filter-option.hidden-option.active { color: var(--orange); background: var(--card); }
-.filter-count { color: var(--muted); }
 .pagination { display: flex; flex-wrap: wrap; justify-content: center; gap: .35rem; margin-top: 1.5rem; }
 .page-button { min-width: 2.2rem; cursor: pointer; }
-.page-button.active { background: var(--blue); color: #fff; }
 .summary { margin: .7rem 0 0; color: var(--muted); font: .9rem "Open Sans", sans-serif; }
-.project-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: 1rem; }
-.project-card { display: flex; flex-direction: column; min-height: 220px; padding: 1.2rem; background: var(--card); border: 1px solid var(--line); border-top: 3px solid var(--blue); border-radius: 2px; box-shadow: 0 2px 8px rgba(0,0,0,.04); }
-.project-card h2 { margin: 0; font-size: 1.35rem; line-height: 1.15; }
+.project-grid { row-gap: 1rem; }
 .project-card h2 a { color: inherit; text-decoration: none; }
 .project-card h2 a:hover { color: var(--blue); }
-.project-card p { color: var(--muted); margin: .7rem 0; }
 .metadata { font-size: .86rem; color: var(--blue) !important; }
 .tags { display: flex; flex-wrap: wrap; gap: .35rem; }
 .tag { padding: .15rem .4rem; background: var(--paper); border: 1px solid var(--line); color: var(--muted); font: .75rem "Open Sans", sans-serif; }
 .project-card .links { display: flex; flex-wrap: wrap; gap: .7rem; margin-top: auto; padding-top: .8rem; font: .9rem "Open Sans", sans-serif; }
 a { color: var(--blue); }
-.badge { display: inline-block; margin: .7rem 0 0; padding: .2rem .5rem; border-radius: 2px; background: var(--warning-bg); color: var(--warning-text); font: .72rem "Open Sans", sans-serif; }
-.badge.standard { background: var(--blue-soft); color: #24719e; }
-.catalog-footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--line); color: var(--muted); font: .82rem "Open Sans", sans-serif; }
-.empty-state { padding: 2rem; text-align: center; color: var(--muted); }
-.error-report { margin-top: 1.5rem; padding: 1rem; border: 1px solid #f0c5a9; border-radius: 2px; background: #fff8f3; color: #7e3e1f; font: .9rem "Open Sans", sans-serif; }
-.error-report summary { cursor: pointer; font-weight: bold; }
-.error-report li { margin-top: .4rem; overflow-wrap: anywhere; }
-@media (max-width: 760px) { .catalog-shell { padding-top: 1.5rem; } .catalog-header { align-items: flex-start; } .pharo-logo { width: 56px; height: 56px; flex-basis: 56px; } .catalog-layout { display: block; } .filters { position: static; width: auto; min-height: 3.5rem; max-height: 3.5rem; margin: 1.25rem 0 0; transform: none; transition: max-height .2s ease; } .catalog-layout.filters-hidden .filters { padding: 0; min-height: 3.5rem; } .filters.mobile-expanded { max-height: 1000px; } .filters.open { transform: none; } .sidebar-close { display: none; } .burger { display: block; } }
+.catalog-footer { margin: 3rem -2rem 0; padding: 1rem 2rem 0; border-top: 1px solid var(--line); color: var(--muted); font: .82rem "Open Sans", sans-serif; }
+.empty-state { text-align: center; }
+.error-report summary { cursor: pointer; }
+@media (max-width: 760px) { .catalog-shell { padding-top: 1.5rem; } .pharo-logo { width: 56px; height: 56px; flex-basis: 56px; } .filters { width: auto; margin: 1rem 0 0; } }
 """
 
 
@@ -776,19 +750,18 @@ const categoryList = document.getElementById('category-list');
 const hideNoRelease = document.getElementById('hide-no-release');
 const hideNonStandard = document.getElementById('hide-non-standard');
 const filters = document.getElementById('filters');
+const catalogContent = document.getElementById('catalog-content');
 const layout = document.getElementById('catalog-layout');
+const sidebarToggle = document.getElementById('sidebar-toggle');
 const pageSize = 12;
 let currentPage = 1;
 let selectedCategory = localStorage.getItem('catalog-category') || '';
 let selectedSort = localStorage.getItem('catalog-sort') || 'name';
-let filtersCollapsed = localStorage.getItem('catalog-filters-collapsed') === 'true';
 const escapeHtml = (value) => String(value ?? '').replace(/[&<>\"']/g, (char) => ({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;',"'":'&#39;'}[char]));
 hideNoRelease.checked = localStorage.getItem('catalog-hide-no-release') !== 'false';
 hideNonStandard.checked = localStorage.getItem('catalog-hide-non-standard') !== 'false';
 document.documentElement.dataset.theme = localStorage.getItem('catalog-theme') || 'light';
 document.getElementById('theme-toggle').checked = document.documentElement.dataset.theme === 'dark';
-if (filtersCollapsed) layout.classList.add('filters-hidden');
-if (!filtersCollapsed && window.matchMedia('(max-width: 760px)').matches) filters.classList.add('mobile-expanded');
 function baseProjects() {
   const query = search.value.trim().toLowerCase();
     return data.projects.filter((project) => {
@@ -802,7 +775,7 @@ function isHidden(project) {
     return (hideNoRelease.checked && hasNoRelease) || (hideNonStandard.checked && isNonStandard);
 }
 function renderFilterList(container, values, selected, setter) {
-    container.innerHTML = values.map(([value, count]) => { const label = value === '' ? 'All' : value === 'Hidden' ? '👁 See hidden' : value; return `<button class="filter-option btn btn-link btn-block text-left ${selected === value ? 'active' : ''} ${value === 'Hidden' ? 'hidden-option' : ''}" data-value="${escapeHtml(value)}"><span>${escapeHtml(label)}</span><span class="filter-count">${count}</span></button>`; }).join('');
+    container.innerHTML = values.map(([value, count]) => { const label = value === '' ? 'All' : value === 'Hidden' ? '👁 See hidden' : value; return `<button type="button" class="filter-option list-group-item list-group-item-action d-flex justify-content-between align-items-center ${selected === value ? 'active' : ''} ${value === 'Hidden' ? 'hidden-option' : ''}" data-value="${escapeHtml(value)}"><span>${escapeHtml(label)}</span><span class="filter-count badge bg-secondary rounded-pill">${count}</span></button>`; }).join('');
     container.querySelectorAll('.filter-option').forEach((button) => button.addEventListener('click', () => {
         setter(button.dataset.value);
         currentPage = 1;
@@ -815,10 +788,10 @@ function render() {
     const visibleProjects = candidates.filter((project) => !isHidden(project));
     const catalogProjects = visibleProjects.filter((project) => !(project.categories || []).includes(UNTAGGED_CATEGORY));
     const untaggedProjects = visibleProjects.filter((project) => (project.categories || []).includes(UNTAGGED_CATEGORY));
-    const categoryValues = [['', catalogProjects.length], ...categoryNames.map((name) => [name, catalogProjects.filter((project) => (project.categories || []).includes(name)).length]).filter(([, count]) => count > 0)];
-    if (untaggedProjects.length) categoryValues.push([UNTAGGED_CATEGORY, untaggedProjects.length]);
-    const otherCount = visibleProjects.filter((project) => (project.categories || []).includes('Other')).length;
-    if (otherCount > 0) categoryValues.push(['Other', otherCount]);
+    const categoryValues = [['', catalogProjects.length], ...categoryNames.map((name) => [name, candidates.filter((project) => (project.categories || []).includes(name)).length]).filter(([, count]) => count > 0)];
+    if (candidates.some((project) => (project.categories || []).includes(UNTAGGED_CATEGORY))) categoryValues.push([UNTAGGED_CATEGORY, candidates.filter((project) => (project.categories || []).includes(UNTAGGED_CATEGORY)).length]);
+    const uncategorizedCount = candidates.filter((project) => (project.categories || []).includes('Uncategorized')).length;
+    if (uncategorizedCount > 0) categoryValues.push(['Uncategorized', uncategorizedCount]);
     categoryValues.push(['Hidden', hiddenProjects.length]);
     const pool = selectedCategory === 'Hidden' ? hiddenProjects : selectedCategory === UNTAGGED_CATEGORY ? untaggedProjects : selectedCategory ? visibleProjects : catalogProjects;
     const projects = selectedCategory === 'Hidden'
@@ -835,8 +808,8 @@ function render() {
     const standard = project.status === 'standard';
     const status = standard ? 'Standard release' : project.status === 'no-release' || project.status === 'error' ? 'Project without release' : 'Project without standard release';
     const categories = (project.categories || []).map(escapeHtml).join(' · ');
-    const tags = (project.tags || []).map((value) => `<span class="tag">${escapeHtml(value)}</span>`).join(' ');
-    return `<article class="project-card"><h2><a href="${escapeHtml(project.project_url)}">${escapeHtml(project.name)}</a></h2><p>${escapeHtml(project.description)}</p><p class="metadata">${categories}</p><div class="tags">${tags}</div><p class="metadata">Last updated: ${escapeHtml(project.update_age || 'Unknown')}</p>${standard ? '' : `<span class="badge" title="${escapeHtml(status)}">⚠ ${escapeHtml(status)}</span>`}<div class="links"><a href="${escapeHtml(project.repository_url)}">Repository</a></div></article>`;
+    const tags = (project.tags || []).filter((value) => value.toLowerCase() !== 'pharo').map((value) => `<span class="tag">${escapeHtml(value)}</span>`).join(' ');
+    return `<div class="col-lg-4 p-0"><article class="project-card card m-2"><div class="card-body d-flex flex-column"><h2 class="card-title h5"><a href="${escapeHtml(project.project_url)}">${escapeHtml(project.name)}</a></h2><div class="d-flex flex-wrap align-items-center gap-2 mb-2"><span class="metadata">${categories}</span><div class="tags">${tags}</div></div><p class="card-text">${escapeHtml(project.description)}</p>${standard ? '' : `<div class="alert alert-warning py-2 mt-3" role="alert">⚠ ${escapeHtml(status)}</div>`}<div class="card-footer-row mt-auto pt-3 d-flex justify-content-between align-items-center"><span class="metadata">Updated: ${escapeHtml(project.update_age || 'Unknown')}</span><a class="btn btn-outline-secondary btn-sm" href="${escapeHtml(project.repository_url)}" aria-label="Repository"><i class="bi bi-github" aria-hidden="true"></i></a></div></div></article></div>`;
   }).join('');
     pagination.innerHTML = Array.from({length: pages}, (_, index) => `<button class="page-button btn ${currentPage === index + 1 ? 'btn-primary' : 'btn-outline-primary'}" data-page="${index + 1}">${index + 1}</button>`).join('');
     pagination.querySelectorAll('.page-button').forEach((button) => button.addEventListener('click', () => { currentPage = Number(button.dataset.page); render(); window.scrollTo({top: 0, behavior: 'smooth'}); }));
@@ -849,17 +822,10 @@ sort.addEventListener('change', () => { selectedSort = sort.value; localStorage.
 hideNoRelease.addEventListener('change', () => { localStorage.setItem('catalog-hide-no-release', hideNoRelease.checked); currentPage = 1; render(); });
 hideNonStandard.addEventListener('change', () => { localStorage.setItem('catalog-hide-non-standard', hideNonStandard.checked); currentPage = 1; render(); });
 document.getElementById('theme-toggle').addEventListener('change', (event) => { const theme = event.target.checked ? 'dark' : 'light'; document.documentElement.dataset.theme = theme; localStorage.setItem('catalog-theme', theme); });
-document.getElementById('sidebar-toggle').addEventListener('click', () => {
-    if (window.matchMedia('(max-width: 760px)').matches) {
-        filters.classList.toggle('mobile-expanded');
-        filtersCollapsed = !filters.classList.contains('mobile-expanded');
-    } else {
-        layout.classList.toggle('filters-hidden');
-        filtersCollapsed = layout.classList.contains('filters-hidden');
-    }
-    localStorage.setItem('catalog-filters-collapsed', filtersCollapsed);
-});
-document.getElementById('sidebar-close').addEventListener('click', () => filters.classList.remove('open'));
+filters.addEventListener('shown.bs.collapse', () => { sidebarToggle.textContent = 'Toggle Categories'; });
+filters.addEventListener('hidden.bs.collapse', () => { sidebarToggle.textContent = 'Toggle Categories'; });
+filters.addEventListener('shown.bs.collapse', () => { catalogContent.classList.remove('col-md-12'); catalogContent.classList.add('col-md-9'); });
+filters.addEventListener('hidden.bs.collapse', () => { catalogContent.classList.remove('col-md-9'); catalogContent.classList.add('col-md-12'); });
 render();
 """
 

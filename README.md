@@ -15,7 +15,7 @@ open site/index.html
 
 The generator handles registry validation, URL normalization, pagination, fork exclusion for automatic discovery, GitHub topics, config-driven category derivation, latest releases, index assets, deduplication, and per-package failures. It writes the static site to `site/` and a machine-readable report to `site/catalog.json`. A package is standard when its configured index filename is present as a release asset; otherwise the project remains linked to its repository and is visibly marked.
 
-The generated site imports standard project indexes at `projects/<repository>/index.html`. It provides a responsive filter sidebar with dynamic category counts, `Other` for unmatched projects, `Hidden` for projects excluded by the current hide settings, client-side pagination, a remembered hide-no-release setting, and a remembered light/dark theme. Tags remain visible on cards and searchable but are not sidebar navigation controls. The favicon is copied from the Pharo Lighthouse asset, without uploading or embedding the authentication token.
+The generated site imports standard project indexes at `projects/<repository>/index.html`. It provides a responsive filter sidebar with dynamic category counts, `Uncategorized` for unmatched projects, `Hidden` for projects excluded by the current hide settings, client-side pagination, a remembered hide-no-release setting, and a remembered light/dark theme. Tags remain visible on cards and searchable but are not sidebar navigation controls. The favicon is copied from the Pharo Lighthouse asset, without uploading or embedding the authentication token.
 
 ## Configuration
 

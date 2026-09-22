@@ -116,7 +116,7 @@ The generator writes the following outputs under `site/`:
 
 The browser performs search, category selection, hide/show filtering, pagination, theme persistence, and filter-menu persistence entirely in JavaScript. No server-side request is needed after publication.
 
-The category selector includes visible configured categories, `Other` for projects with no category match, and `See hidden` for projects excluded by the current hide settings. Tags remain project metadata and search content, but are intentionally not a navigation menu.
+The category selector includes visible configured categories, `Uncategorized` for projects with no category match, and `See hidden` for projects excluded by the current hide settings. Tags remain project metadata and search content, but are intentionally not a navigation menu.
 
 ## Failure And Status Model
 
