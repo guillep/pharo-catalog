@@ -40,4 +40,4 @@ packages:
     description: Github action to release packages into the Pharo catalog.
     tags:
       - package-management
-    repository: guillep/pharo-catalog
+    repository: guillep/pharo-release
