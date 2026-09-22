@@ -113,7 +113,15 @@ class GenerateTests(unittest.TestCase):
         self.assertIn("catalog-hide-no-release", site)
         self.assertIn("catalog-filters-collapsed", site)
         self.assertIn("hideNonStandard.checked", site)
+        self.assertIn("filter(([, count]) => count > 0)", site)
+        self.assertNotIn('id="tag-list"', site)
         self.assertIn('type="application/json"', site)
+
+    def test_documentation_page_contains_requested_guidance(self):
+        documentation = generate.render_documentation()
+        self.assertIn("How to get my project here", documentation)
+        self.assertIn("How do I make my project not hidden", documentation)
+        self.assertIn("How to make my project list correct information", documentation)
 
     def test_shared_logo_asset_is_available(self):
         self.assertTrue(generate.LOGO_PATH.is_file())

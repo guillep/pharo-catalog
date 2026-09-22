@@ -378,7 +378,6 @@ def render_site(
                 <label class="toggle-row"><input id="hide-no-release" type="checkbox"> Hide projects without releases</label>
                 <label class="toggle-row"><input id="hide-non-standard" type="checkbox"> Hide non-standard projects</label>
                 <h2>Categories</h2><div id="category-list" class="filter-list"></div>
-                <h2>Tags</h2><div id="tag-list" class="filter-list"></div>
             </aside>
             <section class="catalog-content">
                 <section class="catalog-controls" aria-label="Catalog controls">
@@ -398,8 +397,50 @@ def render_site(
     <script id="catalog-categories" type="application/json">{category_json}</script>
   <script>{JS}</script>
 </body>
+                <a class="documentation-link" href="documentation.html">Documentation</a>
 </html>
-    """
+        """
+
+
+DOCS_CSS = """
+:root { --ink: #333; --muted: #777; --line: #ddd; --paper: #f7f7f7; --card: #fff; --blue: #3297d4; }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--paper); color: var(--ink); font: 16px/1.6 "Open Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+.docs-shell { max-width: 900px; margin: auto; padding: 2rem 1.25rem 4rem; }
+.docs-header { display: flex; align-items: center; gap: 1rem; border-bottom: 5px solid #f5f5f5; padding-bottom: 1.25rem; }
+.docs-header img { width: 58px; height: 58px; object-fit: contain; }
+.docs-header h1 { margin: 0; font-size: 2.2rem; font-weight: 600; }
+.docs-header > a { margin-left: auto; color: var(--blue); }
+.eyebrow { margin: 0 0 .15rem; color: var(--blue); font-size: .72rem; font-weight: bold; letter-spacing: .13em; }
+.docs-content { margin-top: 2rem; }
+.docs-content section { margin: 0 0 2rem; padding: 1.4rem; background: var(--card); border: 1px solid var(--line); border-left: 4px solid var(--blue); border-radius: 3px; }
+.docs-content h2 { margin-top: 0; color: var(--blue); font-size: 1.45rem; }
+code, pre { background: #f1f4f6; }
+code { padding: .1rem .25rem; }
+pre { padding: 1rem; overflow-x: auto; border: 1px solid var(--line); }
+.catalog-footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--line); color: var(--muted); font-size: .82rem; }
+@media (max-width: 600px) { .docs-header { align-items: flex-start; flex-wrap: wrap; } .docs-header > a { margin-left: 0; width: 100%; } }
+"""
+
+
+def render_documentation() -> str:
+        return f"""<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" href="assets/favicon.ico"><title>Catalog documentation</title><style>{DOCS_CSS}</style></head>
+<body><main class="docs-shell">
+    <header class="docs-header"><img src="assets/pharo-beacon.svg" alt="Pharo"><div><p class="eyebrow">PHARO ECOSYSTEM</p><h1>Catalog documentation</h1></div><a href="index.html">Project catalog</a></header>
+    <article class="docs-content">
+        <section><h2>How to get my project here</h2><p>Add your project to <code>packages.yml</code> through a pull request. Provide a display name, a useful description, optional tags, and a canonical GitHub repository URL.</p><pre><code>packages:
+    - name: My Project
+        description: A short description of what the project does.
+        tags: [pharo, tools]
+        repository: https://github.com/my-org/my-project</code></pre><p>The catalog discovers the latest GitHub release and imports its <code>index.html</code> when available.</p></section>
+        <section><h2>How do I make my project not hidden</h2><p>The catalog hides projects without releases by default. Publish a GitHub release and attach an asset named exactly <code>index.html</code> to make the project standard and visible.</p><p>A project with a release but no index is marked as <strong>Project without standard release</strong>.</p></section>
+        <section><h2>How to make my project list correct information</h2><p>Keep the registry name and description concise and accurate. Add useful free-form tags to the registry and maintain your repository topics. Topics and explicit tags are merged for search.</p><p>Categories are derived automatically from configured topic keywords, so categories should not be added to package entries. Use the canonical repository URL and keep your release asset named <code>index.html</code>.</p></section>
+    </article>
+    <footer class="catalog-footer">Copyright © 2026 Pharo contributors. <a href="https://github.com/guillep/pharo-catalog">guillep/pharo-catalog</a>.</footer>
+</main></body></html>
+"""
 
 
 def generate(config_path: Path) -> tuple[int, int]:
@@ -409,7 +450,6 @@ def generate(config_path: Path) -> tuple[int, int]:
     token_env = github.get("token_env", "GITHUB_TOKEN")
     token = os.environ.get(token_env)
     client = GitHubClient(github.get("api_url", DEFAULT_API_URL), token)
-    index_filename = index_config.get("filename", DEFAULT_INDEX_FILENAME)
     category_rules = load_category_rules(config)
     registry_path = config_path.parent / config.get("registry", "packages.yml")
     registry = load_registry(registry_path)
@@ -464,6 +504,7 @@ def generate(config_path: Path) -> tuple[int, int]:
 
     projects.sort(key=lambda project: project["name"].lower())
     (output / "index.html").write_text(render_site(projects, errors), encoding="utf-8")
+    (output / "documentation.html").write_text(render_documentation(), encoding="utf-8")
     report = {"projects": projects, "errors": errors}
     (output / "catalog.json").write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
     for error in errors:
@@ -552,7 +593,6 @@ const summary = document.getElementById('summary');
 const empty = document.getElementById('empty');
 const pagination = document.getElementById('pagination');
 const categoryList = document.getElementById('category-list');
-const tagList = document.getElementById('tag-list');
 const hideNoRelease = document.getElementById('hide-no-release');
 const hideNonStandard = document.getElementById('hide-non-standard');
 const filters = document.getElementById('filters');
@@ -560,7 +600,6 @@ const layout = document.getElementById('catalog-layout');
 const pageSize = 12;
 let currentPage = 1;
 let selectedCategory = localStorage.getItem('catalog-category') || '';
-let selectedTag = localStorage.getItem('catalog-tag') || '';
 let filtersCollapsed = localStorage.getItem('catalog-filters-collapsed') === 'true';
 const escapeHtml = (value) => String(value ?? '').replace(/[&<>\"']/g, (char) => ({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;',"'":'&#39;'}[char]));
 hideNoRelease.checked = localStorage.getItem('catalog-hide-no-release') !== 'false';
@@ -590,12 +629,9 @@ function renderFilterList(container, values, selected, setter) {
 }
 function render() {
     const candidates = baseProjects();
-    const projects = candidates.filter((project) => (!selectedCategory || (project.categories || []).includes(selectedCategory)) && (!selectedTag || (project.tags || []).includes(selectedTag)));
-    const categoryCounts = [['', candidates.length], ...categoryNames.map((name) => [name, candidates.filter((project) => (project.categories || []).includes(name)).length])];
-    const tagValues = [...new Set(data.projects.flatMap((project) => project.tags || []))].sort((a, b) => a.localeCompare(b));
-    const tagCounts = [['', candidates.length], ...tagValues.map((name) => [name, candidates.filter((project) => (project.tags || []).includes(name)).length])];
+    const projects = candidates.filter((project) => !selectedCategory || (project.categories || []).includes(selectedCategory));
+    const categoryCounts = [['', candidates.length], ...categoryNames.map((name) => [name, candidates.filter((project) => (project.categories || []).includes(name)).length]).filter(([, count]) => count > 0)];
     renderFilterList(categoryList, categoryCounts, selectedCategory, (value) => { selectedCategory = value; localStorage.setItem('catalog-category', value); });
-    renderFilterList(tagList, tagCounts, selectedTag, (value) => { selectedTag = value; localStorage.setItem('catalog-tag', value); });
     const pages = Math.max(1, Math.ceil(projects.length / pageSize));
     currentPage = Math.min(currentPage, pages);
     const visible = projects.slice((currentPage - 1) * pageSize, currentPage * pageSize);
