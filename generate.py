@@ -325,7 +325,7 @@ def render_site(
                 <button id="sidebar-toggle" class="icon-button burger" type="button" aria-label="Open filters">☰</button>
             </div>
     </header>
-        <div class="catalog-layout">
+        <div id="catalog-layout" class="catalog-layout">
             <aside id="filters" class="filters" aria-label="Project filters">
                 <button id="sidebar-close" class="sidebar-close" type="button">Close filters</button>
                 <label class="toggle-row"><input id="hide-no-release" type="checkbox"> Hide projects without releases</label>
@@ -445,6 +445,8 @@ h1 { margin: 0; color: #111111; font-size: clamp(2.2rem, 6vw, 4rem); line-height
 input { width: 100%; margin-top: .5rem; padding: .85rem 1rem; border: 2px solid #dddddd; border-radius: 2px; color: var(--ink); background: var(--card); font: 1rem "Open Sans", sans-serif; }
 input:focus { outline: 3px solid rgba(50,151,212,.2); border-color: var(--blue); }
 .catalog-layout { display: grid; grid-template-columns: 230px 1fr; gap: 2rem; }
+.catalog-layout.filters-hidden { display: block; }
+.catalog-layout.filters-hidden .filters { display: none; }
 .filters { padding-top: 2rem; }
 .filters h2 { margin: 1.3rem 0 .45rem; color: var(--ink); font-size: .95rem; }
 .sidebar-close { display: none; margin-bottom: 1rem; }
@@ -489,6 +491,7 @@ const categoryList = document.getElementById('category-list');
 const tagList = document.getElementById('tag-list');
 const hideNoRelease = document.getElementById('hide-no-release');
 const filters = document.getElementById('filters');
+const layout = document.getElementById('catalog-layout');
 const pageSize = 12;
 let currentPage = 1;
 let selectedCategory = localStorage.getItem('catalog-category') || '';
@@ -537,7 +540,13 @@ function render() {
 search.addEventListener('input', render);
 hideNoRelease.addEventListener('change', () => { localStorage.setItem('catalog-hide-no-release', hideNoRelease.checked); currentPage = 1; render(); });
 document.getElementById('theme-toggle').addEventListener('click', () => { const theme = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark'; document.documentElement.dataset.theme = theme; localStorage.setItem('catalog-theme', theme); });
-document.getElementById('sidebar-toggle').addEventListener('click', () => filters.classList.add('open'));
+document.getElementById('sidebar-toggle').addEventListener('click', () => {
+    if (window.matchMedia('(max-width: 760px)').matches) {
+        filters.classList.toggle('open');
+    } else {
+        layout.classList.toggle('filters-hidden');
+    }
+});
 document.getElementById('sidebar-close').addEventListener('click', () => filters.classList.remove('open'));
 render();
 """
