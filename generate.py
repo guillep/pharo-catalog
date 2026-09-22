@@ -539,7 +539,7 @@ a { color: var(--blue); }
 .error-report { margin-top: 1.5rem; padding: 1rem; border: 1px solid #f0c5a9; border-radius: 2px; background: #fff8f3; color: #7e3e1f; font: .9rem "Open Sans", sans-serif; }
 .error-report summary { cursor: pointer; font-weight: bold; }
 .error-report li { margin-top: .4rem; overflow-wrap: anywhere; }
-@media (max-width: 760px) { .catalog-shell { padding-top: 1.5rem; } .catalog-header { align-items: flex-start; } .pharo-logo { width: 56px; height: 56px; flex-basis: 56px; } .catalog-layout { display: block; } .filters { position: static; width: auto; max-height: 3rem; margin: 1.25rem 0 0; transform: none; transition: max-height .2s ease; } .filters.mobile-expanded { max-height: 1000px; } .filters.open { transform: none; } .sidebar-close { display: none; } .burger { display: block; } }
+@media (max-width: 760px) { .catalog-shell { padding-top: 1.5rem; } .catalog-header { align-items: flex-start; } .pharo-logo { width: 56px; height: 56px; flex-basis: 56px; } .catalog-layout { display: block; } .filters { position: static; width: auto; max-height: 3.5rem; margin: 1.25rem 0 0; transform: none; transition: max-height .2s ease; } .catalog-layout.filters-hidden .filters { padding: 0; } .filters.mobile-expanded { max-height: 1000px; } .filters.open { transform: none; } .sidebar-close { display: none; } .burger { display: block; } }
 """
 
 
