@@ -95,9 +95,6 @@ class GitHubClient:
 
 def load_config(path: Path) -> dict:
     config = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
-    organizations = config.get("organizations")
-    if not isinstance(organizations, list):
-        raise ValueError("config organizations must be a list")
     return config
 
 
@@ -114,8 +111,11 @@ def normalize_repository_url(value: str) -> str:
     return f"https://github.com/{parts[0]}/{parts[1]}"
 
 
-def load_registry(path: Path) -> list[dict]:
+def load_registry_data(path: Path) -> dict:
     raw = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
+    organizations = raw.get("organizations", [])
+    if not isinstance(organizations, list):
+        raise ValueError("registry organizations must be a list")
     packages = raw.get("packages")
     if not isinstance(packages, list):
         raise ValueError("registry must define a packages list")
@@ -135,7 +135,11 @@ def load_registry(path: Path) -> list[dict]:
             raise ValueError(f"duplicate repository in registry: {identity}")
         identities.add(identity)
         registry.append({**entry, "tags": tags, "repository": identity})
-    return registry
+    return {"organizations": organizations, "packages": registry}
+
+
+def load_registry(path: Path) -> list[dict]:
+    return load_registry_data(path)["packages"]
 
 
 def load_category_rules(config: dict) -> list[dict]:
@@ -369,8 +373,11 @@ def render_site(
         <p class="lede">Discover Pharo packages, releases, and their project indexes.</p>
       </div>
             <div class="header-actions">
-                <a class="documentation-link" href="catalog.json">JSON</a>
-                <a class="documentation-link" href="catalog.csv">CSV</a>
+                <nav class="data-nav" aria-label="Catalog resources">
+                    <a href="documentation.html">Documentation</a>
+                    <a href="catalog.json">JSON</a>
+                    <a href="catalog.csv">CSV</a>
+                </nav>
                 <label class="theme-toggle"><input id="theme-toggle" type="checkbox"> Dark mode</label>
             </div>
     </header>
@@ -403,7 +410,6 @@ def render_site(
     <script id="catalog-categories" type="application/json">{category_json}</script>
   <script>{JS}</script>
 </body>
-                <a class="documentation-link" href="documentation.html">Documentation</a>
 </html>
         """
 
@@ -459,7 +465,9 @@ def generate(config_path: Path) -> tuple[int, int]:
     client = GitHubClient(github.get("api_url", DEFAULT_API_URL), token)
     category_rules = load_category_rules(config)
     registry_path = config_path.parent / config.get("registry", "packages.yml")
-    registry = load_registry(registry_path)
+    registry_data = load_registry_data(registry_path)
+    registry = registry_data["packages"]
+    organizations = registry_data["organizations"]
     output = Path(index_config.get("output_directory", "site"))
     if output.exists():
         shutil.rmtree(output)
@@ -475,7 +483,7 @@ def generate(config_path: Path) -> tuple[int, int]:
     repositories: dict[str, dict] = {
         entry["repository"]: repository_from_registry(entry) for entry in registry
     }
-    for organization in config["organizations"]:
+    for organization in organizations:
         try:
             organization_repositories = paged_repositories(client, organization)
         except GitHubError as error:
@@ -542,6 +550,9 @@ body { margin: 0; background: var(--paper); color: var(--ink); font: 16px/1.55 "
 .catalog-header { display: flex; align-items: center; gap: 1rem; border-bottom: 5px solid #f5f5f5; padding-bottom: 1.5rem; }
 .header-copy { flex: 1; }
 .header-actions { display: flex; gap: .5rem; align-self: flex-start; }
+.data-nav { display: flex; gap: .3rem; padding: .25rem; border: 1px solid var(--line); border-radius: 3px; background: var(--card); }
+.data-nav a { padding: .35rem .55rem; border-radius: 2px; color: var(--blue); text-decoration: none; font: .78rem "Open Sans", sans-serif; }
+.data-nav a:hover { background: var(--blue-soft); }
 .icon-button, .sidebar-close { border: 1px solid var(--line); border-radius: 2px; background: var(--card); color: var(--ink); padding: .45rem .65rem; cursor: pointer; font: .9rem "Open Sans", sans-serif; }
 .theme-toggle, .toggle-row { position: relative; display: flex; align-items: center; gap: .55rem; color: var(--muted); cursor: pointer; font: .82rem "Open Sans", sans-serif; }
 .theme-toggle input, .toggle-row input { position: absolute; opacity: 0; pointer-events: none; }

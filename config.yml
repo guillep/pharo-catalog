@@ -1,9 +1,3 @@
-organizations:
-  - pharo
-  - pharo-contributions
-  - pharo-graphics
-  - pharo-vcs
-
 registry: packages.yml
 
 github:
@@ -19,7 +13,7 @@ categories:
   # Topic audit: pharo (22), smalltalk (7), pharo-smalltalk (3), plus the
   # one-off topics currently used by the configured repositories.
   - name: Language & Compiler
-    keywords: [compiler, compiler-tool, language, smalltalk, pharo-smalltalk, parser]
+    keywords: [compiler, compiler-tool, language, parser]
   - name: Development Environment
     keywords: [ide, development-environment]
   - name: Source Code & Version Control
@@ -29,19 +23,19 @@ categories:
   - name: Build & Deployment
     keywords: [build, deployment, ci, cd, docker, alpine-linux]
   - name: Web
-    keywords: [web, http, https, rest, html, css, cascading-style-sheets, scraping, stylesheet]
+    keywords: [web, http, https, rest, html, css, cascading-style-sheets, scraping, stylesheet, gtk3]
   - name: Networking
     keywords: [networking, network, tcp, udp, cryptography]
   - name: UI
-    keywords: [ui, gui, user-interface]
+    keywords: [ui, gui, user-interface, brick, spec, morphic, morph, morphic-ui, morphic-gui, bloc]
   - name: Graphics & Visualization
     keywords: [graphics, visualization, rendering, graph, cairo, freetype, harfbuzz,
       opengl, opengl-es, vulkan, metal, directx]
   - name: Data & Databases
     keywords: [data, database, sql, collection, collections, hashtable]
   - name: System & OS
-    keywords: [system, operating-system, os, file-manager]
-  - name: Tools
-    keywords: [tool, tools, utility, command-line, command-line-parser, pdf, deprecated, style]
+    keywords: [system, operating-system, os, file-manager, file-system, process, thread, memory, memory-management, command-line, command-line, command-line-parser]
+  - name: Utilities
+    keywords: [pdf, csv, json, xml, yaml, serialization, compression, zip, tar, gzip, bzip2]
   - name: Education
     keywords: [education, teaching, learning, natural-language-processing, nlp]

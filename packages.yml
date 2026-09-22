@@ -1,3 +1,23 @@
+organizations:
+  - pharo
+  - pharo-contributions
+  - pharo-graphics
+  - pharo-vcs
+  - pharo-ai
+  - pharo-llm
+  - pharo-spec
+  - pharo-cig
+  - pharo-rdbms
+  - pharo-nosql
+  - pharo-web
+  - pharo-crypto
+  - pharo-ide
+  - pharo-testing
+  - pharo-utilities
+  - pharo-pkg
+  - pharo-completion
+  - pharo-pulsar
+
 packages:
   - name: Mutalk
     description: Mutation testing for Pharo.

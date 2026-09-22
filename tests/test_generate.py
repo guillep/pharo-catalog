@@ -52,6 +52,10 @@ class GenerateTests(unittest.TestCase):
             registry = generate.load_registry(path)
             self.assertEqual(registry[0]["repository"], "https://github.com/example/demo")
 
+    def test_registry_contains_organizations(self):
+        data = generate.load_registry_data(Path(__file__).parents[1] / "packages.yml")
+        self.assertIn("pharo", data["organizations"])
+
     def test_configured_index_filename_has_a_default(self):
         config = generate.load_config(Path(__file__).parents[1] / "config.yml")
         self.assertEqual(config["index"].get("filename", generate.DEFAULT_INDEX_FILENAME), "index.html")
@@ -117,6 +121,7 @@ class GenerateTests(unittest.TestCase):
         self.assertIn("Hide projects without releases", site)
         self.assertIn("catalog-hide-no-release", site)
         self.assertIn("catalog-filters-collapsed", site)
+        self.assertIn('aria-label="Catalog resources"', site)
         self.assertIn("hideNonStandard.checked", site)
         self.assertIn("filter(([, count]) => count > 0)", site)
         self.assertNotIn('id="tag-list"', site)
