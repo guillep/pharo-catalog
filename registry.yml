@@ -30,6 +30,10 @@ organizations:
     tags: [development-environment]
   - name: pharo-pulsar
     tags: [development-environment]
+  - name: pharo-containers
+    tags: [collection]
+  - name: pillar-markup
+    tags: [utilities]
 
 packages:
   - name: Pharo Catalog
