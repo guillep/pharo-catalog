@@ -23,6 +23,6 @@ Add packages to `registry.yml` to register them. The registry requires `name`, `
 
 ## GitHub Pages
 
-The manual `Build and publish catalog` workflow in `.github/workflows/publish.yml` can be run from the Actions tab. It also refreshes nightly. Enable GitHub Pages for the repository using **GitHub Actions** as the source.
+The manual `Build and publish catalog` workflow in `.github/workflows/publish.yml` can be run from the Actions tab. It also refreshes nightly. Enable GitHub Pages for the repository using **GitHub Actions** as the source. Each successful generation also updates the `site-history` branch with the generated site at the branch root. The workflow creates a regular commit only when generated files have changed, preserving the build history without force-pushing. The Pages deployment continues to use its normal artifact and deployment jobs.
 
 The workflow prefers the optional `CATALOG_GITHUB_TOKEN` secret and falls back to the workflow token. A dedicated token is useful when organization repositories require access beyond the repository's default token.

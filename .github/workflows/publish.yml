@@ -2,6 +2,8 @@ name: Build and publish catalog
 
 on:
   push:
+    branches-ignore:
+      - site-history
   workflow_dispatch:
   schedule:
     - cron: '0 0 * * *'
@@ -31,6 +33,55 @@ jobs:
       - uses: actions/upload-pages-artifact@v3
         with:
           path: site
+      - uses: actions/upload-artifact@v4
+        with:
+          name: generated-site
+          path: site
+          if-no-files-found: error
+          include-hidden-files: true
+
+  version:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    concurrency:
+      group: site-history
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/download-artifact@v4
+        with:
+          name: generated-site
+          path: ${{ runner.temp }}/catalog-site
+      - name: Commit generated site to site-history
+        run: |
+          set +e
+          git ls-remote --exit-code --heads origin site-history >/dev/null
+          branch_status=$?
+          set -e
+          if [ "$branch_status" -eq 0 ]; then
+            git fetch origin site-history
+            git checkout -B site-history FETCH_HEAD
+          elif [ "$branch_status" -eq 2 ]; then
+            git checkout --orphan site-history
+          else
+            exit "$branch_status"
+          fi
+          git rm -rf --ignore-unmatch .
+          git clean -fdx
+          cp -R "$RUNNER_TEMP/catalog-site/." .
+          git add -A
+          if git diff --cached --quiet; then
+            echo "Generated site is unchanged; no history commit needed."
+          else
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git commit -m "Update generated catalog ($(date -u +%Y-%m-%d))"
+            git push origin site-history
+          fi
 
   deploy:
     needs: build
