@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" href="assets/favicon.ico"><title>Catalog documentation</title><style>
+:root { --ink: #333; --muted: #777; --line: #ddd; --paper: #f7f7f7; --card: #fff; --blue: #3297d4; }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--paper); color: var(--ink); font: 16px/1.6 "Open Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+.docs-shell { max-width: 900px; margin: auto; padding: 2rem 1.25rem 4rem; }
+.docs-header { display: flex; align-items: center; gap: 1rem; border-bottom: 5px solid #f5f5f5; padding-bottom: 1.25rem; }
+.docs-header img { width: 58px; height: 58px; object-fit: contain; }
+.docs-header h1 { margin: 0; font-size: 2.2rem; font-weight: 600; }
+.docs-header > a { margin-left: auto; color: var(--blue); }
+.eyebrow { margin: 0 0 .15rem; color: var(--blue); font-size: .72rem; font-weight: bold; letter-spacing: .13em; }
+.docs-content { margin-top: 2rem; }
+.docs-content section { margin: 0 0 2rem; padding: 1.4rem; background: var(--card); border: 1px solid var(--line); border-left: 4px solid var(--blue); border-radius: 3px; }
+.docs-content h2 { margin-top: 0; color: var(--blue); font-size: 1.45rem; }
+code, pre { background: #f1f4f6; }
+code { padding: .1rem .25rem; }
+pre { padding: 1rem; overflow-x: auto; border: 1px solid var(--line); }
+.catalog-footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--line); color: var(--muted); font-size: .82rem; }
+@media (max-width: 600px) { .docs-header { align-items: flex-start; flex-wrap: wrap; } .docs-header > a { margin-left: 0; width: 100%; } }
+</style></head>
+<body><main class="docs-shell">
+    <header class="docs-header"><img src="assets/pharo-beacon.svg" alt="Pharo"><div><p class="eyebrow">PHARO ECOSYSTEM</p><h1>Catalog documentation</h1></div><a href="index.html">Project catalog</a></header>
+    <article class="docs-content">
+        <section><h2>How to get my project here</h2><p>Projects hosted in one of the managed GitHub organizations are discovered automatically when their repository has the exact <code>pharo</code> topic. If you want your organization included, open a pull request against the <a href="https://github.com/guillep/pharo-catalog">guillep/pharo-catalog</a> repository and add it to <code>registry.yml</code>.</p><p>If your project is not hosted in a managed organization, you can publish it as a standalone package by adding an entry to the <code>packages</code> section in that same file through a pull request.</p><p>Provide a display name, a useful description, optional tags, and a concise <code>owner/repository</code> reference.</p><pre><code>packages:
+    - name: My Project
+        description: A short description of what the project does.
+        tags: [pharo, tools]
+        repository: https://github.com/my-org/my-project</code></pre><p>The catalog discovers the latest GitHub release and imports its <code>index.html</code> when available.</p></section>
+        <section><h2>How do I make my project not hidden</h2><p>The catalog hides projects without releases by default. Use the reusable <a href="https://github.com/guillep/pharo-release">guillep/pharo-release</a> action to publish your package release and its standard <code>index.html</code> asset.</p><p>A project with a release but no index is marked as <strong>Project without standard release</strong>.</p></section>
+        <section><h2>How to make my project list correct information</h2><p>Keep the registry name and description concise and accurate. Add useful free-form tags to the registry and maintain your repository topics. Topics and explicit tags are merged for search.</p><p>Categories are derived automatically from configured topic keywords, so categories should not be added to package entries. Use the canonical repository URL and keep your release asset named <code>index.html</code>.</p></section>
+        <section><h2>How do GitHub topics and tags work?</h2><p>Topics configured on your GitHub repository become tags in the catalog. Registry tags from <code>registry.yml</code> are combined with those topics, and the result is used for search and category derivation.</p><p>The topic-to-category mapping is maintained in <a href="https://github.com/guillep/pharo-catalog/blob/main/config.yml#L18">config.yml</a>. If a topic should belong to a different category, propose the mapping change with a pull request to <a href="https://github.com/guillep/pharo-catalog">guillep/pharo-catalog</a>.</p></section>
+        <section><h2>What do Uncategorized and Untagged mean?</h2><p><strong>Uncategorized</strong> means the project has tags, but none match a configured category keyword. <strong>Untagged</strong> means the project was discovered from an organization but does not have the required <code>pharo</code> topic.</p></section>
+        <section><h2>How can I consume this info programmatically?</h2><p>The generated catalog exposes machine-readable exports beside the website: <a href="catalog.json"><code>catalog.json</code></a> for structured consumers and <a href="catalog.csv"><code>catalog.csv</code></a> for spreadsheets and simple data pipelines.</p><p>Each project record includes its name, description, categories, tags, status, local project URL, and repository URL. The JSON export also includes generation errors. These files are static and can be fetched directly from the published catalog without authentication.</p></section>
+    </article>
+    <footer class="catalog-footer">Copyright © 2026 Pharo contributors. <a href="https://github.com/guillep/pharo-catalog">guillep/pharo-catalog</a>.</footer>
+</main></body></html>

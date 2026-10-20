@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="system">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <meta name="pharo-index-format" content="1">
+  <title>MuTalk — releases</title>
+  <style>
+:root {
+    --pharo-blue: #3297d4;
+    --pharo-blue-soft: #dcedf7;
+    --pharo-orange: #f15a24;
+    --pr-bg: #f7f7f7;
+    --pr-surface: #ffffff;
+    --pr-border: #dddddd;
+    --pr-text: #333333;
+    --pr-text-muted: #777777;
+    --pr-accent: #3297d4;
+    --pr-code-bg: #f4f4f4;
+    --pr-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    color-scheme: light dark;
+}
+
+html[data-theme="dark"] {
+    --pr-bg: #20252a;
+    --pr-surface: #2b3035;
+    --pr-border: #454b50;
+    --pr-text: #f4f4f4;
+    --pr-text-muted: #b8b8b8;
+    --pr-accent: #62b1e3;
+    --pr-code-bg: #353b40;
+    --pr-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --pr-bg: #20252a;
+        --pr-surface: #2b3035;
+        --pr-border: #454b50;
+        --pr-text: #f4f4f4;
+        --pr-text-muted: #b8b8b8;
+        --pr-accent: #62b1e3;
+        --pr-code-bg: #353b40;
+        --pr-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+    }
+    html[data-theme="light"] {
+        --pr-bg: #f7f7f7;
+        --pr-surface: #ffffff;
+        --pr-border: #dddddd;
+        --pr-text: #333333;
+        --pr-text-muted: #777777;
+        --pr-accent: #3297d4;
+        --pr-code-bg: #f4f4f4;
+        --pr-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    }
+}
+
+html {
+    font-size: 16px;
+}
+
+body {
+    margin: 0;
+    background: var(--pr-bg);
+    color: var(--pr-text);
+    font-family: "Open Sans", -apple-system, BlinkMacSystemFont, "Segoe UI",
+        sans-serif;
+    line-height: 1.55;
+}
+
+.pharo-index {
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 2.5rem 1.25rem 4rem;
+}
+
+.pharo-index h1, .pharo-index h2, .pharo-index h3 {
+    color: var(--pr-accent);
+    line-height: 1.2;
+}
+
+.index-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding-bottom: 1.25rem;
+    border-bottom: 5px solid var(--pr-code-bg);
+    margin-bottom: 1.5rem;
+}
+
+.index-header .project-name {
+    margin: 0;
+    font-size: 3.15rem;
+    line-height: 1;
+}
+
+.index-logo {
+    width: 48px;
+    height: 48px;
+    flex: 0 0 48px;
+    object-fit: contain;
+}
+
+.latest-release {
+    background: var(--pr-code-bg);
+    border: 1px solid var(--pr-border);
+    border-radius: 2px;
+    padding: 1rem 1.1rem;
+}
+
+.latest-release h2 {
+    margin: 0;
+    font-size: 1.05rem;
+}
+
+.latest-release p {
+    margin: 0.35rem 0 0;
+}
+
+.table-of-contents ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem 1.25rem;
+    margin: 0;
+    padding-left: 1.2rem;
+}
+
+.section-title {
+    font-size: 0.85rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--pr-text-muted);
+    margin: 2rem 0 0.6rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.section-title::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: var(--pr-border);
+}
+
+.release-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 1.25rem;
+}
+
+.release {
+    background: var(--pr-surface);
+    border: 1px solid var(--pr-border);
+    border-radius: 2px;
+    padding: 1.1rem 1.25rem;
+    box-shadow: var(--pr-shadow);
+}
+
+.release-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.4rem 1rem;
+    margin-bottom: 0.4rem;
+}
+
+.release-version {
+    margin: 0;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 1.35rem;
+}
+
+.release-badge {
+    font-size: 0.72rem;
+    padding: 0.08rem 0.5rem;
+    border-radius: 999px;
+    vertical-align: middle;
+    margin-left: 0.5rem;
+    border: 1px solid var(--pr-border);
+    color: var(--pr-text-muted);
+}
+
+.release-date {
+    color: var(--pr-text-muted);
+    font-size: 0.9rem;
+}
+
+.release-meta {
+    font-size: 0.9rem;
+    padding: 0.6rem 0.8rem;
+    background: var(--pr-code-bg);
+    border-radius: 8px;
+    margin: 0.6rem 0;
+}
+
+.release-meta dt {
+    display: inline-block;
+    min-width: 7.5em;
+    color: var(--pr-text-muted);
+}
+
+.release-meta dd {
+    display: inline;
+    margin: 0;
+    margin-left: 0.4rem;
+    margin-right: 1.4rem;
+}
+
+.release-meta code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    word-break: break-all;
+}
+
+.release-artifacts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1rem;
+    margin: 0.8rem 0;
+}
+
+.release-artifacts a {
+    overflow-wrap: anywhere;
+}
+
+.release-toc ul {
+    columns: 2;
+    margin: 0 0 1rem;
+    padding-left: 1.2rem;
+}
+
+.release-notes {
+    font-size: 0.95rem;
+}
+
+.release-notes code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 0.85em;
+    background: var(--pr-code-bg);
+    border-radius: 4px;
+    padding: 0.1rem 0.35rem;
+    color: var(--pr-accent);
+}
+
+.release-notes pre {
+    background: var(--pr-code-bg);
+    border-radius: 8px;
+    padding: 0.7rem 0.9rem;
+    overflow-x: auto;
+}
+
+.release-notes blockquote {
+    margin: 0.5rem 0;
+    padding-left: 0.8rem;
+    border-left: 3px solid var(--pr-border);
+    color: var(--pr-text-muted);
+}
+
+.release-notes table {
+    border-collapse: collapse;
+    margin: 0.5rem 0;
+}
+
+.release-notes th, .release-notes td {
+    border: 1px solid var(--pr-border);
+    padding: 0.3rem 0.6rem;
+    text-align: left;
+}
+
+.project-readme {
+    background: var(--pr-surface);
+    border: 1px solid var(--pr-border);
+    border-radius: 12px;
+    padding: 1.1rem 1.25rem;
+    box-shadow: var(--pr-shadow);
+    overflow-wrap: break-word;
+}
+
+.project-readme img {
+    max-width: 100%;
+}
+
+.project-readme pre {
+    background: var(--pr-code-bg);
+    border-radius: 8px;
+    padding: 0.7rem 0.9rem;
+    overflow-x: auto;
+}
+
+.project-readme code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 0.85em;
+    background: var(--pr-code-bg);
+    border-radius: 4px;
+    padding: 0.1rem 0.35rem;
+}
+
+.project-readme table {
+    border-collapse: collapse;
+    margin: 0.5rem 0;
+}
+
+.project-readme th, .project-readme td {
+    border: 1px solid var(--pr-border);
+    padding: 0.3rem 0.6rem;
+}
+
+.index-footer {
+    margin-top: 2.5rem;
+    color: var(--pr-text-muted);
+    font-size: 0.8rem;
+    text-align: center;
+}
+
+a {
+    color: var(--pr-accent);
+}
+</style>
+</head>
+<body>
+  <main class="pharo-index" data-project="MuTalk">
+        
+<header class="index-header">
+        <?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg class="index-logo" xmlns="http://www.w3.org/2000/svg" version="1.1" width="155" height="155" viewBox="0 0 155 155" id="Pharo">
+  <defs>
+<linearGradient x1="0" y1="0" x2="1" y2="0" id="lG_fire" gradientUnits="userSpaceOnUse" gradientTransform="matrix(0,12.7,-12.7,0,640,65)" spreadMethod="pad">
+  <stop style="stop-color:#f7931e;stop-opacity:1" offset="0" />
+  <stop style="stop-color:#ed1c24;stop-opacity:1" offset="1" />
+</linearGradient>
+<linearGradient x1="0.4" y1="0" x2="1" y2="0" id="lG_column" gradientUnits="userSpaceOnUse" gradientTransform="matrix(10.76,-145.87,145.87,10.76,631.57,223.43)" spreadMethod="pad">
+  <stop style="stop-color:#2b98d8;stop-opacity:1" offset="0" />
+  <stop style="stop-color:#a10b0b;stop-opacity:1" offset="1" />
+</linearGradient>
+  </defs>
+  <g id="beacon" transform="translate(-560,-45)">
+<path d="m 628.58,64.64 0,19.22 22.72,0 0,-20.14 -11.16,-2.74 -11.56,3.66 z" id="fire" style="fill:url(#lG_fire);stroke:none" />
+<path d="m 627.39,67.47 c 0.23,-0.63 1.25,-1.52 2.83,-2.36 2.32,-1.24 5.84,-2.38 9.79,-2.43 6.63,-0.1 12.1,2.87 12.7,4.41 l 0.06,0 0,-0.01 c -0.06,-3.58 -5.2,-10.05 -11.7,-10.26 l -3.15,0.11 c -6.05,0.62 -10.64,7.12 -10.59,10.53 l 0,0.01 0.06,0 z" id="cap" style="fill:#164c6c;fill-opacity:1;fill-rule:nonzero;stroke:none" />
+<g id="column" style="fill:url(#lG_column);stroke:none">
+  <path d="m 635.55,75.19 c -6.21,0.44 -11.87,2.99 -11.87,2.99 l 0,0 0,5.38 c 0,0 -0.03,1.36 2.63,2.25 l 0,0 0.13,5.46 c -7.22,0.95 -12.04,2.56 -12.01,4.31 l 0,0 c 0,0.44 2.25,3.62 2.25,3.62 l 0,0 c 0,0 0.78,0.96 1.72,1.1 l 0,0 c 0.94,0.14 2.58,0.95 3.64,1.82 l 0,0 c 1.07,0.87 1.95,2.52 1.97,3.69 l 0,0 c 0.02,1.16 1.2,2.1 2.62,2.07 l 0,0 3.39,-0.05 c -4.06,2.31 -5.35,4.76 -6.55,6.46 l 0,0 c -1.24,1.74 -2.28,16.8 -2.28,16.8 l 0,0 c 0,0 0.57,-1.52 2.88,-5.11 l 0,0 c 2.31,-3.58 11.46,-8.51 18.35,-12.25 l 0,0 c 5.78,-3.14 11.02,-6.26 11.02,-6.26 l 0,0 c 1.34,-0.78 2.55,-1.43 2.55,-2.58 l 0,0 c 0,-1.4 0.59,-3.08 1.35,-3.73 l 0,0 c 0.76,-0.67 2.15,-1.33 3.09,-1.5 l 0,0 c 0.93,-0.16 1.68,-1.15 1.68,-1.15 l 0,0 c 0,0 2.14,-3.25 2.13,-3.69 l 0,0 c -0.02,-1.67 -4.44,-3.07 -11.12,-3.83 l 0,0 -0.13,-5.41 c 1.94,-0.59 3.09,-1.28 3.07,-2.02 l 0,0 0,-5.38 c 0,0 -5.07,-2.81 -11.83,-3.11 l 0,0 c -2.42,0 -6.33,0 -8.67,0.12" id="top" />
+  <path d="m 642.45,128.1 c -15.04,7.24 -22.43,10.89 -23.5,18.67 l 0,0 c -1.07,7.78 -2.22,15.42 -2.22,15.42 l 0,0 c 0.93,-5.6 11.84,-12.19 22.76,-17.5 l 0,0 c 10.92,-5.3 18.74,-8.75 18.23,-14.51 l 0,0 c -0.45,-5.14 -1.54,-12.22 -1.77,-13.67 l 0.08,1.08 c 0.08,1.08 -0.57,5.38 -13.49,11.6" id="middle" />
+  <path d="m 640.26,162.25 c -20.34,9.48 -25.38,12.09 -25.97,17.91 l 0,0 c -0.51,5.01 -1.68,15.57 -2,18.42 l 0,0 c 0.39,-1.55 2.49,-5.54 13.28,-11.4 l 0,0 c 14.1,-7.67 36.69,-14.04 36.14,-22.06 l 0,0 c -0.54,-8.02 -2.06,-18.59 -2.06,-18.59 l 0,0 c 0,0 0.94,6.24 -19.4,15.73" id="bottom" />
+</g>
+<path d="m 698.94,17.83 c -78.62,68.64 -72.74,53.81 -18,45.42 -54.74,8.39 -63.63,-4.87 27.19,40.57 -90.82,-45.44 -74.9,-44.42 -48.75,-3.09 -26.15,-41.33 -16.29,-53.88 -30.19,38.41 13.9,-92.29 17.86,-76.83 -12.12,-47.32 29.99,-29.51 44.96,-24.01 -45.85,-16.84 90.82,-7.17 77.34,1.37 41.26,-26.16 36.08,27.52 35.48,43.47 1.84,-48.82 33.63,92.3 21.35,82.11 37.62,31.17 -16.27,50.94 -31.63,55.3 47,-13.34" id="flare" style="opacity:0.7;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:none" />
+  </g>
+</svg>
+
+  <div>
+    <h1 class="project-name" data-project-name>MuTalk</h1>
+    
+  </div>
+</header>
+
+        
+    <section class="latest-release" id="latest-release" aria-labelledby="latest-release-title">
+        <h2 id="latest-release-title">Latest release</h2>
+        <p><a href="#release-3.0.8">3.0.8</a> (September 22, 2026)</p>
+    </section>
+    
+        
+    <nav class="table-of-contents" aria-label="Table of contents">
+        <h2 class="section-title">Contents</h2>
+        <ul>
+            <li><a href="#releases">All releases</a></li>
+            <li><a href="#readme">README</a></li>
+        </ul>
+    </nav>
+    
+    
+<h2 class="section-title">README</h2>
+<section class="project-readme" data-section="readme" id="readme"
+         aria-label="README"><h1>MuTalk (µ-talk)</h1>
+<p>Mutation Testing in Smalltalk</p>
+<p><a href="https://www.pharo.org">
+<img alt="Pharo" src="https://img.shields.io/static/v1?style=for-the-badge&message=Pharo&color=3297d4&logo=Harbor&logoColor=FFFFFF&label=" />
+</a></p>
+<p><a href="https://github.com/pavel-krivanek/mutalk/actions/workflows/test.yml"><img alt="Build status" src="https://github.com/pavel-krivanek/mutalk/workflows/CI/badge.svg" /></a>
+<a href="https://coveralls.io/github/pavel-krivanek/mutalk?branch=master"><img alt="Coverage Status" src="https://coveralls.io/repos/github/pavel-krivanek/mutalk/badge.svg?branch=master" /></a>
+<a href="https://pharo.org/download"><img alt="Pharo version" src="https://img.shields.io/badge/Pharo-9.0-%23aac9ff.svg" /></a>
+<a href="https://pharo.org/download"><img alt="Pharo version" src="https://img.shields.io/badge/Pharo-10-%23aac9ff.svg" /></a>
+<a href="https://pharo.org/download"><img alt="Pharo version" src="https://img.shields.io/badge/Pharo-11-%23aac9ff.svg" /></a>
+<a href="https://raw.githubusercontent.com/pavel-krivanek/mutalk/master/LICENSE"><img alt="License" src="https://img.shields.io/badge/license-MIT-blue.svg" /></a></p>
+<p>This project was originally developed at the University of Buenos Aires (Argentina) by Nicolás Chillo, Gabriel Brunstein and others in times of Pharo 1.1.</p>
+<h2>How to load</h2>
+<ul>
+<li>Latest release:</li>
+</ul>
+<pre><code class="language-smalltalk">Metacello new
+  baseline: 'MuTalk';
+  repository: 'github://pharo-contributions/mutalk:v2.3.0/src';
+  load.
+</code></pre>
+<ul>
+<li>Full version:</li>
+</ul>
+<pre><code class="language-smalltalk">Metacello new
+  baseline: 'MuTalk';
+  repository: 'github://pharo-contributions/mutalk/src';
+  load.
+</code></pre>
+<h2>Quick start</h2>
+<pre><code class="language-smalltalk">&quot;Put here the classes you want to mutate&quot;
+classesToMutate := {  }.
+&quot;Put here the test classes associated with&quot;
+testClasses :=  {  }.
+
+analysis := MTAnalysis new
+classesToMutate: classesToMutate;
+testClasses: testClasses.
+
+analysis run.
+
+&quot;To inspect the results&quot;
+analysis generalResult inspect.
+</code></pre>
+<h2>Wiki</h2>
+<p>You can find a wiki <a href="https://github.com/pharo-contributions/mutalk/wiki">here</a> with a lot of information about MuTalk and how it works. It is higly recommended to read it.</p>
+<h2>Release automation</h2>
+<p>Releases are published automatically when a Semantic Versioning tag is pushed
+(<code>2.7.0</code>, <code>v2.7.0</code>, <code>2.7.0-beta.1</code>, ...). The composite action in
+<a href="https://github.com/guillep/pharo-release"><code>guillep/pharo-release</code></a> (wired up by <code>.github/workflows/pharo-release.yml</code>):</p>
+<ul>
+<li>validates the tag and fails on non-SemVer tags;</li>
+<li>reads the source repository location from <code>.project</code> (resolved relative to
+  the project file, override with the <code>project-file</code> input);</li>
+<li>queries the GitHub Releases API for existing releases;</li>
+<li>generates an <code>index.html</code> with release metadata, absolute artifact URLs,
+  changelog and the rendered <code>README.md</code>;</li>
+<li>publishes the GitHub Release with <code>index.html</code>.</li>
+</ul>
+<p>The index format, the <code>release.json</code> schema and reuse instructions for other
+Pharo repositories are documented in
+<a href="https://github.com/guillep/pharo-release">the <code>guillep/pharo-release</code> repository</a>.</p>
+<hr />
+<p>Original repository: http://www.squeaksource.com/MutationTesting</p>
+<p>ESUG presentation: https://www.slideshare.net/esug/mutation-testing</p>
+<p>Master thesis (in spanish): http://gestion.dc.uba.ar/media/academic/grade/thesis/brunstein.pdf</p>
+<blockquote>
+<p>Following text is copy from https://code.google.com/archive/p/mutalk/</p>
+</blockquote>
+<h2>Mutation testing</h2>
+<p>During the 70s, mutation testing emerged as a technique to assess the fault-finding effectiveness of a test suite. It works mutating objects' behavior and looking for tests to “kill” those mutants. The surviving mutants are the starting point to writing better tests. Thus, this technique is an interesting alternative to code coverage regarding test quality.</p>
+<p>However, so far it is a “brute force” technique that takes too long to provide useful results. This characteristic has forbidden its widespread and practical use regardless the existence of new techniques, such as schema-based mutation and selective mutation. Additionally, there are no mutation testing tools (to our knowledge) that work on meta-circular and dynamic environments, such as Smalltalk, so compile and link time are the current technique's bottleneck.</p>
+<p>This Smalltalk-based tool was developed at the University of Buenos Aires (Argentina) in the context of the final thesis work. The tool uses Smalltalk's dynamic and meta-programming facilities to notably reduce the time to get valuable output and help to understand and implement new tests due to its integration with the rest of the environment.</p></section>
+
+        <section id="releases" aria-labelledby="releases-title">
+            <h2 class="section-title" id="releases-title">Releases</h2>
+            
+    <nav class="release-toc" aria-label="Release table of contents">
+        <ul><li><a href="#release-3.0.8">3.0.8</a></li><li><a href="#release-3.0.7">3.0.7</a></li><li><a href="#release-3.0.6">3.0.6</a></li><li><a href="#release-3.0.5">3.0.5</a></li><li><a href="#release-3.0.4">3.0.4</a></li><li><a href="#release-3.0.3">3.0.3</a></li><li><a href="#release-2.6.0">2.6.0</a></li><li><a href="#release-2.5.0">2.5.0</a></li><li><a href="#release-2.4.0">2.4.0</a></li><li><a href="#release-2.3.0">2.3.0</a></li><li><a href="#release-2.2.0">2.2.0</a></li><li><a href="#release-2.1.0">2.1.0</a></li><li><a href="#release-2.0.0">2.0.0</a></li><li><a href="#release-1.0.0">1.0.0</a></li></ul>
+    </nav>
+    
+            <ol class="release-list">
+      
+<li>
+  <article class="release"
+           id="release-3.0.8"
+           data-release-version="3.0.8"
+           data-release-index="0"
+           data-prerelease="false">
+    <div class="release-head">
+      <h2 class="release-version">3.0.8</h2>
+      <time class="release-date" datetime="2026-09-22T11:05:04Z">September 22, 2026</time>
+    </div>
+    <div class="release-artifacts" aria-label="Release artifacts"><a class="release-artifact" href="https://github.com/pharo-contributions/mutalk/releases/download/v3.0.8/index.html">index.html</a><a class="release-artifact" href="https://github.com/pharo-contributions/mutalk/archive/refs/tags/v3.0.8.zip">Source code (zip)</a><a class="release-artifact" href="https://github.com/pharo-contributions/mutalk/archive/refs/tags/v3.0.8.tar.gz">Source code (tar.gz)</a></div>
+    <section class="release-notes" aria-label="Release notes"><h3>Release notes</h3><p><strong>Full Changelog</strong>: https://github.com/pharo-contributions/mutalk/compare/v3.0.7...v3.0.8</p></section>
+  </article>
+</li>
+
+<li>
+  <article class="release"
+           id="release-3.0.7"
+           data-release-version="3.0.7"
+           data-release-index="1"
+           data-prerelease="false">
+    <div class="release-head">
+      <h2 class="release-version">3.0.7</h2>
+      <time class="release-date" datetime="2026-09-22T10:43:46Z">September 22, 2026</time>
+    </div>
+    <div class="release-artifacts" aria-label="Release artifacts"><a class="release-artifact" href="https://github.com/pharo-contributions/mutalk/archive/refs/tags/v3.0.7.zip">Source code (zip)</a><a class="release-artifact" href="https://github.com/pharo-contributions/mutalk/archive/refs/tags/v3.0.7.tar.gz">Source code (tar.gz)</a><a class="release-artifact" href="https://github.com/pharo-contributions/mutalk/releases/download/v3.0.7/index.html">index.html</a></div>
+    <section class="release-notes" aria-label="Release notes"><h3>Release notes</h3><p><strong>Full Changelog</strong>: https://github.com/pharo-contributions/mutalk/compare/v3.0.6...v3.0.7</p></section>
+  </article>
+</li>
+
+<li>
+  <article class="release"
+           id="release-3.0.6"
+           data-release-version="3.0.6"
+           data-release-index="2"
+           data-prerelease="false">
+    <div class="release-head">
+      <h2 class="release-version">3.0.6</h2>
+      <time class="release-date" datetime="2026-09-22T09:55:28Z">September 22, 2026</time>
+    </div>
+    <div class="release-artifacts" aria-label="Release artifacts"><a class="release-artifact" href="https://github.com/pharo-contributions/mutalk/archive/refs/tags/v3.0.6.zip">Source code (zip)</a><a class="release-artifact" href="https://github.com/pharo-contributions/mutalk/archive/refs/tags/v3.0.6.tar.gz">Source code (tar.gz)</a><a class="release-artifact" href="https://github.com/pharo-contributions/mutalk/releases/download/v3.0.6/index.html">index.html</a></div>
+    <section class="release-notes" aria-label="Release notes"><h3>Release notes</h3><p><strong>Full Changelog</strong>: https://github.com/pharo-contributions/mutalk/compare/v3.0.5...v3.0.6</p></section>
+  </article>
+</li>
+
+<li>
+  <article class="release"
+           id="release-3.0.5"
+           data-release-version="3.0.5"
+           data-release-index="3"
+           data-prerelease="false">
+    <div class="release-head">
+      <h2 class="release-version">3.0.5</h2>
+      <time class="release-date" datetime="2026-09-22T09:51:33Z">September 22, 2026</time>
+    </div>
+    <div class="release-artifacts" aria-label="Release artifacts"><a class="release-artifact" href="https://github.com/pharo-contributions/mutalk/archive/refs/tags/v3.0.5.zip">Source code (zip)</a><a class="release-artifact" href="https://github.com/pharo-contributions/mutalk/archive/refs/tags/v3.0.5.tar.gz">Source code (tar.gz)</a><a class="release-artifact" href="https://github.com/pharo-contributions/mutalk/releases/download/v3.0.5/index.html">index.html</a></div>
+    <section class="release-notes" aria-label="Release notes"><h3>Release notes</h3><p><strong>Full Changelog</strong>: https://github.com/pharo-contributions/mutalk/compare/v3.0.4...v3.0.5</p></section>
+  </article>
+</li>
+
+<li>
+  <article class="release"
+           id="release-3.0.4"
+           data-release-version="3.0.4"
+           data-release-index="4"
+           data-prerelease="false">
+    <div class="release-head">
+      <h2 class="release-version">3.0.4</h2>
+      <time class="release-date" datetime="2026-09-22T09:42:06Z">September 22, 2026</time>
+    </div>
+    <div class="release-artifacts" aria-label="Release artifacts"><a class="release-artifact" href="https://github.com/pharo-contributions/mutalk/archive/refs/tags/v3.0.4.zip">Source code (zip)</a><a class="release-artifact" href="https://github.com/pharo-contributions/mutalk/archive/refs/tags/v3.0.4.tar.gz">Source code (tar.gz)</a><a class="release-artifact" href="https://github.com/pharo-contributions/mutalk/releases/download/v3.0.4/index.html">index.html</a></div>
+    <section class="release-notes" aria-label="Release notes"><h3>Release notes</h3><p><strong>Full Changelog</strong>: https://github.com/pharo-contributions/mutalk/compare/v3.0.3...v3.0.4</p></section>
+  </article>
+</li>
+
+<li>
+  <article class="release"
+           id="release-3.0.3"
+           data-release-version="3.0.3"
+           data-release-index="5"
+           data-prerelease="false">
+    <div class="release-head">
+      <h2 class="release-version">3.0.3</h2>
+      <time class="release-date" datetime="2026-09-22T09:38:26Z">September 22, 2026</time>
+    </div>
+    <div class="release-artifacts" aria-label="Release artifacts"><a class="release-artifact" href="https://github.com/pharo-contributions/mutalk/archive/refs/tags/v3.0.3.zip">Source code (zip)</a><a class="release-artifact" href="https://github.com/pharo-contributions/mutalk/archive/refs/tags/v3.0.3.tar.gz">Source code (tar.gz)</a><a class="release-artifact" href="https://github.com/pharo-contributions/mutalk/releases/download/v3.0.3/index.html">index.html</a></div>
+    <section class="release-notes" aria-label="Release notes"><h3>Release notes</h3><h2>What's Changed</h2>
+<ul>
+<li>Pharo14 compatibility by @DurieuxPol in https://github.com/pharo-contributions/mutalk/pull/132</li>
+<li>Skip CI test for Pharo 9 by @DurieuxPol in https://github.com/pharo-contributions/mutalk/pull/133</li>
+<li>Fix: inspector extensions require builder as argument by @balsa-sarenac in https://github.com/pharo-contributions/mutalk/pull/131</li>
+<li>Fixed MTMethodInstaller for Pharo 14 by @DurieuxPol in https://github.com/pharo-contributions/mutalk/pull/137</li>
+<li>Sortable columns for analysis result by @DurieuxPol in https://github.com/pharo-contributions/mutalk/pull/138</li>
+</ul>
+<h2>New Contributors</h2>
+<ul>
+<li>@balsa-sarenac made their first contribution in https://github.com/pharo-contributions/mutalk/pull/131</li>
+</ul>
+<p><strong>Full Changelog</strong>: https://github.com/pharo-contributions/mutalk/compare/v2.6.0...v3.0.3</p></section>
+  </article>
+</li>
+
+<li>
+  <article class="release"
+           id="release-2.6.0"
+           data-release-version="2.6.0"
+           data-release-index="6"
+           data-prerelease="false">
+    <div class="release-head">
+      <h2 class="release-version">2.6.0</h2>
+      <time class="release-date" datetime="2025-03-14T09:21:12Z">March 14, 2025</time>
+    </div>
+    <div class="release-artifacts" aria-label="Release artifacts"><a class="release-artifact" href="https://github.com/pharo-contributions/mutalk/archive/refs/tags/v2.6.0.zip">Source code (zip)</a><a class="release-artifact" href="https://github.com/pharo-contributions/mutalk/archive/refs/tags/v2.6.0.tar.gz">Source code (tar.gz)</a></div>
+    <section class="release-notes" aria-label="Release notes"><h3>Release notes</h3><h2>What's Changed</h2>
+<ul>
+<li>Example for the MuTalk chapter and small changes by @DurieuxPol in https://github.com/pharo-contributions/mutalk/pull/121</li>
+<li>Utility analysis ignore the "no tests" warning by @DurieuxPol in https://github.com/pharo-contributions/mutalk/pull/125</li>
+<li>Create a matrix and heatmap from existing MTAnalysis by @DurieuxPol in https://github.com/pharo-contributions/mutalk/pull/124</li>
+<li>Analysis can now be rerun by @DurieuxPol in https://github.com/pharo-contributions/mutalk/pull/127</li>
+<li>Mutant selection strategies more easily accessible and method rename by @DurieuxPol in https://github.com/pharo-contributions/mutalk/pull/128</li>
+<li>More customizable heatmaps by @DurieuxPol in https://github.com/pharo-contributions/mutalk/pull/129</li>
+<li>Moved MyVehicleTest to dedicated test package by @DurieuxPol in https://github.com/pharo-contributions/mutalk/pull/130</li>
+</ul>
+<p><strong>Full Changelog</strong>: https://github.com/pharo-contributions/mutalk/compare/v2.5.0...v2.6.0</p></section>
+  </article>
+</li>
+
+<li>
+  <article class="release"
+           id="release-2.5.0"
+           data-release-version="2.5.0"
+           data-release-index="7"
+           data-prerelease="false">
+    <div class="release-head">
+      <h2 class="release-version">2.5.0</h2>
+      <time class="release-date" datetime="2024-07-05T14:40:21Z">July 05, 2024</time>
+    </div>
+    <div class="release-artifacts" aria-label="Release artifacts"><a class="release-artifact" href="https://github.com/pharo-contributions/mutalk/archive/refs/tags/v2.5.0.zip">Source code (zip)</a><a class="release-artifact" href="https://github.com/pharo-contributions/mutalk/archive/refs/tags/v2.5.0.tar.gz">Source code (tar.gz)</a></div>
+    <section class="release-notes" aria-label="Release notes"><h3>Release notes</h3><h2>What's Changed</h2>
+<ul>
+<li>Mutalk reusable workflow CI by @matburnx and  @guillep<ul>
+<li>in https://github.com/pharo-contributions/mutalk/pull/118</li>
+<li>in https://github.com/pharo-contributions/mutalk/pull/120</li>
+</ul>
+</li>
+</ul>
+<h2>New Contributors</h2>
+<ul>
+<li>@matburnx made their first contribution in https://github.com/pharo-contributions/mutalk/pull/118</li>
+</ul>
+<p><strong>Full Changelog</strong>: https://github.com/pharo-contributions/mutalk/compare/v2.4.0...v2.5.0</p></section>
+  </article>
+</li>
+
+<li>
+  <article class="release"
+           id="release-2.4.0"
+           data-release-version="2.4.0"
+           data-release-index="8"
+           data-prerelease="false">
+    <div class="release-head">
+      <h2 class="release-version">2.4.0</h2>
+      <time class="release-date" datetime="2024-05-06T07:59:32Z">May 06, 2024</time>
+    </div>
+    <div class="release-artifacts" aria-label="Release artifacts"><a class="release-artifact" href="https://github.com/pharo-contributions/mutalk/archive/refs/tags/v2.4.0.zip">Source code (zip)</a><a class="release-artifact" href="https://github.com/pharo-contributions/mutalk/archive/refs/tags/v2.4.0.tar.gz">Source code (tar.gz)</a></div>
+    <section class="release-notes" aria-label="Release notes"><h3>Release notes</h3><h2>What's Changed</h2>
+<h3>New features</h3>
+<ul>
+<li>Composite test filter by @DurieuxPol in https://github.com/pharo-contributions/mutalk/pull/106</li>
+<li>Changed default values of analysis by @DurieuxPol in https://github.com/pharo-contributions/mutalk/pull/110</li>
+<li>Changed default budget by @DurieuxPol in https://github.com/pharo-contributions/mutalk/pull/115</li>
+<li>Added a progress bar as a logger by @DurieuxPol in https://github.com/pharo-contributions/mutalk/pull/117</li>
+</ul>
+<h3>Fixes and cleanups</h3>
+<ul>
+<li>Fix testCoveredMethods by @DurieuxPol in https://github.com/pharo-contributions/mutalk/pull/109</li>
+<li>Removed test case selection strategies by @DurieuxPol in https://github.com/pharo-contributions/mutalk/pull/108</li>
+<li>Refactor mutant selection strategies by @DurieuxPol in https://github.com/pharo-contributions/mutalk/pull/107</li>
+<li>Organised operators in categories by @DurieuxPol in https://github.com/pharo-contributions/mutalk/pull/111</li>
+<li>Refactor test filter validation of red tests by @DurieuxPol in https://github.com/pharo-contributions/mutalk/pull/114</li>
+<li>Analysis uses methods instead of classes &amp; extension methods are ignored if not from package by @DurieuxPol in https://github.com/pharo-contributions/mutalk/pull/116</li>
+</ul>
+<p><strong>Full Changelog</strong>: https://github.com/pharo-contributions/mutalk/compare/v2.3.0...v2.4.0</p></section>
+  </article>
+</li>
+
+<li>
+  <article class="release"
+           id="release-2.3.0"
+           data-release-version="2.3.0"
+           data-release-index="9"
+           data-prerelease="false">
+    <div class="release-head">
+      <h2 class="release-version">2.3.0</h2>
+      <time class="release-date" datetime="2024-03-28T08:23:23Z">March 28, 2024</time>
+    </div>
+    <div class="release-artifacts" aria-label="Release artifacts"><a class="release-artifact" href="https://github.com/pharo-contributions/mutalk/archive/refs/tags/v2.3.0.zip">Source code (zip)</a><a class="release-artifact" href="https://github.com/pharo-contributions/mutalk/archive/refs/tags/v2.3.0.tar.gz">Source code (tar.gz)</a></div>
+    <section class="release-notes" aria-label="Release notes"><h3>Release notes</h3><h2>What's Changed</h2>
+<ul>
+<li>Fix unimplemented methods and small refactoring for test filters by @DurieuxPol in https://github.com/pharo-contributions/mutalk/pull/101</li>
+<li>Random class and method mutant selection strategies by @DurieuxPol in https://github.com/pharo-contributions/mutalk/pull/102</li>
+</ul>
+<p><strong>Full Changelog</strong>: https://github.com/pharo-contributions/mutalk/compare/v2.2.0...v2.3.0</p></section>
+  </article>
+</li>
+
+<li>
+  <article class="release"
+           id="release-2.2.0"
+           data-release-version="2.2.0"
+           data-release-index="10"
+           data-prerelease="false">
+    <div class="release-head">
+      <h2 class="release-version">2.2.0</h2>
+      <time class="release-date" datetime="2024-03-14T15:24:59Z">March 14, 2024</time>
+    </div>
+    <div class="release-artifacts" aria-label="Release artifacts"><a class="release-artifact" href="https://github.com/pharo-contributions/mutalk/archive/refs/tags/v2.2.0.zip">Source code (zip)</a><a class="release-artifact" href="https://github.com/pharo-contributions/mutalk/archive/refs/tags/v2.2.0.tar.gz">Source code (tar.gz)</a></div>
+    <section class="release-notes" aria-label="Release notes"><h3>Release notes</h3><h2>What's Changed</h2>
+<ul>
+<li>Subclass replacement operator by @DurieuxPol in https://github.com/pharo-contributions/mutalk/pull/75</li>
+<li>Updated file logger by @DurieuxPol in https://github.com/pharo-contributions/mutalk/pull/77</li>
+<li>Add result inspetors for killed and terminated mutants by @guillep in https://github.com/pharo-contributions/mutalk/pull/78</li>
+<li>Add heatmap to MTMatrix by @DurieuxPol in https://github.com/pharo-contributions/mutalk/pull/79</li>
+<li>Improve detection of terminated mutants by @guillep in https://github.com/pharo-contributions/mutalk/pull/81</li>
+<li>New test filters by @DurieuxPol in https://github.com/pharo-contributions/mutalk/pull/82</li>
+<li>API works with packages &amp; removed deprecated API by @DurieuxPol in https://github.com/pharo-contributions/mutalk/pull/90</li>
+<li>Mutalk handles parametrized tests correctly by @DurieuxPol in https://github.com/pharo-contributions/mutalk/pull/95</li>
+<li>General result shows filtered tests by @DurieuxPol in https://github.com/pharo-contributions/mutalk/pull/84</li>
+<li>Red test filter by @DurieuxPol in https://github.com/pharo-contributions/mutalk/pull/96</li>
+<li>Log refactoring and improvement by @DurieuxPol in https://github.com/pharo-contributions/mutalk/pull/97</li>
+</ul>
+<p><strong>Full Changelog</strong>: https://github.com/pharo-contributions/mutalk/compare/v2.1.0...v2.2.0</p></section>
+  </article>
+</li>
+
+<li>
+  <article class="release"
+           id="release-2.1.0"
+           data-release-version="2.1.0"
+           data-release-index="11"
+           data-prerelease="false">
+    <div class="release-head">
+      <h2 class="release-version">2.1.0</h2>
+      <time class="release-date" datetime="2024-02-05T09:44:58Z">February 05, 2024</time>
+    </div>
+    <div class="release-artifacts" aria-label="Release artifacts"><a class="release-artifact" href="https://github.com/pharo-contributions/mutalk/archive/refs/tags/v2.1.0.zip">Source code (zip)</a><a class="release-artifact" href="https://github.com/pharo-contributions/mutalk/archive/refs/tags/v2.1.0.tar.gz">Source code (tar.gz)</a></div>
+    <section class="release-notes" aria-label="Release notes"><h3>Release notes</h3><h2>What's Changed</h2>
+<ul>
+<li>Update README with Pharo11 badge and reference to the wiki by @DurieuxPol in https://github.com/pharo-contributions/mutalk/pull/71</li>
+<li>Imported MuTalk-Utilities by @DurieuxPol in https://github.com/pharo-contributions/mutalk/pull/70</li>
+<li>Implemented test filters by @DurieuxPol in https://github.com/pharo-contributions/mutalk/pull/72</li>
+<li>New mutant operators by @DurieuxPol in https://github.com/pharo-contributions/mutalk/pull/74</li>
+<li>Refactoring and tests for other utilities by @DurieuxPol in https://github.com/pharo-contributions/mutalk/pull/73</li>
+</ul>
+<p><strong>Full Changelog</strong>: https://github.com/pharo-contributions/mutalk/compare/v2.0.0...v2.1.0</p></section>
+  </article>
+</li>
+
+<li>
+  <article class="release"
+           id="release-2.0.0"
+           data-release-version="2.0.0"
+           data-release-index="12"
+           data-prerelease="false">
+    <div class="release-head">
+      <h2 class="release-version">2.0.0</h2>
+      <time class="release-date" datetime="2024-01-22T08:21:27Z">January 22, 2024</time>
+    </div>
+    <div class="release-artifacts" aria-label="Release artifacts"><a class="release-artifact" href="https://github.com/pharo-contributions/mutalk/archive/refs/tags/v2.0.0.zip">Source code (zip)</a><a class="release-artifact" href="https://github.com/pharo-contributions/mutalk/archive/refs/tags/v2.0.0.tar.gz">Source code (tar.gz)</a></div>
+    <section class="release-notes" aria-label="Release notes"><h3>Release notes</h3><h2>What's Changed</h2>
+<ul>
+<li>cleanup: remove deprecated classes by @guillep in https://github.com/pharo-contributions/mutalk/pull/69</li>
+</ul>
+<p><strong>Full Changelog</strong>: https://github.com/pharo-contributions/mutalk/compare/v1.0.0...v2.0.0</p></section>
+  </article>
+</li>
+
+<li>
+  <article class="release"
+           id="release-1.0.0"
+           data-release-version="1.0.0"
+           data-release-index="13"
+           data-prerelease="false">
+    <div class="release-head">
+      <h2 class="release-version">1.0.0</h2>
+      <time class="release-date" datetime="2024-01-18T09:14:59Z">January 18, 2024</time>
+    </div>
+    <div class="release-artifacts" aria-label="Release artifacts"><a class="release-artifact" href="https://github.com/pharo-contributions/mutalk/archive/refs/tags/v1.0.0.zip">Source code (zip)</a><a class="release-artifact" href="https://github.com/pharo-contributions/mutalk/archive/refs/tags/v1.0.0.tar.gz">Source code (tar.gz)</a></div>
+    <section class="release-notes" aria-label="Release notes"><h3>Release notes</h3><h2>What's Changed</h2>
+<ul>
+<li>merge development by @pavel-krivanek in https://github.com/pharo-contributions/mutalk/pull/1</li>
+<li>Fix issue #4 by @mabdi in https://github.com/pharo-contributions/mutalk/pull/5</li>
+<li>Fix method installer tests cases. by @hogoww in https://github.com/pharo-contributions/mutalk/pull/8</li>
+<li>[improvement] move mutant execution logic to be able to rerun it by @hogoww in https://github.com/pharo-contributions/mutalk/pull/9</li>
+<li>add Travis CI by @hogoww in https://github.com/pharo-contributions/mutalk/pull/10</li>
+<li>Better tests cases for coverage directed by @hogoww in https://github.com/pharo-contributions/mutalk/pull/12</li>
+<li>replace <code>signalFor:</code> by @pavel-krivanek in https://github.com/pharo-contributions/mutalk/pull/14</li>
+<li>Refactoring baseline by @jordanmontt in https://github.com/pharo-contributions/mutalk/pull/16</li>
+<li>Adding inspector extension by @jordanmontt in https://github.com/pharo-contributions/mutalk/pull/17</li>
+<li>added CI with smalltalk ci by @jordanmontt in https://github.com/pharo-contributions/mutalk/pull/18</li>
+<li>fixing the properties file inside source folder by @jordanmontt in https://github.com/pharo-contributions/mutalk/pull/19</li>
+<li>Editing readme by @jordanmontt in https://github.com/pharo-contributions/mutalk/pull/20</li>
+<li>Mabdi fork merge by @pavel-krivanek in https://github.com/pharo-contributions/mutalk/pull/21</li>
+<li>Updated baseline for Pharo11 by @guillep in https://github.com/pharo-contributions/mutalk/pull/22</li>
+<li>Optimising mutations to not hold to AST nodes by @guillep in https://github.com/pharo-contributions/mutalk/pull/23</li>
+<li>Better progress bar info by @guillep in https://github.com/pharo-contributions/mutalk/pull/24</li>
+<li>Add CI on PRs by @guillep in https://github.com/pharo-contributions/mutalk/pull/27</li>
+<li>Cleanup/recursions by @guillep in https://github.com/pharo-contributions/mutalk/pull/25</li>
+<li>Stubborn/selection by @guillep in https://github.com/pharo-contributions/mutalk/pull/26</li>
+<li>Introducing random mutant-selection by @DurieuxPol in https://github.com/pharo-contributions/mutalk/pull/31</li>
+<li>Renamed some classes by @DurieuxPol in https://github.com/pharo-contributions/mutalk/pull/32</li>
+<li>Implemented budgets by @DurieuxPol in https://github.com/pharo-contributions/mutalk/pull/33</li>
+<li>Fixed number and percentage budgets, and random mutant selection refactoring by @DurieuxPol in https://github.com/pharo-contributions/mutalk/pull/34</li>
+<li>Added test for not exact percentage mutant selection by @DurieuxPol in https://github.com/pharo-contributions/mutalk/pull/47</li>
+<li>Improvements to RandomMutantSelectionStrategyTest by @DurieuxPol in https://github.com/pharo-contributions/mutalk/pull/46</li>
+<li>Refactored and renamed classes and methods for budgets by @DurieuxPol in https://github.com/pharo-contributions/mutalk/pull/48</li>
+<li>Refactorings by @DurieuxPol in https://github.com/pharo-contributions/mutalk/pull/49</li>
+<li>Allow analysis to continue even after the first test error by @DurieuxPol in https://github.com/pharo-contributions/mutalk/pull/56</li>
+<li>Disable epicea monitoring during mutant evaluation by @DurieuxPol in https://github.com/pharo-contributions/mutalk/pull/55</li>
+<li>Fluent API and small refactoring by @DurieuxPol in https://github.com/pharo-contributions/mutalk/pull/57</li>
+<li>Moved builder pattern to analysis class, and refactored how test classes are managed at instanciation by @DurieuxPol in https://github.com/pharo-contributions/mutalk/pull/62</li>
+<li>Fix: replace class side API implementation by @guillep in https://github.com/pharo-contributions/mutalk/pull/63</li>
+<li>Prefix all classes with MT and rename ExtremeTransformationOperator by @DurieuxPol in https://github.com/pharo-contributions/mutalk/pull/66</li>
+<li>Update README with new features and new API by @DurieuxPol in https://github.com/pharo-contributions/mutalk/pull/67</li>
+<li>Added Pharo12 to the CI by @DurieuxPol in https://github.com/pharo-contributions/mutalk/pull/68</li>
+</ul>
+<h2>New Contributors</h2>
+<ul>
+<li>@pavel-krivanek made their first contribution in https://github.com/pharo-contributions/mutalk/pull/1</li>
+<li>@mabdi made their first contribution in https://github.com/pharo-contributions/mutalk/pull/5</li>
+<li>@hogoww made their first contribution in https://github.com/pharo-contributions/mutalk/pull/8</li>
+<li>@jordanmontt made their first contribution in https://github.com/pharo-contributions/mutalk/pull/16</li>
+<li>@guillep made their first contribution in https://github.com/pharo-contributions/mutalk/pull/22</li>
+<li>@DurieuxPol made their first contribution in https://github.com/pharo-contributions/mutalk/pull/31</li>
+</ul>
+<p><strong>Full Changelog</strong>: https://github.com/pharo-contributions/mutalk/commits/v1.0.0</p></section>
+  </article>
+</li>
+
+            </ol>
+        </section>
+    <footer class="index-footer">
+      Copyright © 2026 Pharo contributors. Generated on September 22, 2026 by <a href="https://github.com/guillep/pharo-release">guillep/pharo-release</a>.
+    </footer>
+  </main>
+</body>
+</html>
