@@ -73,7 +73,7 @@
       "organization": "pharo-graphics",
       "stars": 5,
       "categories": [
-        "Untagged"
+        "Graphics & Visualization"
       ],
       "tags": [
         "graphics"
@@ -207,7 +207,7 @@
       "organization": "pillar-markup",
       "stars": 1,
       "categories": [
-        "Untagged"
+        "Uncategorized"
       ],
       "tags": [
         "utilities"
@@ -285,7 +285,7 @@
       "organization": "pillar-markup",
       "stars": 2,
       "categories": [
-        "Untagged"
+        "Uncategorized"
       ],
       "tags": [
         "utilities"
@@ -391,7 +391,7 @@
       "organization": "pharo-graphics",
       "stars": 2,
       "categories": [
-        "Untagged"
+        "Graphics & Visualization"
       ],
       "tags": [
         "graphics"
@@ -410,7 +410,7 @@
       "organization": "pharo-graphics",
       "stars": 2,
       "categories": [
-        "Untagged"
+        "Graphics & Visualization"
       ],
       "tags": [
         "graphics"
@@ -429,7 +429,7 @@
       "organization": "pharo-graphics",
       "stars": 3,
       "categories": [
-        "Untagged"
+        "Graphics & Visualization"
       ],
       "tags": [
         "benchmark",
@@ -452,7 +452,7 @@
       "organization": "pillar-markup",
       "stars": 0,
       "categories": [
-        "Untagged"
+        "Uncategorized"
       ],
       "tags": [
         "utilities"
@@ -471,7 +471,7 @@
       "organization": "pillar-markup",
       "stars": 0,
       "categories": [
-        "Untagged"
+        "Uncategorized"
       ],
       "tags": [
         "utilities"
@@ -616,7 +616,7 @@
       "organization": "pharo-spec",
       "stars": 2,
       "categories": [
-        "Untagged"
+        "UI"
       ],
       "tags": [
         "ui"
@@ -737,7 +737,7 @@
       "organization": "pharo-containers",
       "stars": 3,
       "categories": [
-        "Untagged"
+        "Data & Databases"
       ],
       "tags": [
         "collection"
@@ -777,7 +777,7 @@
       "organization": "pharo-containers",
       "stars": 0,
       "categories": [
-        "Untagged"
+        "Data & Databases"
       ],
       "tags": [
         "collection"
@@ -796,7 +796,7 @@
       "organization": "pharo-containers",
       "stars": 0,
       "categories": [
-        "Untagged"
+        "Data & Databases"
       ],
       "tags": [
         "collection"
@@ -815,7 +815,7 @@
       "organization": "pharo-containers",
       "stars": 0,
       "categories": [
-        "Untagged"
+        "Data & Databases"
       ],
       "tags": [
         "collection"
@@ -834,7 +834,7 @@
       "organization": "pharo-containers",
       "stars": 2,
       "categories": [
-        "Untagged"
+        "Data & Databases"
       ],
       "tags": [
         "collection"
@@ -853,7 +853,7 @@
       "organization": "pharo-containers",
       "stars": 1,
       "categories": [
-        "Untagged"
+        "Data & Databases"
       ],
       "tags": [
         "collection"
@@ -872,7 +872,7 @@
       "organization": "pharo-containers",
       "stars": 0,
       "categories": [
-        "Untagged"
+        "Data & Databases"
       ],
       "tags": [
         "collection"
@@ -912,7 +912,7 @@
       "organization": "pharo-containers",
       "stars": 0,
       "categories": [
-        "Untagged"
+        "Data & Databases"
       ],
       "tags": [
         "collection"
@@ -995,7 +995,7 @@
       "organization": "pharo-containers",
       "stars": 1,
       "categories": [
-        "Untagged"
+        "Data & Databases"
       ],
       "tags": [
         "collection"
@@ -1014,7 +1014,7 @@
       "organization": "pharo-containers",
       "stars": 0,
       "categories": [
-        "Untagged"
+        "Data & Databases"
       ],
       "tags": [
         "collection"
@@ -1033,7 +1033,7 @@
       "organization": "pharo-containers",
       "stars": 0,
       "categories": [
-        "Untagged"
+        "Data & Databases"
       ],
       "tags": [
         "collection"
@@ -1073,7 +1073,7 @@
       "organization": "pharo-containers",
       "stars": 0,
       "categories": [
-        "Untagged"
+        "Data & Databases"
       ],
       "tags": [
         "collection"
@@ -1092,7 +1092,7 @@
       "organization": "pharo-containers",
       "stars": 1,
       "categories": [
-        "Untagged"
+        "Data & Databases"
       ],
       "tags": [
         "collection"
@@ -1111,7 +1111,7 @@
       "organization": "pharo-containers",
       "stars": 0,
       "categories": [
-        "Untagged"
+        "Data & Databases"
       ],
       "tags": [
         "collection"
@@ -1153,7 +1153,7 @@
       "organization": "pharo-containers",
       "stars": 0,
       "categories": [
-        "Untagged"
+        "Data & Databases"
       ],
       "tags": [
         "collection"
@@ -1213,7 +1213,7 @@
       "organization": "pharo-ai",
       "stars": 0,
       "categories": [
-        "Untagged"
+        "AI"
       ],
       "tags": [
         "ai"
@@ -1232,7 +1232,7 @@
       "organization": "pharo-graphics",
       "stars": 8,
       "categories": [
-        "Untagged"
+        "Graphics & Visualization"
       ],
       "tags": [
         "graphics"
@@ -1296,7 +1296,7 @@
       "organization": "pharo-ai",
       "stars": 0,
       "categories": [
-        "Untagged"
+        "AI"
       ],
       "tags": [
         "ai"
@@ -1580,7 +1580,7 @@
       "organization": "pharo-ai",
       "stars": 0,
       "categories": [
-        "Untagged"
+        "AI"
       ],
       "tags": [
         "ai"
@@ -1599,7 +1599,7 @@
       "organization": "pharo-spec",
       "stars": 1,
       "categories": [
-        "Untagged"
+        "UI"
       ],
       "tags": [
         "ui"
@@ -1638,7 +1638,7 @@
       "organization": "pillar-markup",
       "stars": 0,
       "categories": [
-        "Untagged"
+        "Uncategorized"
       ],
       "tags": [
         "utilities"
@@ -1743,7 +1743,7 @@
       "organization": "pharo-vcs",
       "stars": 9,
       "categories": [
-        "Untagged"
+        "Source Code & Version Control"
       ],
       "tags": [
         "version-control"
@@ -1762,7 +1762,7 @@
       "organization": "pillar-markup",
       "stars": 0,
       "categories": [
-        "Untagged"
+        "Uncategorized"
       ],
       "tags": [
         "utilities"
@@ -1802,7 +1802,7 @@
       "organization": "pharo-rdbms",
       "stars": 5,
       "categories": [
-        "Untagged"
+        "Data & Databases"
       ],
       "tags": [
         "database"
@@ -1933,7 +1933,7 @@
       "organization": "pharo-spec",
       "stars": 1,
       "categories": [
-        "Untagged"
+        "UI"
       ],
       "tags": [
         "ui"
@@ -1997,7 +1997,7 @@
       "organization": "pharo-containers",
       "stars": 0,
       "categories": [
-        "Untagged"
+        "Data & Databases"
       ],
       "tags": [
         "collection"
@@ -2144,7 +2144,7 @@
       "organization": "pharo-ai",
       "stars": 2,
       "categories": [
-        "Untagged"
+        "AI"
       ],
       "tags": [
         "ai"
@@ -2180,7 +2180,7 @@
       "organization": "pharo-completion",
       "stars": 0,
       "categories": [
-        "Untagged"
+        "Development Environment"
       ],
       "tags": [
         "code-completion",
@@ -2259,7 +2259,7 @@
       "organization": "pharo-ai",
       "stars": 0,
       "categories": [
-        "Untagged"
+        "AI"
       ],
       "tags": [
         "ai"
@@ -2385,7 +2385,7 @@
       "organization": "pharo-ai",
       "stars": 0,
       "categories": [
-        "Untagged"
+        "AI"
       ],
       "tags": [
         "ai"
@@ -2426,7 +2426,7 @@
       "organization": "pharo-ai",
       "stars": 0,
       "categories": [
-        "Untagged"
+        "AI"
       ],
       "tags": [
         "ai"
@@ -2532,7 +2532,7 @@
       "organization": "pillar-markup",
       "stars": 0,
       "categories": [
-        "Untagged"
+        "Uncategorized"
       ],
       "tags": [
         "utilities"
@@ -2562,7 +2562,7 @@
       "organization": "pillar-markup",
       "stars": 2,
       "categories": [
-        "Untagged"
+        "Uncategorized"
       ],
       "tags": [
         "utilities"
@@ -2615,7 +2615,7 @@
       "organization": "pharo-nosql",
       "stars": 19,
       "categories": [
-        "Untagged"
+        "Data & Databases"
       ],
       "tags": [
         "database"
@@ -2653,7 +2653,7 @@
       "organization": "pharo-ai",
       "stars": 0,
       "categories": [
-        "Untagged"
+        "AI"
       ],
       "tags": [
         "linear-algebra",
@@ -2738,7 +2738,7 @@
       "organization": "pharo-ai",
       "stars": 0,
       "categories": [
-        "Untagged"
+        "AI"
       ],
       "tags": [
         "ai"
@@ -2794,7 +2794,7 @@
       "organization": "pharo-spec",
       "stars": 0,
       "categories": [
-        "Untagged"
+        "UI"
       ],
       "tags": [
         "ui"
@@ -2813,7 +2813,7 @@
       "organization": "pharo-spec",
       "stars": 2,
       "categories": [
-        "Untagged"
+        "UI"
       ],
       "tags": [
         "ui"
@@ -2832,7 +2832,7 @@
       "organization": "pharo-spec",
       "stars": 0,
       "categories": [
-        "Untagged"
+        "UI"
       ],
       "tags": [
         "ui"
@@ -2920,7 +2920,7 @@
       "organization": "pharo-ai",
       "stars": 2,
       "categories": [
-        "Untagged"
+        "AI"
       ],
       "tags": [
         "ai"
@@ -2939,7 +2939,7 @@
       "organization": "pharo-ai",
       "stars": 0,
       "categories": [
-        "Untagged"
+        "AI"
       ],
       "tags": [
         "ai"
@@ -2958,7 +2958,7 @@
       "organization": "pharo-graphics",
       "stars": 0,
       "categories": [
-        "Untagged"
+        "Graphics & Visualization"
       ],
       "tags": [
         "graphics"
@@ -3017,7 +3017,7 @@
       "organization": "pharo-ide",
       "stars": 2,
       "categories": [
-        "Untagged"
+        "Development Environment"
       ],
       "tags": [
         "ide"
@@ -3053,7 +3053,7 @@
       "organization": "pharo-nosql",
       "stars": 8,
       "categories": [
-        "Untagged"
+        "Data & Databases"
       ],
       "tags": [
         "database"
@@ -3171,7 +3171,7 @@
       "organization": "pharo-pkg",
       "stars": 0,
       "categories": [
-        "Untagged"
+        "Uncategorized"
       ],
       "tags": [
         "package-management"
@@ -3190,7 +3190,7 @@
       "organization": "pharo-graphics",
       "stars": 0,
       "categories": [
-        "Untagged"
+        "Graphics & Visualization"
       ],
       "tags": [
         "graphics"
@@ -3249,7 +3249,7 @@
       "organization": "pharo-nosql",
       "stars": 0,
       "categories": [
-        "Untagged"
+        "Data & Databases"
       ],
       "tags": [
         "database"
@@ -3266,7 +3266,7 @@
       "repository_url": "https://github.com/pharo-project/pharo",
       "project_url": "https://github.com/pharo-project/pharo",
       "organization": "pharo-project",
-      "stars": 1497,
+      "stars": 1498,
       "categories": [
         "Uncategorized"
       ],
@@ -3302,7 +3302,7 @@
       "standard": false,
       "status": "no-release",
       "artifacts": [],
-      "last_updated": "2026-10-20T11:56:26Z",
+      "last_updated": "2026-10-21T07:40:36Z",
       "update_age": "Recent"
     },
     {
@@ -3371,7 +3371,7 @@
       "organization": "pharo-llm",
       "stars": 1,
       "categories": [
-        "Untagged"
+        "AI"
       ],
       "tags": [
         "ai",
@@ -3452,7 +3452,7 @@
       "organization": "pharo-llm",
       "stars": 0,
       "categories": [
-        "Untagged"
+        "AI"
       ],
       "tags": [
         "ai",
@@ -3654,7 +3654,7 @@
       "organization": "pharo-pkg",
       "stars": 0,
       "categories": [
-        "Untagged"
+        "Uncategorized"
       ],
       "tags": [
         "package-management"
@@ -3673,7 +3673,7 @@
       "organization": "pharo-pkg",
       "stars": 0,
       "categories": [
-        "Untagged"
+        "Uncategorized"
       ],
       "tags": [
         "package-management"
@@ -3869,7 +3869,7 @@
       "organization": "pharo-llm",
       "stars": 0,
       "categories": [
-        "Untagged"
+        "AI"
       ],
       "tags": [
         "ai",
@@ -4090,7 +4090,7 @@
       "organization": "pharo-llm",
       "stars": 0,
       "categories": [
-        "Untagged"
+        "AI"
       ],
       "tags": [
         "pharo-llm",
@@ -4112,7 +4112,7 @@
       "organization": "pharo-llm",
       "stars": 0,
       "categories": [
-        "Untagged"
+        "AI"
       ],
       "tags": [
         "ai",
@@ -4231,7 +4231,7 @@
       "organization": "pharo-rdbms",
       "stars": 11,
       "categories": [
-        "Untagged"
+        "Data & Databases"
       ],
       "tags": [
         "database"
@@ -4579,7 +4579,7 @@
       "organization": "pharo-llm",
       "stars": 0,
       "categories": [
-        "Untagged"
+        "AI"
       ],
       "tags": [
         "ai",
@@ -4755,7 +4755,7 @@
       "organization": "pharo-project",
       "stars": 113,
       "categories": [
-        "Untagged"
+        "Uncategorized"
       ],
       "tags": [
         "pharo-vm",
@@ -4899,7 +4899,7 @@
       "standard": false,
       "status": "no-index",
       "artifacts": [],
-      "last_updated": "2026-10-20T21:23:42Z",
+      "last_updated": "2026-10-21T03:37:50Z",
       "update_age": "Recent"
     },
     {
@@ -4944,7 +4944,7 @@
       "organization": "SeasideSt",
       "stars": 0,
       "categories": [
-        "Untagged"
+        "Web"
       ],
       "tags": [
         "web"
@@ -5046,7 +5046,7 @@
       "organization": "pillar-markup",
       "stars": 0,
       "categories": [
-        "Untagged"
+        "Uncategorized"
       ],
       "tags": [
         "utilities"
@@ -5065,7 +5065,7 @@
       "organization": "pillar-markup",
       "stars": 0,
       "categories": [
-        "Untagged"
+        "Uncategorized"
       ],
       "tags": [
         "utilities"
@@ -5106,7 +5106,7 @@
       "organization": "pillar-markup",
       "stars": 0,
       "categories": [
-        "Untagged"
+        "Uncategorized"
       ],
       "tags": [
         "utilities"
@@ -5125,7 +5125,7 @@
       "organization": "pharo-pkg",
       "stars": 0,
       "categories": [
-        "Untagged"
+        "Uncategorized"
       ],
       "tags": [
         "package-management"
@@ -5187,7 +5187,7 @@
       "organization": "pharo-llm",
       "stars": 0,
       "categories": [
-        "Untagged"
+        "AI"
       ],
       "tags": [
         "ai",
@@ -5267,7 +5267,7 @@
       "organization": "pharo-graphics",
       "stars": 4,
       "categories": [
-        "Untagged"
+        "Graphics & Visualization"
       ],
       "tags": [
         "graphics"
@@ -5286,7 +5286,7 @@
       "organization": "pharo-graphics",
       "stars": 1,
       "categories": [
-        "Untagged"
+        "Graphics & Visualization"
       ],
       "tags": [
         "graphics"
@@ -5305,7 +5305,7 @@
       "organization": "pharo-graphics",
       "stars": 1,
       "categories": [
-        "Untagged"
+        "Graphics & Visualization"
       ],
       "tags": [
         "graphics"
@@ -5324,7 +5324,7 @@
       "organization": "pharo-graphics",
       "stars": 1,
       "categories": [
-        "Untagged"
+        "Graphics & Visualization"
       ],
       "tags": [
         "graphics"
@@ -5449,7 +5449,7 @@
       "organization": "SeasideSt",
       "stars": 1,
       "categories": [
-        "Untagged"
+        "Web"
       ],
       "tags": [
         "web"
@@ -5468,7 +5468,7 @@
       "organization": "SeasideSt",
       "stars": 7,
       "categories": [
-        "Untagged"
+        "Web"
       ],
       "tags": [
         "web"
@@ -5487,7 +5487,7 @@
       "organization": "SeasideSt",
       "stars": 1,
       "categories": [
-        "Untagged"
+        "Web"
       ],
       "tags": [
         "web"
@@ -5506,7 +5506,7 @@
       "organization": "SeasideSt",
       "stars": 1,
       "categories": [
-        "Untagged"
+        "Web"
       ],
       "tags": [
         "web"
@@ -5566,7 +5566,7 @@
       "organization": "pharo-spec",
       "stars": 2,
       "categories": [
-        "Untagged"
+        "UI"
       ],
       "tags": [
         "ui"
@@ -5669,7 +5669,7 @@
       "organization": "pharo-spec",
       "stars": 2,
       "categories": [
-        "Untagged"
+        "UI"
       ],
       "tags": [
         "ui"
@@ -5710,7 +5710,7 @@
       "organization": "pharo-spec",
       "stars": 3,
       "categories": [
-        "Untagged"
+        "UI"
       ],
       "tags": [
         "ui"
@@ -5749,7 +5749,7 @@
       "organization": "pharo-spec",
       "stars": 4,
       "categories": [
-        "Untagged"
+        "UI"
       ],
       "tags": [
         "ui"
@@ -5855,7 +5855,7 @@
       "organization": "pharo-ai",
       "stars": 0,
       "categories": [
-        "Untagged"
+        "AI"
       ],
       "tags": [
         "ai"
@@ -5874,7 +5874,7 @@
       "organization": "pharo-ide",
       "stars": 1,
       "categories": [
-        "Untagged"
+        "Development Environment"
       ],
       "tags": [
         "ide"
@@ -6041,7 +6041,7 @@
       "organization": "pharo-vcs",
       "stars": 0,
       "categories": [
-        "Untagged"
+        "Source Code & Version Control"
       ],
       "tags": [
         "version-control"
@@ -6060,7 +6060,7 @@
       "organization": "pharo-vcs",
       "stars": 0,
       "categories": [
-        "Untagged"
+        "Source Code & Version Control"
       ],
       "tags": [
         "version-control"
@@ -6079,7 +6079,7 @@
       "organization": "pharo-vcs",
       "stars": 0,
       "categories": [
-        "Untagged"
+        "Source Code & Version Control"
       ],
       "tags": [
         "version-control"
@@ -6098,7 +6098,7 @@
       "organization": "pharo-vcs",
       "stars": 0,
       "categories": [
-        "Untagged"
+        "Source Code & Version Control"
       ],
       "tags": [
         "version-control"
@@ -6117,7 +6117,7 @@
       "organization": "pharo-vcs",
       "stars": 0,
       "categories": [
-        "Untagged"
+        "Source Code & Version Control"
       ],
       "tags": [
         "version-control"
@@ -6136,7 +6136,7 @@
       "organization": "pharo-vcs",
       "stars": 0,
       "categories": [
-        "Untagged"
+        "Source Code & Version Control"
       ],
       "tags": [
         "version-control"
@@ -6155,7 +6155,7 @@
       "organization": "pharo-vcs",
       "stars": 0,
       "categories": [
-        "Untagged"
+        "Source Code & Version Control"
       ],
       "tags": [
         "version-control"
@@ -6174,7 +6174,7 @@
       "organization": "pharo-vcs",
       "stars": 0,
       "categories": [
-        "Untagged"
+        "Source Code & Version Control"
       ],
       "tags": [
         "version-control"
@@ -6193,7 +6193,7 @@
       "organization": "pharo-vcs",
       "stars": 0,
       "categories": [
-        "Untagged"
+        "Source Code & Version Control"
       ],
       "tags": [
         "version-control"
@@ -6212,7 +6212,7 @@
       "organization": "pharo-vcs",
       "stars": 0,
       "categories": [
-        "Untagged"
+        "Source Code & Version Control"
       ],
       "tags": [
         "version-control"
@@ -6231,7 +6231,7 @@
       "organization": "pharo-vcs",
       "stars": 0,
       "categories": [
-        "Untagged"
+        "Source Code & Version Control"
       ],
       "tags": [
         "version-control"
@@ -6250,7 +6250,7 @@
       "organization": "pharo-vcs",
       "stars": 0,
       "categories": [
-        "Untagged"
+        "Source Code & Version Control"
       ],
       "tags": [
         "version-control"
@@ -6328,7 +6328,7 @@
       "organization": "pillar-markup",
       "stars": 0,
       "categories": [
-        "Untagged"
+        "Uncategorized"
       ],
       "tags": [
         "utilities"
@@ -6347,7 +6347,7 @@
       "organization": "pillar-markup",
       "stars": 0,
       "categories": [
-        "Untagged"
+        "Uncategorized"
       ],
       "tags": [
         "utilities"
@@ -6366,7 +6366,7 @@
       "organization": "pillar-markup",
       "stars": 0,
       "categories": [
-        "Untagged"
+        "Uncategorized"
       ],
       "tags": [
         "utilities"
@@ -6385,7 +6385,7 @@
       "organization": "pharo-completion",
       "stars": 0,
       "categories": [
-        "Untagged"
+        "Development Environment"
       ],
       "tags": [
         "development-environment"
@@ -6404,7 +6404,7 @@
       "organization": "pharo-vcs",
       "stars": 34,
       "categories": [
-        "Untagged"
+        "Source Code & Version Control"
       ],
       "tags": [
         "version-control"
@@ -6457,7 +6457,7 @@
       "organization": "pharo-graphics",
       "stars": 31,
       "categories": [
-        "Untagged"
+        "Graphics & Visualization"
       ],
       "tags": [
         "graphics"
@@ -6520,7 +6520,7 @@
       "organization": "pharo-completion",
       "stars": 0,
       "categories": [
-        "Untagged"
+        "Development Environment"
       ],
       "tags": [
         "completion",
@@ -6590,7 +6590,7 @@
       "organization": "pharo-completion",
       "stars": 0,
       "categories": [
-        "Untagged"
+        "Development Environment"
       ],
       "tags": [
         "development-environment"
@@ -6609,7 +6609,7 @@
       "organization": "pharo-ai",
       "stars": 2,
       "categories": [
-        "Untagged"
+        "AI"
       ],
       "tags": [
         "ai"
@@ -6652,7 +6652,7 @@
       "organization": "pharo-ai",
       "stars": 17,
       "categories": [
-        "Untagged"
+        "AI"
       ],
       "tags": [
         "wiki",
