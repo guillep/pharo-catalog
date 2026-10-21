@@ -1,4 +1,5 @@
 import json
+import shutil
 import tempfile
 import unittest
 from pathlib import Path
@@ -82,14 +83,6 @@ class GenerateTests(unittest.TestCase):
         self.assertTrue(generate.is_special_repository({"name": "github-pages"}))
         self.assertFalse(generate.is_special_repository({"name": "pharo"}))
 
-    def test_pharo_topic_matching_is_case_insensitive_and_exact(self):
-        class TopicClient:
-            def repository_topics(self, full_name):
-                return ["Pharo", "smalltalk"]
-
-        client = TopicClient()
-        self.assertTrue(generate.has_pharo_topic(client, {"full_name": "example/demo"}))
-
     def test_organization_tags_are_applied_to_discovered_repositories(self):
         class TopicClient:
             def repository_topics(self, full_name):
@@ -113,6 +106,49 @@ class GenerateTests(unittest.TestCase):
         )
         self.assertIn("ide", project["tags"])
         self.assertEqual(project["categories"], ["Development Environment"])
+
+    def test_organization_mapping_tag_categorizes_repository_without_github_topics(self):
+        repository = {
+            "name": "github-api",
+            "full_name": "pharo-vcs/github-api",
+            "html_url": "https://github.com/pharo-vcs/github-api",
+            "description": "Github API bindings for Pharo",
+            "fork": False,
+            "topics": [],
+            "release": None,
+            "last_updated": "2020-10-23T11:56:20Z",
+        }
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root / "assets").mkdir()
+            shutil.copyfile(generate.LOGO_PATH, root / "assets" / "pharo-beacon.svg")
+            shutil.copyfile(Path(__file__).parents[1] / "assets" / "favicon.ico", root / "assets" / "favicon.ico")
+            (root / "registry.yml").write_text(
+                "organizations:\n  - name: pharo-vcs\n    tags: [version-control]\npackages: []\n",
+                encoding="utf-8",
+            )
+            config_path = root / "config.yml"
+            config_path.write_text(
+                "registry: registry.yml\n"
+                "github:\n  token_env: GITHUB_TOKEN\n"
+                f"index:\n  output_directory: {root / 'site'}\n"
+                "categories:\n"
+                "  - name: Source Code & Version Control\n"
+                "    keywords: [version-control]\n",
+                encoding="utf-8",
+            )
+
+            with patch.object(generate, "mock_repositories", return_value=[repository]), patch.object(
+                generate, "GitHubClient", side_effect=AssertionError("network client must not be used")
+            ):
+                generate.generate(config_path, mock=True)
+
+            report = json.loads((root / "site" / "catalog.json").read_text(encoding="utf-8"))
+
+        project = report["projects"][0]
+        self.assertEqual(project["tags"], ["version-control"])
+        self.assertEqual(project["categories"], ["Source Code & Version Control"])
 
     def test_registry_entry_overrides_discovered_metadata(self):
         project = generate.merge_project_metadata(

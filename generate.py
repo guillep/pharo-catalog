@@ -99,7 +99,7 @@ def mock_repositories() -> list[dict]:
     }, {
         "name": "legacy-tool", "full_name": "pharo-project/legacy-tool",
         "html_url": "https://github.com/pharo-project/legacy-tool",
-        "description": "A mock repository without the pharo topic.", "fork": False,
+        "description": "A mock repository without topic tags.", "fork": False,
         "topics": ["tools"],
         "release": {"tag_name": "v1.0.0", "assets": []}, "last_updated": "2023-01-01T00:00:00Z",
     }]
@@ -300,10 +300,6 @@ def is_special_repository(repository: dict) -> bool:
     return name == ".github" or name == "github-pages" or name.endswith(".github.io")
 
 
-def has_pharo_topic(client, repository: dict) -> bool:
-    return any(topic.casefold() == "pharo" for topic in client.repository_topics(repository["full_name"]))
-
-
 def update_age(date_text: str) -> str:
     if not date_text:
         return "Unknown"
@@ -382,7 +378,7 @@ def process_repository(
         "project_url": repository.get("html_url", ""),
         "organization": full_name.split("/", 1)[0] if "/" in full_name else "",
         "stars": repository.get("stargazers_count", 0),
-        "categories": [UNTAGGED_CATEGORY] if repository.get("untagged") else derive_categories(tags, category_rules or []),
+        "categories": derive_categories(tags, category_rules or []) if tags else [UNTAGGED_CATEGORY],
         "tags": tags,
         "standard": False,
         "status": "no-release",
@@ -570,14 +566,14 @@ def render_documentation() -> str:
         <section><h2>How do I make my project not hidden</h2><p>The catalog hides projects without releases by default. Use the reusable <a href="https://github.com/guillep/pharo-release">guillep/pharo-release</a> action to publish your package release and its standard <code>index.html</code> asset.</p><p>A project with a release but no index is marked as <strong>Project without standard release</strong>.</p></section>
         <section><h2>How to make my project list correct information</h2><p>Keep the registry name and description concise and accurate. Add useful free-form tags to the registry and maintain your repository topics. Topics and explicit tags are merged for search.</p><p>Categories are derived automatically from configured topic keywords, so categories should not be added to package entries. Use the canonical repository URL and keep your release asset named <code>index.html</code>.</p></section>
         <section><h2>How do GitHub topics and tags work?</h2><p>Topics configured on your GitHub repository become tags in the catalog. Registry tags from <code>registry.yml</code> are combined with those topics, and the result is used for search and category derivation.</p><p>The topic-to-category mapping is maintained in <a href="https://github.com/guillep/pharo-catalog/blob/main/config.yml#L18">config.yml</a>. If a topic should belong to a different category, propose the mapping change with a pull request to <a href="https://github.com/guillep/pharo-catalog">guillep/pharo-catalog</a>.</p></section>
-        <section><h2>What do Uncategorized and Untagged mean?</h2><p><strong>Uncategorized</strong> means the project has tags, but none match a configured category keyword. <strong>Untagged</strong> means the project was discovered from an organization but does not have the required <code>pharo</code> topic.</p></section>
+        <section><h2>What do Uncategorized and Untagged mean?</h2><p><strong>Uncategorized</strong> means the project has tags, but none match a configured category keyword. <strong>Untagged</strong> means the project has no GitHub topics or configured tags.</p></section>
         <section><h2>How can I consume this info programmatically?</h2><p>The generated catalog exposes machine-readable exports beside the website: <a href="catalog.json"><code>catalog.json</code></a> for structured consumers and <a href="catalog.csv"><code>catalog.csv</code></a> for spreadsheets and simple data pipelines.</p><p>Each project record includes its name, description, categories, tags, status, local project URL, and repository URL. The JSON export also includes generation errors. These files are static and can be fetched directly from the published catalog without authentication.</p></section>
     </article>
     <footer class="catalog-footer">Copyright © 2026 Pharo contributors. <a href="https://github.com/guillep/pharo-catalog">guillep/pharo-catalog</a>.</footer>
 </main></body></html>
 """.replace("packages.yml", "registry.yml").replace(
     "Projects hosted in one of the managed GitHub organizations are discovered automatically.",
-    "Projects hosted in one of the managed GitHub organizations are discovered automatically when their repository has the exact <code>pharo</code> topic.",
+    "Projects hosted in managed GitHub organizations are discovered automatically. GitHub topics and configured organization or registry tags are mapped to categories using the keywords in config.yml.",
 )
 
 
@@ -594,10 +590,15 @@ def generate(config_path: Path, mock: bool = False) -> tuple[int, int]:
     registry_path = config_path.parent / config.get("registry", "registry.yml")
     registry_data = load_registry_data(registry_path)
     registry = registry_data["packages"]
-    organizations = (
-        [{"name": owner, "exclude": set()} for owner in sorted({repo["full_name"].split("/", 1)[0] for repo in mock_data})]
-        if mock else registry_data["organizations"]
-    )
+    if mock:
+        configured_organizations = {item["name"]: item for item in registry_data["organizations"]}
+        mock_owners = sorted({repo["full_name"].split("/", 1)[0] for repo in mock_data})
+        organizations = [
+            {**configured_organizations.get(owner, {"name": owner, "tags": []}), "exclude": set()}
+            for owner in mock_owners
+        ]
+    else:
+        organizations = registry_data["organizations"]
     output = Path(index_config.get("output_directory", "site"))
     if output.exists():
         shutil.rmtree(output)
@@ -629,7 +630,6 @@ def generate(config_path: Path, mock: bool = False) -> tuple[int, int]:
                 continue
             try:
                 identity = normalize_repository_url(repository["html_url"])
-                repository["untagged"] = not has_pharo_topic(client, repository)
                 if identity in excluded:
                     continue
                 repositories.setdefault(identity, repository)
@@ -783,7 +783,7 @@ function isHidden(project) {
     return (hideNoRelease.checked && hasNoRelease) || (hideNonStandard.checked && isNonStandard);
 }
 function renderFilterList(container, values, selected, setter) {
-    container.innerHTML = values.map(([value, count]) => { const label = value === '' ? 'All' : value === 'Hidden' ? '👁 See hidden' : value; const help = value === 'Uncategorized' ? 'Tags did not match a configured category.' : value === 'Untagged' ? 'Organization repository does not have the pharo topic.' : ''; const question = help ? `<span class="ms-1 text-secondary" data-bs-toggle="tooltip" data-bs-placement="right" title="${escapeHtml(help)}" aria-label="About ${escapeHtml(value)}" role="img" tabindex="0"><svg width="14" height="14" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="7" fill="currentColor"/><text x="8" y="12" text-anchor="middle" font-size="11" fill="white">?</text></svg></span>` : ''; return `<button type="button" class="filter-option list-group-item list-group-item-action d-flex justify-content-between align-items-center ${selected === value ? 'active' : ''} ${value === 'Hidden' ? 'hidden-option' : ''}" data-value="${escapeHtml(value)}"><span>${escapeHtml(label)}${question}</span><span class="filter-count badge bg-secondary rounded-pill">${count}</span></button>`; }).join('');
+    container.innerHTML = values.map(([value, count]) => { const label = value === '' ? 'All' : value === 'Hidden' ? '👁 See hidden' : value; const help = value === 'Uncategorized' ? 'Tags did not match a configured category.' : value === 'Untagged' ? 'Project has no GitHub topics or configured tags.' : ''; const question = help ? `<span class="ms-1 text-secondary" data-bs-toggle="tooltip" data-bs-placement="right" title="${escapeHtml(help)}" aria-label="About ${escapeHtml(value)}" role="img" tabindex="0"><svg width="14" height="14" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="7" fill="currentColor"/><text x="8" y="12" text-anchor="middle" font-size="11" fill="white">?</text></svg></span>` : ''; return `<button type="button" class="filter-option list-group-item list-group-item-action d-flex justify-content-between align-items-center ${selected === value ? 'active' : ''} ${value === 'Hidden' ? 'hidden-option' : ''}" data-value="${escapeHtml(value)}"><span>${escapeHtml(label)}${question}</span><span class="filter-count badge bg-secondary rounded-pill">${count}</span></button>`; }).join('');
     container.querySelectorAll('.filter-option').forEach((button) => button.addEventListener('click', () => {
         setter(button.dataset.value);
         currentPage = 1;
