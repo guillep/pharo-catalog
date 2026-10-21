@@ -2092,8 +2092,8 @@
       "standard": false,
       "status": "no-index",
       "artifacts": [],
-      "last_updated": "2026-09-04T18:56:12Z",
-      "update_age": "3 months"
+      "last_updated": "2026-10-20T18:45:48Z",
+      "update_age": "Recent"
     },
     {
       "name": "icetray",
@@ -3862,6 +3862,26 @@
       "update_age": "Recent"
     },
     {
+      "name": "pharo-labels",
+      "description": "No description provided.",
+      "repository_url": "https://github.com/pharo-llm/pharo-labels",
+      "project_url": "https://github.com/pharo-llm/pharo-labels",
+      "organization": "pharo-llm",
+      "stars": 0,
+      "categories": [
+        "Untagged"
+      ],
+      "tags": [
+        "ai",
+        "llm"
+      ],
+      "standard": false,
+      "status": "no-release",
+      "artifacts": [],
+      "last_updated": "2026-10-20T20:20:17Z",
+      "update_age": "Recent"
+    },
+    {
       "name": "pharo-launcher",
       "description": "Lets you manage your pharo images and download new ones",
       "repository_url": "https://github.com/pharo-project/pharo-launcher",
@@ -4879,7 +4899,7 @@
       "standard": false,
       "status": "no-index",
       "artifacts": [],
-      "last_updated": "2026-10-19T23:12:44Z",
+      "last_updated": "2026-10-20T21:23:42Z",
       "update_age": "Recent"
     },
     {
@@ -5135,7 +5155,7 @@
       "standard": false,
       "status": "no-release",
       "artifacts": [],
-      "last_updated": "2026-10-15T10:09:08Z",
+      "last_updated": "2026-10-20T18:31:31Z",
       "update_age": "Recent"
     },
     {
@@ -5313,7 +5333,7 @@
       "status": "no-index",
       "artifacts": [],
       "last_updated": "2026-09-20T14:24:37Z",
-      "update_age": "Recent"
+      "update_age": "3 months"
     },
     {
       "name": "Scheduler",
