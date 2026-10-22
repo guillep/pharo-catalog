@@ -82,7 +82,7 @@
       "status": "no-index",
       "artifacts": [],
       "last_updated": "2026-09-21T18:34:07Z",
-      "update_age": "Recent"
+      "update_age": "3 months"
     },
     {
       "name": "aleph",
@@ -3283,7 +3283,7 @@
       "standard": false,
       "status": "no-index",
       "artifacts": [],
-      "last_updated": "2026-10-19T17:52:16Z",
+      "last_updated": "2026-10-21T19:16:18Z",
       "update_age": "Recent"
     },
     {
@@ -5700,7 +5700,7 @@
       "status": "no-release",
       "artifacts": [],
       "last_updated": "2026-09-21T08:08:03Z",
-      "update_age": "Recent"
+      "update_age": "3 months"
     },
     {
       "name": "Spec-QA",
