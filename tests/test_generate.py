@@ -195,6 +195,10 @@ class GenerateTests(unittest.TestCase):
         self.assertIn("hide-non-standard", site)
         self.assertIn("Project without release", site)
         self.assertIn("Project without standard release", site)
+        self.assertIn('documentation.html#${help.target}', site)
+        self.assertIn("No release has been published.", site)
+        self.assertIn("Release is missing index.html.", site)
+        self.assertIn('d-flex justify-content-between align-items-center', site)
         self.assertIn("<h2 class=\"card-title h5\"><a href=", site)
         self.assertIn("filter-menu-bar", site)
         self.assertIn("Copyright © 2026 Pharo contributors", site)
@@ -218,6 +222,8 @@ class GenerateTests(unittest.TestCase):
         documentation = generate.render_documentation()
         self.assertIn("How to get my project here", documentation)
         self.assertIn("How do I make my project not hidden", documentation)
+        self.assertIn('id="no-release"', documentation)
+        self.assertIn('id="no-standard-release"', documentation)
         self.assertIn("How to make my project list correct information", documentation)
 
     def test_shared_logo_asset_is_available(self):

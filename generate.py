@@ -563,7 +563,7 @@ def render_documentation() -> str:
         description: A short description of what the project does.
         tags: [pharo, tools]
         repository: https://github.com/my-org/my-project</code></pre><p>The catalog discovers the latest GitHub release and imports its <code>index.html</code> when available.</p></section>
-        <section><h2>How do I make my project not hidden</h2><p>The catalog hides projects without releases by default. Use the reusable <a href="https://github.com/guillep/pharo-release">guillep/pharo-release</a> action to publish your package release and its standard <code>index.html</code> asset.</p><p>A project with a release but no index is marked as <strong>Project without standard release</strong>.</p></section>
+        <section><h2>How do I make my project not hidden</h2><p id="no-release">The catalog hides projects without releases by default. Use the reusable <a href="https://github.com/guillep/pharo-release">guillep/pharo-release</a> action to publish your package release.</p><p id="no-standard-release">A project with a release but no standard <code>index.html</code> asset is marked as <strong>Project without standard release</strong>. Include the <code>index.html</code> asset in your release.</p></section>
         <section><h2>How to make my project list correct information</h2><p>Keep the registry name and description concise and accurate. Add useful free-form tags to the registry and maintain your repository topics. Topics and explicit tags are merged for search.</p><p>Categories are derived automatically from configured topic keywords, so categories should not be added to package entries. Use the canonical repository URL and keep your release asset named <code>index.html</code>.</p></section>
         <section><h2>How do GitHub topics and tags work?</h2><p>Topics configured on your GitHub repository become tags in the catalog. Registry tags from <code>registry.yml</code> are combined with those topics, and the result is used for search and category derivation.</p><p>The topic-to-category mapping is maintained in <a href="https://github.com/guillep/pharo-catalog/blob/main/config.yml#L18">config.yml</a>. If a topic should belong to a different category, propose the mapping change with a pull request to <a href="https://github.com/guillep/pharo-catalog">guillep/pharo-catalog</a>.</p></section>
         <section><h2>What do Uncategorized and Untagged mean?</h2><p><strong>Uncategorized</strong> means the project has tags, but none match a configured category keyword. <strong>Untagged</strong> means the project has no GitHub topics or configured tags.</p></section>
@@ -784,11 +784,15 @@ function isHidden(project) {
 }
 function renderFilterList(container, values, selected, setter) {
     container.innerHTML = values.map(([value, count]) => { const label = value === '' ? 'All' : value === 'Hidden' ? '👁 See hidden' : value; const help = value === 'Uncategorized' ? 'Tags did not match a configured category.' : value === 'Untagged' ? 'Project has no GitHub topics or configured tags.' : ''; const question = help ? `<span class="ms-1 text-secondary" data-bs-toggle="tooltip" data-bs-placement="right" title="${escapeHtml(help)}" aria-label="About ${escapeHtml(value)}" role="img" tabindex="0"><svg width="14" height="14" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="7" fill="currentColor"/><text x="8" y="12" text-anchor="middle" font-size="11" fill="white">?</text></svg></span>` : ''; return `<button type="button" class="filter-option list-group-item list-group-item-action d-flex justify-content-between align-items-center ${selected === value ? 'active' : ''} ${value === 'Hidden' ? 'hidden-option' : ''}" data-value="${escapeHtml(value)}"><span>${escapeHtml(label)}${question}</span><span class="filter-count badge bg-secondary rounded-pill">${count}</span></button>`; }).join('');
+    initTooltips(container);
     container.querySelectorAll('.filter-option').forEach((button) => button.addEventListener('click', () => {
         setter(button.dataset.value);
         currentPage = 1;
         render();
     }));
+}
+function initTooltips(container) {
+    container.querySelectorAll('[data-bs-toggle="tooltip"]').forEach((element) => bootstrap.Tooltip.getOrCreateInstance(element));
 }
 function render() {
     const candidates = baseProjects();
@@ -817,8 +821,13 @@ function render() {
     const status = standard ? 'Standard release' : project.status === 'no-release' || project.status === 'error' ? 'Project without release' : 'Project without standard release';
     const categories = (project.categories || []).map(escapeHtml).join(' · ');
     const tags = (project.tags || []).filter((value) => value.toLowerCase() !== 'pharo').map((value) => `<span class="tag">${escapeHtml(value)}</span>`).join(' ');
-    return `<div class="col-lg-4 p-0"><article class="project-card card m-2"><div class="card-body d-flex flex-column"><h2 class="card-title h5"><a href="${escapeHtml(project.project_url)}">${escapeHtml(project.name)}</a></h2><div class="d-flex flex-wrap align-items-center gap-2 mb-2"><span class="metadata">${categories}</span><div class="tags">${tags}</div></div><p class="card-text">${escapeHtml(project.description)}</p>${standard ? '' : `<div class="alert alert-warning py-2 mt-3" role="alert">⚠ ${escapeHtml(status)}</div>`}<div class="card-footer-row mt-auto pt-3 d-flex justify-content-between align-items-center"><span class="metadata">Updated: ${escapeHtml(project.update_age || 'Unknown')}</span><a class="btn btn-outline-secondary btn-sm" href="${escapeHtml(project.repository_url)}" aria-label="Repository"><i class="bi bi-github" aria-hidden="true"></i></a></div></div></article></div>`;
+    const help = project.status === 'no-release' || project.status === 'error'
+        ? { target: 'no-release', text: 'No release has been published.' }
+        : { target: 'no-standard-release', text: 'Release is missing index.html.' };
+    const warning = `<div class="alert alert-warning py-2 mt-3 d-flex justify-content-between align-items-center" role="alert"><span>⚠ ${escapeHtml(status)}</span><a class="ms-1 text-secondary flex-shrink-0" href="documentation.html#${help.target}" data-bs-toggle="tooltip" data-bs-placement="top" title="${escapeHtml(help.text)}" aria-label="${escapeHtml(help.text)}"><svg width="14" height="14" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="7" fill="currentColor"/><text x="8" y="12" text-anchor="middle" font-size="11" fill="white">?</text></svg></a></div>`;
+    return `<div class="col-lg-4 p-0"><article class="project-card card m-2"><div class="card-body d-flex flex-column"><h2 class="card-title h5"><a href="${escapeHtml(project.project_url)}">${escapeHtml(project.name)}</a></h2><div class="d-flex flex-wrap align-items-center gap-2 mb-2"><span class="metadata">${categories}</span><div class="tags">${tags}</div></div><p class="card-text">${escapeHtml(project.description)}</p>${standard ? '' : warning}<div class="card-footer-row mt-auto pt-3 d-flex justify-content-between align-items-center"><span class="metadata">Updated: ${escapeHtml(project.update_age || 'Unknown')}</span><a class="btn btn-outline-secondary btn-sm" href="${escapeHtml(project.repository_url)}" aria-label="Repository"><i class="bi bi-github" aria-hidden="true"></i></a></div></div></article></div>`;
   }).join('');
+    initTooltips(grid);
     pagination.innerHTML = Array.from({length: pages}, (_, index) => `<button class="page-button btn ${currentPage === index + 1 ? 'btn-primary' : 'btn-outline-primary'}" data-page="${index + 1}">${index + 1}</button>`).join('');
     pagination.querySelectorAll('.page-button').forEach((button) => button.addEventListener('click', () => { currentPage = Number(button.dataset.page); render(); window.scrollTo({top: 0, behavior: 'smooth'}); }));
     summary.textContent = `${projects.length} of ${data.projects.length} projects${data.errors.length ? ` · ${data.errors.length} discovery errors` : ''}`;
@@ -830,7 +839,6 @@ sort.addEventListener('change', () => { selectedSort = sort.value; localStorage.
 hideNoRelease.addEventListener('change', () => { localStorage.setItem('catalog-hide-no-release', hideNoRelease.checked); currentPage = 1; render(); });
 hideNonStandard.addEventListener('change', () => { localStorage.setItem('catalog-hide-non-standard', hideNonStandard.checked); currentPage = 1; render(); });
 document.getElementById('theme-toggle').addEventListener('change', (event) => { const theme = event.target.checked ? 'dark' : 'light'; document.documentElement.dataset.theme = theme; localStorage.setItem('catalog-theme', theme); });
-document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach((element) => new bootstrap.Tooltip(element));
 filters.addEventListener('shown.bs.collapse', () => { sidebarToggle.textContent = 'Toggle Categories'; });
 filters.addEventListener('hidden.bs.collapse', () => { sidebarToggle.textContent = 'Toggle Categories'; });
 filters.addEventListener('shown.bs.collapse', () => { catalogContent.classList.remove('col-md-12'); catalogContent.classList.add('col-md-9'); });
