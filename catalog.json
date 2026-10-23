@@ -498,7 +498,7 @@
         "ide"
       ],
       "standard": false,
-      "status": "no-release",
+      "status": "no-index",
       "artifacts": [],
       "last_updated": "2020-02-18T18:58:55Z",
       "update_age": "Over a year"
@@ -639,7 +639,7 @@
       ],
       "tags": [],
       "standard": false,
-      "status": "no-release",
+      "status": "no-index",
       "artifacts": [],
       "last_updated": "2023-10-19T18:13:52Z",
       "update_age": "Over a year"
@@ -1259,7 +1259,7 @@
         "cryptography"
       ],
       "standard": false,
-      "status": "no-release",
+      "status": "no-index",
       "artifacts": [],
       "last_updated": "2026-10-06T12:24:16Z",
       "update_age": "Recent"
@@ -1710,7 +1710,7 @@
       ],
       "tags": [],
       "standard": false,
-      "status": "no-release",
+      "status": "no-index",
       "artifacts": [],
       "last_updated": "2020-12-01T10:04:20Z",
       "update_age": "Over a year"
@@ -1749,7 +1749,7 @@
         "version-control"
       ],
       "standard": false,
-      "status": "no-release",
+      "status": "no-index",
       "artifacts": [],
       "last_updated": "2020-10-23T11:56:20Z",
       "update_age": "Over a year"
@@ -2167,7 +2167,7 @@
       ],
       "tags": [],
       "standard": false,
-      "status": "no-release",
+      "status": "no-index",
       "artifacts": [],
       "last_updated": "2020-01-07T14:16:39Z",
       "update_age": "Over a year"
@@ -2496,7 +2496,7 @@
         "ai"
       ],
       "standard": false,
-      "status": "no-release",
+      "status": "no-index",
       "artifacts": [],
       "last_updated": "2025-09-29T11:39:54Z",
       "update_age": "Over a year"
@@ -3283,7 +3283,7 @@
       "standard": false,
       "status": "no-index",
       "artifacts": [],
-      "last_updated": "2026-10-21T19:16:18Z",
+      "last_updated": "2026-10-22T19:02:14Z",
       "update_age": "Recent"
     },
     {
@@ -3439,7 +3439,7 @@
         "pharo"
       ],
       "standard": false,
-      "status": "no-release",
+      "status": "no-index",
       "artifacts": [],
       "last_updated": "2026-07-26T08:46:06Z",
       "update_age": "3 months"
@@ -4762,7 +4762,7 @@
         "smalltalk"
       ],
       "standard": false,
-      "status": "no-release",
+      "status": "no-index",
       "artifacts": [],
       "last_updated": "2025-11-14T09:45:21Z",
       "update_age": "This year"
@@ -5155,7 +5155,7 @@
       "standard": false,
       "status": "no-release",
       "artifacts": [],
-      "last_updated": "2026-10-21T14:15:09Z",
+      "last_updated": "2026-10-22T21:05:29Z",
       "update_age": "Recent"
     },
     {
@@ -5410,7 +5410,7 @@
         "ide"
       ],
       "standard": false,
-      "status": "no-release",
+      "status": "no-index",
       "artifacts": [],
       "last_updated": "2026-07-29T09:47:32Z",
       "update_age": "3 months"
@@ -5772,7 +5772,7 @@
       ],
       "tags": [],
       "standard": false,
-      "status": "no-release",
+      "status": "no-index",
       "artifacts": [],
       "last_updated": "2018-04-06T13:22:55Z",
       "update_age": "Over a year"
@@ -5842,7 +5842,7 @@
         "stylesheet"
       ],
       "standard": false,
-      "status": "no-release",
+      "status": "no-index",
       "artifacts": [],
       "last_updated": "2022-02-02T09:55:42Z",
       "update_age": "Over a year"
@@ -5901,7 +5901,7 @@
         "programming-language"
       ],
       "standard": false,
-      "status": "no-release",
+      "status": "no-index",
       "artifacts": [],
       "last_updated": "2024-07-02T11:44:47Z",
       "update_age": "Over a year"
@@ -6028,7 +6028,7 @@
         "telepharo"
       ],
       "standard": false,
-      "status": "no-release",
+      "status": "no-index",
       "artifacts": [],
       "last_updated": "2022-12-23T13:10:41Z",
       "update_age": "Over a year"
@@ -6066,7 +6066,7 @@
         "version-control"
       ],
       "standard": false,
-      "status": "no-release",
+      "status": "no-index",
       "artifacts": [],
       "last_updated": "2018-06-27T12:49:59Z",
       "update_age": "Over a year"
