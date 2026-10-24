@@ -125,7 +125,7 @@
       "status": "no-index",
       "artifacts": [],
       "last_updated": "2026-09-23T13:57:21Z",
-      "update_age": "Recent"
+      "update_age": "3 months"
     },
     {
       "name": "app-deployer",
@@ -2522,7 +2522,7 @@
       "status": "no-index",
       "artifacts": [],
       "last_updated": "2026-09-23T07:23:13Z",
-      "update_age": "Recent"
+      "update_age": "3 months"
     },
     {
       "name": "Microdown-Agenda",
@@ -2822,7 +2822,7 @@
       "status": "no-index",
       "artifacts": [],
       "last_updated": "2026-09-23T06:44:08Z",
-      "update_age": "Recent"
+      "update_age": "3 months"
     },
     {
       "name": "NewTools-ProcessBrowser",
@@ -3546,8 +3546,8 @@
       "standard": false,
       "status": "no-release",
       "artifacts": [],
-      "last_updated": "2025-11-20T10:33:23Z",
-      "update_age": "This year"
+      "last_updated": "2026-10-23T10:29:52Z",
+      "update_age": "Recent"
     },
     {
       "name": "pharo-ci",
@@ -4676,7 +4676,7 @@
       "standard": false,
       "status": "no-index",
       "artifacts": [],
-      "last_updated": "2026-10-22T07:47:42Z",
+      "last_updated": "2026-10-23T10:06:15Z",
       "update_age": "Recent"
     },
     {
@@ -4899,7 +4899,7 @@
       "standard": false,
       "status": "no-index",
       "artifacts": [],
-      "last_updated": "2026-10-21T03:37:50Z",
+      "last_updated": "2026-10-23T23:54:37Z",
       "update_age": "Recent"
     },
     {
