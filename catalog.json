@@ -1922,7 +1922,7 @@
       "standard": false,
       "status": "no-release",
       "artifacts": [],
-      "last_updated": "2026-10-05T11:44:53Z",
+      "last_updated": "2026-10-24T15:32:43Z",
       "update_age": "Recent"
     },
     {
@@ -3442,7 +3442,7 @@
       "status": "no-index",
       "artifacts": [],
       "last_updated": "2026-07-26T08:46:06Z",
-      "update_age": "3 months"
+      "update_age": "This year"
     },
     {
       "name": "pharo-bench-tester",
@@ -6618,7 +6618,7 @@
       "status": "no-release",
       "artifacts": [],
       "last_updated": "2026-07-26T20:23:34Z",
-      "update_age": "3 months"
+      "update_age": "This year"
     },
     {
       "name": "voyage",
