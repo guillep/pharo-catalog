@@ -1879,8 +1879,8 @@
       "standard": false,
       "status": "no-index",
       "artifacts": [],
-      "last_updated": "2026-07-09T06:23:37Z",
-      "update_age": "This year"
+      "last_updated": "2026-10-25T14:59:35Z",
+      "update_age": "Recent"
     },
     {
       "name": "group-entries",
@@ -2588,7 +2588,7 @@
       "status": "no-release",
       "artifacts": [],
       "last_updated": "2026-07-27T07:35:36Z",
-      "update_age": "3 months"
+      "update_age": "This year"
     },
     {
       "name": "Migrator",
@@ -3266,7 +3266,7 @@
       "repository_url": "https://github.com/pharo-project/pharo",
       "project_url": "https://github.com/pharo-project/pharo",
       "organization": "pharo-project",
-      "stars": 1498,
+      "stars": 1499,
       "categories": [
         "Uncategorized"
       ],
@@ -4899,7 +4899,7 @@
       "standard": false,
       "status": "no-index",
       "artifacts": [],
-      "last_updated": "2026-10-23T23:54:37Z",
+      "last_updated": "2026-10-25T22:02:33Z",
       "update_age": "Recent"
     },
     {
