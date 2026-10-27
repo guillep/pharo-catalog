@@ -241,7 +241,7 @@
       "repository_url": "https://github.com/pharo-ai/awesome-pharo-ml",
       "project_url": "https://github.com/pharo-ai/awesome-pharo-ml",
       "organization": "pharo-ai",
-      "stars": 71,
+      "stars": 72,
       "categories": [
         "AI"
       ],
@@ -362,7 +362,7 @@
       "repository_url": "https://github.com/pharo-graphics/Bloc",
       "project_url": "https://github.com/pharo-graphics/Bloc",
       "organization": "pharo-graphics",
-      "stars": 95,
+      "stars": 96,
       "categories": [
         "UI",
         "Graphics & Visualization"
@@ -1655,7 +1655,7 @@
       "repository_url": "https://github.com/pharo-rdbms/garage",
       "project_url": "https://github.com/pharo-rdbms/garage",
       "organization": "pharo-rdbms",
-      "stars": 11,
+      "stars": 12,
       "categories": [
         "Data & Databases"
       ],
@@ -3266,7 +3266,7 @@
       "repository_url": "https://github.com/pharo-project/pharo",
       "project_url": "https://github.com/pharo-project/pharo",
       "organization": "pharo-project",
-      "stars": 1499,
+      "stars": 1503,
       "categories": [
         "Uncategorized"
       ],
@@ -3283,7 +3283,7 @@
       "standard": false,
       "status": "no-index",
       "artifacts": [],
-      "last_updated": "2026-10-22T19:02:14Z",
+      "last_updated": "2026-10-26T13:44:31Z",
       "update_age": "Recent"
     },
     {
@@ -3755,7 +3755,7 @@
       "status": "no-release",
       "artifacts": [],
       "last_updated": "2025-10-26T17:31:22Z",
-      "update_age": "This year"
+      "update_age": "Over a year"
     },
     {
       "name": "pharo-fontconfig",
@@ -4169,7 +4169,7 @@
       "repository_url": "https://github.com/pharo-llm/pharo-mcp",
       "project_url": "https://github.com/pharo-llm/pharo-mcp",
       "organization": "pharo-llm",
-      "stars": 3,
+      "stars": 4,
       "categories": [
         "AI"
       ],
@@ -4710,7 +4710,7 @@
       "standard": false,
       "status": "no-release",
       "artifacts": [],
-      "last_updated": "2026-10-09T08:45:02Z",
+      "last_updated": "2026-10-26T10:47:36Z",
       "update_age": "Recent"
     },
     {
@@ -5142,7 +5142,7 @@
       "repository_url": "https://github.com/pharo-pulsar/pulsar",
       "project_url": "https://github.com/pharo-pulsar/pulsar",
       "organization": "pharo-pulsar",
-      "stars": 4,
+      "stars": 8,
       "categories": [
         "Development Environment"
       ],
