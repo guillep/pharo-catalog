@@ -380,7 +380,7 @@
       "standard": false,
       "status": "no-index",
       "artifacts": [],
-      "last_updated": "2026-10-15T01:42:31Z",
+      "last_updated": "2026-10-27T15:13:25Z",
       "update_age": "Recent"
     },
     {
@@ -441,7 +441,7 @@
       "standard": false,
       "status": "no-release",
       "artifacts": [],
-      "last_updated": "2026-06-20T06:01:17Z",
+      "last_updated": "2026-07-02T11:51:01Z",
       "update_age": "This year"
     },
     {
@@ -786,7 +786,7 @@
       "status": "no-release",
       "artifacts": [],
       "last_updated": "2026-07-29T09:59:12Z",
-      "update_age": "3 months"
+      "update_age": "This year"
     },
     {
       "name": "Containers-BinarySearchTree",
@@ -1042,7 +1042,7 @@
       "status": "no-release",
       "artifacts": [],
       "last_updated": "2026-07-29T09:59:53Z",
-      "update_age": "3 months"
+      "update_age": "This year"
     },
     {
       "name": "Containers-Queue",
@@ -1305,7 +1305,7 @@
       "status": "no-release",
       "artifacts": [],
       "last_updated": "2026-07-29T09:56:42Z",
-      "update_age": "3 months"
+      "update_age": "This year"
     },
     {
       "name": "data-imputers",
@@ -2783,7 +2783,7 @@
       "standard": false,
       "status": "no-index",
       "artifacts": [],
-      "last_updated": "2026-10-07T06:49:42Z",
+      "last_updated": "2026-10-27T14:58:48Z",
       "update_age": "Recent"
     },
     {
@@ -3266,7 +3266,7 @@
       "repository_url": "https://github.com/pharo-project/pharo",
       "project_url": "https://github.com/pharo-project/pharo",
       "organization": "pharo-project",
-      "stars": 1503,
+      "stars": 1507,
       "categories": [
         "Uncategorized"
       ],
@@ -4710,7 +4710,7 @@
       "standard": false,
       "status": "no-release",
       "artifacts": [],
-      "last_updated": "2026-10-26T10:47:36Z",
+      "last_updated": "2026-10-27T08:20:54Z",
       "update_age": "Recent"
     },
     {
@@ -4744,8 +4744,8 @@
       "standard": false,
       "status": "no-release",
       "artifacts": [],
-      "last_updated": "2026-07-01T11:39:57Z",
-      "update_age": "This year"
+      "last_updated": "2026-10-27T09:23:35Z",
+      "update_age": "Recent"
     },
     {
       "name": "pharo5-vm",
@@ -5155,7 +5155,7 @@
       "standard": false,
       "status": "no-release",
       "artifacts": [],
-      "last_updated": "2026-10-22T21:05:29Z",
+      "last_updated": "2026-10-27T18:29:42Z",
       "update_age": "Recent"
     },
     {
@@ -5413,7 +5413,7 @@
       "status": "no-index",
       "artifacts": [],
       "last_updated": "2026-07-29T09:47:32Z",
-      "update_age": "3 months"
+      "update_age": "This year"
     },
     {
       "name": "Seaside",
@@ -5635,7 +5635,7 @@
       "standard": false,
       "status": "no-index",
       "artifacts": [],
-      "last_updated": "2026-10-08T20:08:27Z",
+      "last_updated": "2026-10-27T13:19:03Z",
       "update_age": "Recent"
     },
     {
@@ -5699,8 +5699,8 @@
       "standard": false,
       "status": "no-release",
       "artifacts": [],
-      "last_updated": "2026-09-21T08:08:03Z",
-      "update_age": "3 months"
+      "last_updated": "2026-10-04T15:15:46Z",
+      "update_age": "Recent"
     },
     {
       "name": "Spec-QA",
@@ -5738,7 +5738,7 @@
       "standard": false,
       "status": "no-index",
       "artifacts": [],
-      "last_updated": "2026-09-28T13:18:57Z",
+      "last_updated": "2026-10-27T12:46:44Z",
       "update_age": "Recent"
     },
     {
@@ -5864,7 +5864,7 @@
       "status": "no-release",
       "artifacts": [],
       "last_updated": "2026-07-29T09:58:10Z",
-      "update_age": "3 months"
+      "update_age": "This year"
     },
     {
       "name": "SystemCommands",
@@ -6553,8 +6553,8 @@
       "standard": false,
       "status": "no-index",
       "artifacts": [],
-      "last_updated": "2026-05-07T13:35:10Z",
-      "update_age": "This year"
+      "last_updated": "2026-10-27T14:08:43Z",
+      "update_age": "Recent"
     },
     {
       "name": "UnigramCompletionSorter",
