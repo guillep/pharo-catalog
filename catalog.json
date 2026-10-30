@@ -2092,7 +2092,7 @@
       "standard": false,
       "status": "no-index",
       "artifacts": [],
-      "last_updated": "2026-10-20T18:45:48Z",
+      "last_updated": "2026-10-29T10:38:25Z",
       "update_age": "Recent"
     },
     {
@@ -3283,7 +3283,7 @@
       "standard": false,
       "status": "no-index",
       "artifacts": [],
-      "last_updated": "2026-10-26T13:44:31Z",
+      "last_updated": "2026-10-29T16:57:17Z",
       "update_age": "Recent"
     },
     {
@@ -3898,8 +3898,8 @@
       "standard": false,
       "status": "no-index",
       "artifacts": [],
-      "last_updated": "2026-08-27T09:46:03Z",
-      "update_age": "3 months"
+      "last_updated": "2026-10-29T08:37:31Z",
+      "update_age": "Recent"
     },
     {
       "name": "pharo-libbson",
@@ -5155,7 +5155,7 @@
       "standard": false,
       "status": "no-release",
       "artifacts": [],
-      "last_updated": "2026-10-28T20:14:23Z",
+      "last_updated": "2026-10-29T20:15:38Z",
       "update_age": "Recent"
     },
     {
@@ -5397,7 +5397,7 @@
       "repository_url": "https://github.com/pharo-ide/Seamless",
       "project_url": "https://github.com/pharo-ide/Seamless",
       "organization": "pharo-ide",
-      "stars": 25,
+      "stars": 26,
       "categories": [
         "Development Environment",
         "Networking"
@@ -5635,7 +5635,7 @@
       "standard": false,
       "status": "no-index",
       "artifacts": [],
-      "last_updated": "2026-10-27T13:19:03Z",
+      "last_updated": "2026-10-29T09:06:36Z",
       "update_age": "Recent"
     },
     {
@@ -5738,7 +5738,7 @@
       "standard": false,
       "status": "no-index",
       "artifacts": [],
-      "last_updated": "2026-10-27T12:46:44Z",
+      "last_updated": "2026-10-29T23:05:08Z",
       "update_age": "Recent"
     },
     {
@@ -6412,8 +6412,8 @@
       "standard": false,
       "status": "no-index",
       "artifacts": [],
-      "last_updated": "2026-08-31T09:44:04Z",
-      "update_age": "3 months"
+      "last_updated": "2026-10-29T09:55:25Z",
+      "update_age": "Recent"
     },
     {
       "name": "Topic-Rules",
@@ -6465,7 +6465,7 @@
       "standard": false,
       "status": "no-index",
       "artifacts": [],
-      "last_updated": "2026-10-28T09:06:22Z",
+      "last_updated": "2026-10-29T15:22:52Z",
       "update_age": "Recent"
     },
     {
