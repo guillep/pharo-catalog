@@ -1922,7 +1922,7 @@
       "standard": false,
       "status": "no-release",
       "artifacts": [],
-      "last_updated": "2026-10-24T15:32:43Z",
+      "last_updated": "2026-10-31T11:47:15Z",
       "update_age": "Recent"
     },
     {
@@ -3283,7 +3283,7 @@
       "standard": false,
       "status": "no-index",
       "artifacts": [],
-      "last_updated": "2026-10-30T23:24:10Z",
+      "last_updated": "2026-10-31T21:05:00Z",
       "update_age": "Recent"
     },
     {
@@ -6299,7 +6299,7 @@
       "status": "no-release",
       "artifacts": [],
       "last_updated": "2026-10-01T11:22:21Z",
-      "update_age": "Recent"
+      "update_age": "3 months"
     },
     {
       "name": "threadedFFI-Plugin",
