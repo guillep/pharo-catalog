@@ -380,7 +380,7 @@
       "standard": false,
       "status": "no-index",
       "artifacts": [],
-      "last_updated": "2026-10-30T15:11:30Z",
+      "last_updated": "2026-11-03T03:37:54Z",
       "update_age": "Recent"
     },
     {
@@ -2783,7 +2783,7 @@
       "standard": false,
       "status": "no-index",
       "artifacts": [],
-      "last_updated": "2026-11-01T20:26:06Z",
+      "last_updated": "2026-11-02T15:45:15Z",
       "update_age": "Recent"
     },
     {
@@ -3266,7 +3266,7 @@
       "repository_url": "https://github.com/pharo-project/pharo",
       "project_url": "https://github.com/pharo-project/pharo",
       "organization": "pharo-project",
-      "stars": 1508,
+      "stars": 1509,
       "categories": [
         "Uncategorized"
       ],
@@ -3283,7 +3283,7 @@
       "standard": false,
       "status": "no-index",
       "artifacts": [],
-      "last_updated": "2026-11-01T21:12:33Z",
+      "last_updated": "2026-11-02T16:41:22Z",
       "update_age": "Recent"
     },
     {
@@ -4899,7 +4899,7 @@
       "standard": false,
       "status": "no-index",
       "artifacts": [],
-      "last_updated": "2026-10-25T22:02:33Z",
+      "last_updated": "2026-11-02T22:12:24Z",
       "update_age": "Recent"
     },
     {
@@ -5256,7 +5256,7 @@
       "standard": false,
       "status": "no-index",
       "artifacts": [],
-      "last_updated": "2026-10-30T09:47:56Z",
+      "last_updated": "2026-11-02T07:34:30Z",
       "update_age": "Recent"
     },
     {
@@ -6509,8 +6509,8 @@
       "standard": false,
       "status": "no-release",
       "artifacts": [],
-      "last_updated": "2026-06-20T05:56:11Z",
-      "update_age": "This year"
+      "last_updated": "2026-11-02T14:34:28Z",
+      "update_age": "Recent"
     },
     {
       "name": "typo-tolerance",
