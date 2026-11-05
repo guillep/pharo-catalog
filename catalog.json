@@ -1779,7 +1779,7 @@
       "repository_url": "https://github.com/pharo-rdbms/glorp",
       "project_url": "https://github.com/pharo-rdbms/glorp",
       "organization": "pharo-rdbms",
-      "stars": 28,
+      "stars": 29,
       "categories": [
         "Data & Databases"
       ],
@@ -3266,7 +3266,7 @@
       "repository_url": "https://github.com/pharo-project/pharo",
       "project_url": "https://github.com/pharo-project/pharo",
       "organization": "pharo-project",
-      "stars": 1509,
+      "stars": 1510,
       "categories": [
         "Uncategorized"
       ],
@@ -3283,7 +3283,7 @@
       "standard": false,
       "status": "no-index",
       "artifacts": [],
-      "last_updated": "2026-11-03T16:28:04Z",
+      "last_updated": "2026-11-04T19:14:07Z",
       "update_age": "Recent"
     },
     {
@@ -4520,7 +4520,7 @@
       "repository_url": "https://github.com/pharo-rdbms/Pharo-SQLite3",
       "project_url": "https://github.com/pharo-rdbms/Pharo-SQLite3",
       "organization": "pharo-rdbms",
-      "stars": 23,
+      "stars": 24,
       "categories": [
         "Data & Databases"
       ],
@@ -5738,7 +5738,7 @@
       "standard": false,
       "status": "no-index",
       "artifacts": [],
-      "last_updated": "2026-11-03T20:01:12Z",
+      "last_updated": "2026-11-05T03:27:10Z",
       "update_age": "Recent"
     },
     {
@@ -6465,7 +6465,7 @@
       "standard": false,
       "status": "no-index",
       "artifacts": [],
-      "last_updated": "2026-11-03T19:59:31Z",
+      "last_updated": "2026-11-04T09:26:07Z",
       "update_age": "Recent"
     },
     {
