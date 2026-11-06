@@ -380,7 +380,7 @@
       "standard": false,
       "status": "no-index",
       "artifacts": [],
-      "last_updated": "2026-11-03T05:19:27Z",
+      "last_updated": "2026-11-05T16:28:33Z",
       "update_age": "Recent"
     },
     {
@@ -1262,7 +1262,7 @@
       "status": "no-index",
       "artifacts": [],
       "last_updated": "2026-10-06T12:24:16Z",
-      "update_age": "Recent"
+      "update_age": "3 months"
     },
     {
       "name": "CSSParser",
@@ -2079,7 +2079,7 @@
       "repository_url": "https://github.com/pharo-vcs/iceberg",
       "project_url": "https://github.com/pharo-vcs/iceberg",
       "organization": "pharo-vcs",
-      "stars": 140,
+      "stars": 141,
       "categories": [
         "Source Code & Version Control"
       ],
@@ -2507,7 +2507,7 @@
       "repository_url": "https://github.com/pillar-markup/Microdown",
       "project_url": "https://github.com/pillar-markup/Microdown",
       "organization": "pillar-markup",
-      "stars": 43,
+      "stars": 44,
       "categories": [
         "Language & Compiler"
       ],
@@ -2783,7 +2783,7 @@
       "standard": false,
       "status": "no-index",
       "artifacts": [],
-      "last_updated": "2026-11-02T15:45:15Z",
+      "last_updated": "2026-11-05T15:04:41Z",
       "update_age": "Recent"
     },
     {
@@ -3283,7 +3283,7 @@
       "standard": false,
       "status": "no-index",
       "artifacts": [],
-      "last_updated": "2026-11-04T19:14:07Z",
+      "last_updated": "2026-11-05T16:48:55Z",
       "update_age": "Recent"
     },
     {
@@ -3898,7 +3898,7 @@
       "standard": false,
       "status": "no-index",
       "artifacts": [],
-      "last_updated": "2026-10-29T08:37:31Z",
+      "last_updated": "2026-11-05T09:46:20Z",
       "update_age": "Recent"
     },
     {
@@ -4161,7 +4161,7 @@
       "status": "no-release",
       "artifacts": [],
       "last_updated": "2025-11-05T15:28:17Z",
-      "update_age": "This year"
+      "update_age": "Over a year"
     },
     {
       "name": "pharo-mcp",
@@ -4665,7 +4665,7 @@
       "repository_url": "https://github.com/pharo-project/pharo-vm",
       "project_url": "https://github.com/pharo-project/pharo-vm",
       "organization": "pharo-project",
-      "stars": 142,
+      "stars": 143,
       "categories": [
         "Language & Compiler"
       ],
@@ -6465,7 +6465,7 @@
       "standard": false,
       "status": "no-index",
       "artifacts": [],
-      "last_updated": "2026-11-04T09:26:07Z",
+      "last_updated": "2026-11-05T15:40:57Z",
       "update_age": "Recent"
     },
     {
@@ -6664,7 +6664,7 @@
       "status": "no-release",
       "artifacts": [],
       "last_updated": "2026-10-06T07:06:44Z",
-      "update_age": "Recent"
+      "update_age": "3 months"
     },
     {
       "name": "XML-Pastell",
