@@ -3887,7 +3887,7 @@
       "repository_url": "https://github.com/pharo-project/pharo-launcher",
       "project_url": "https://github.com/pharo-project/pharo-launcher",
       "organization": "pharo-project",
-      "stars": 118,
+      "stars": 119,
       "categories": [
         "Build & Deployment"
       ],
@@ -5142,7 +5142,7 @@
       "repository_url": "https://github.com/pharo-pulsar/pulsar",
       "project_url": "https://github.com/pharo-pulsar/pulsar",
       "organization": "pharo-pulsar",
-      "stars": 8,
+      "stars": 9,
       "categories": [
         "Development Environment"
       ],
@@ -5155,7 +5155,7 @@
       "standard": false,
       "status": "no-release",
       "artifacts": [],
-      "last_updated": "2026-10-29T20:15:38Z",
+      "last_updated": "2026-11-07T14:12:34Z",
       "update_age": "Recent"
     },
     {
@@ -5256,7 +5256,7 @@
       "standard": false,
       "status": "no-index",
       "artifacts": [],
-      "last_updated": "2026-11-02T07:34:30Z",
+      "last_updated": "2026-11-08T22:02:04Z",
       "update_age": "Recent"
     },
     {
@@ -5635,7 +5635,7 @@
       "standard": false,
       "status": "no-index",
       "artifacts": [],
-      "last_updated": "2026-11-07T09:07:41Z",
+      "last_updated": "2026-11-08T13:45:34Z",
       "update_age": "Recent"
     },
     {
