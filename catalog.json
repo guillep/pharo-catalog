@@ -380,7 +380,7 @@
       "standard": false,
       "status": "no-index",
       "artifacts": [],
-      "last_updated": "2026-11-06T22:38:11Z",
+      "last_updated": "2026-11-09T16:11:22Z",
       "update_age": "Recent"
     },
     {
@@ -2092,7 +2092,7 @@
       "standard": false,
       "status": "no-index",
       "artifacts": [],
-      "last_updated": "2026-10-30T07:32:47Z",
+      "last_updated": "2026-11-09T12:55:15Z",
       "update_age": "Recent"
     },
     {
@@ -2783,7 +2783,7 @@
       "standard": false,
       "status": "no-index",
       "artifacts": [],
-      "last_updated": "2026-11-07T09:06:09Z",
+      "last_updated": "2026-11-09T12:56:09Z",
       "update_age": "Recent"
     },
     {
@@ -3283,7 +3283,7 @@
       "standard": false,
       "status": "no-index",
       "artifacts": [],
-      "last_updated": "2026-11-08T00:10:38Z",
+      "last_updated": "2026-11-09T15:57:27Z",
       "update_age": "Recent"
     },
     {
@@ -3610,7 +3610,7 @@
       "status": "no-release",
       "artifacts": [],
       "last_updated": "2026-10-10T20:54:42Z",
-      "update_age": "Recent"
+      "update_age": "3 months"
     },
     {
       "name": "pharo-coral",
@@ -4916,7 +4916,7 @@
       "standard": false,
       "status": "no-release",
       "artifacts": [],
-      "last_updated": "2026-11-07T21:09:19Z",
+      "last_updated": "2026-11-09T16:32:26Z",
       "update_age": "Recent"
     },
     {
@@ -5256,7 +5256,7 @@
       "standard": false,
       "status": "no-index",
       "artifacts": [],
-      "last_updated": "2026-11-08T22:02:04Z",
+      "last_updated": "2026-11-09T12:53:38Z",
       "update_age": "Recent"
     },
     {
@@ -5635,7 +5635,7 @@
       "standard": false,
       "status": "no-index",
       "artifacts": [],
-      "last_updated": "2026-11-08T13:45:34Z",
+      "last_updated": "2026-11-09T15:55:27Z",
       "update_age": "Recent"
     },
     {
@@ -6412,7 +6412,7 @@
       "standard": false,
       "status": "no-index",
       "artifacts": [],
-      "last_updated": "2026-11-07T08:54:58Z",
+      "last_updated": "2026-11-09T13:54:33Z",
       "update_age": "Recent"
     },
     {
@@ -6465,7 +6465,7 @@
       "standard": false,
       "status": "no-index",
       "artifacts": [],
-      "last_updated": "2026-11-05T15:40:57Z",
+      "last_updated": "2026-11-09T16:42:20Z",
       "update_age": "Recent"
     },
     {
@@ -6494,7 +6494,7 @@
       "repository_url": "https://github.com/pharo-graphics/Tutorials",
       "project_url": "https://github.com/pharo-graphics/Tutorials",
       "organization": "pharo-graphics",
-      "stars": 9,
+      "stars": 10,
       "categories": [
         "UI",
         "Graphics & Visualization"
