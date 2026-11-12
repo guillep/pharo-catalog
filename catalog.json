@@ -124,7 +124,7 @@
       "standard": false,
       "status": "no-index",
       "artifacts": [],
-      "last_updated": "2026-11-03T21:19:15Z",
+      "last_updated": "2026-11-12T03:49:10Z",
       "update_age": "Recent"
     },
     {
@@ -2092,7 +2092,7 @@
       "standard": false,
       "status": "no-index",
       "artifacts": [],
-      "last_updated": "2026-11-09T12:55:15Z",
+      "last_updated": "2026-11-11T11:45:25Z",
       "update_age": "Recent"
     },
     {
@@ -3266,7 +3266,7 @@
       "repository_url": "https://github.com/pharo-project/pharo",
       "project_url": "https://github.com/pharo-project/pharo",
       "organization": "pharo-project",
-      "stars": 1510,
+      "stars": 1512,
       "categories": [
         "Uncategorized"
       ],
@@ -3283,7 +3283,7 @@
       "standard": false,
       "status": "no-index",
       "artifacts": [],
-      "last_updated": "2026-11-10T20:49:20Z",
+      "last_updated": "2026-11-10T18:48:43Z",
       "update_age": "Recent"
     },
     {
@@ -3859,7 +3859,7 @@
       "status": "no-index",
       "artifacts": [],
       "last_updated": "2026-10-12T19:00:54Z",
-      "update_age": "Recent"
+      "update_age": "3 months"
     },
     {
       "name": "pharo-labels",
@@ -4122,7 +4122,7 @@
       "status": "no-release",
       "artifacts": [],
       "last_updated": "2026-10-12T18:53:08Z",
-      "update_age": "Recent"
+      "update_age": "3 months"
     },
     {
       "name": "pharo-llmstudio",
@@ -4665,7 +4665,7 @@
       "repository_url": "https://github.com/pharo-project/pharo-vm",
       "project_url": "https://github.com/pharo-project/pharo-vm",
       "organization": "pharo-project",
-      "stars": 143,
+      "stars": 144,
       "categories": [
         "Language & Compiler"
       ],
@@ -5172,7 +5172,7 @@
       "standard": false,
       "status": "no-release",
       "artifacts": [],
-      "last_updated": "2026-11-07T14:12:34Z",
+      "last_updated": "2026-11-11T16:54:27Z",
       "update_age": "Recent"
     },
     {
@@ -5652,7 +5652,7 @@
       "standard": false,
       "status": "no-index",
       "artifacts": [],
-      "last_updated": "2026-11-10T13:03:52Z",
+      "last_updated": "2026-11-11T11:37:39Z",
       "update_age": "Recent"
     },
     {
