@@ -2521,8 +2521,8 @@
       "standard": false,
       "status": "no-index",
       "artifacts": [],
-      "last_updated": "2026-09-23T07:23:13Z",
-      "update_age": "3 months"
+      "last_updated": "2026-11-13T16:23:00Z",
+      "update_age": "Recent"
     },
     {
       "name": "Microdown-Agenda",
@@ -3283,7 +3283,7 @@
       "standard": false,
       "status": "no-index",
       "artifacts": [],
-      "last_updated": "2026-11-12T15:23:39Z",
+      "last_updated": "2026-11-13T10:22:28Z",
       "update_age": "Recent"
     },
     {
@@ -3466,14 +3466,20 @@
     },
     {
       "name": "pharo-benchmarks",
-      "description": "Metadata unavailable.",
+      "description": "No description provided.",
       "repository_url": "https://github.com/pharo-project/pharo-benchmarks",
       "project_url": "https://github.com/pharo-project/pharo-benchmarks",
-      "categories": [],
+      "organization": "pharo-project",
+      "stars": 4,
+      "categories": [
+        "Untagged"
+      ],
       "tags": [],
       "standard": false,
-      "status": "error",
-      "artifacts": []
+      "status": "no-release",
+      "artifacts": [],
+      "last_updated": "2021-05-21T20:59:30Z",
+      "update_age": "Over a year"
     },
     {
       "name": "pharo-bot",
@@ -3540,7 +3546,7 @@
       "standard": false,
       "status": "no-release",
       "artifacts": [],
-      "last_updated": "2026-11-06T08:18:51Z",
+      "last_updated": "2026-11-13T12:41:13Z",
       "update_age": "Recent"
     },
     {
@@ -3892,7 +3898,7 @@
       "standard": false,
       "status": "no-index",
       "artifacts": [],
-      "last_updated": "2026-11-05T09:46:20Z",
+      "last_updated": "2026-11-13T22:27:34Z",
       "update_age": "Recent"
     },
     {
@@ -4704,7 +4710,7 @@
       "standard": false,
       "status": "no-release",
       "artifacts": [],
-      "last_updated": "2026-11-12T10:26:01Z",
+      "last_updated": "2026-11-13T17:43:30Z",
       "update_age": "Recent"
     },
     {
@@ -4910,7 +4916,7 @@
       "standard": false,
       "status": "no-index",
       "artifacts": [],
-      "last_updated": "2026-11-13T02:23:19Z",
+      "last_updated": "2026-11-13T11:48:39Z",
       "update_age": "Recent"
     },
     {
@@ -4919,7 +4925,7 @@
       "repository_url": "https://github.com/pharo-project/PharoTalks",
       "project_url": "https://github.com/pharo-project/PharoTalks",
       "organization": "pharo-project",
-      "stars": 2,
+      "stars": 3,
       "categories": [
         "Untagged"
       ],
@@ -4927,7 +4933,7 @@
       "standard": false,
       "status": "no-release",
       "artifacts": [],
-      "last_updated": "2026-11-09T16:32:26Z",
+      "last_updated": "2026-11-13T12:31:16Z",
       "update_age": "Recent"
     },
     {
@@ -5255,7 +5261,7 @@
       "repository_url": "https://github.com/pharo-graphics/Roassal",
       "project_url": "https://github.com/pharo-graphics/Roassal",
       "organization": "pharo-graphics",
-      "stars": 30,
+      "stars": 31,
       "categories": [
         "Graphics & Visualization"
       ],
@@ -5267,7 +5273,7 @@
       "standard": false,
       "status": "no-index",
       "artifacts": [],
-      "last_updated": "2026-11-09T12:53:38Z",
+      "last_updated": "2026-11-13T22:37:49Z",
       "update_age": "Recent"
     },
     {
@@ -5632,7 +5638,7 @@
       "repository_url": "https://github.com/pharo-spec/Spec",
       "project_url": "https://github.com/pharo-spec/Spec",
       "organization": "pharo-spec",
-      "stars": 66,
+      "stars": 67,
       "categories": [
         "UI"
       ],
@@ -5646,7 +5652,7 @@
       "standard": false,
       "status": "no-index",
       "artifacts": [],
-      "last_updated": "2026-11-12T12:49:17Z",
+      "last_updated": "2026-11-13T18:26:06Z",
       "update_age": "Recent"
     },
     {
@@ -6309,8 +6315,8 @@
       "standard": false,
       "status": "no-index",
       "artifacts": [],
-      "last_updated": "2026-10-01T11:22:21Z",
-      "update_age": "3 months"
+      "last_updated": "2026-11-13T15:08:52Z",
+      "update_age": "Recent"
     },
     {
       "name": "threadedFFI-Plugin",
@@ -6466,7 +6472,7 @@
       "repository_url": "https://github.com/pharo-graphics/Toplo",
       "project_url": "https://github.com/pharo-graphics/Toplo",
       "organization": "pharo-graphics",
-      "stars": 31,
+      "stars": 32,
       "categories": [
         "Graphics & Visualization"
       ],
@@ -6801,10 +6807,6 @@
     {
       "repository": "https://github.com/pharo-project/pharo-bounties",
       "error": "GET https://api.github.com/repos/pharo-project/pharo-bounties/commits?per_page=1: HTTP Error 409: Conflict"
-    },
-    {
-      "repository": "https://github.com/pharo-project/pharo-benchmarks",
-      "error": "GET https://api.github.com/repos/pharo-project/pharo-benchmarks/commits?per_page=1: HTTP Error 500: Internal Server Error"
     },
     {
       "repository": "https://github.com/pillar-markup/MicrodownTestBed",
