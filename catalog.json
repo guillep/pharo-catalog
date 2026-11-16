@@ -362,7 +362,7 @@
       "repository_url": "https://github.com/pharo-graphics/Bloc",
       "project_url": "https://github.com/pharo-graphics/Bloc",
       "organization": "pharo-graphics",
-      "stars": 96,
+      "stars": 97,
       "categories": [
         "UI",
         "Graphics & Visualization"
@@ -1922,7 +1922,7 @@
       "standard": false,
       "status": "no-release",
       "artifacts": [],
-      "last_updated": "2026-10-31T11:47:15Z",
+      "last_updated": "2026-11-15T11:26:58Z",
       "update_age": "Recent"
     },
     {
@@ -2521,7 +2521,7 @@
       "standard": false,
       "status": "no-index",
       "artifacts": [],
-      "last_updated": "2026-11-14T22:59:33Z",
+      "last_updated": "2026-11-15T20:29:58Z",
       "update_age": "Recent"
     },
     {
@@ -3283,7 +3283,7 @@
       "standard": false,
       "status": "no-index",
       "artifacts": [],
-      "last_updated": "2026-11-14T21:40:03Z",
+      "last_updated": "2026-11-15T20:25:19Z",
       "update_age": "Recent"
     },
     {
@@ -4710,7 +4710,7 @@
       "standard": false,
       "status": "no-release",
       "artifacts": [],
-      "last_updated": "2026-11-13T17:43:30Z",
+      "last_updated": "2026-11-15T07:55:22Z",
       "update_age": "Recent"
     },
     {
@@ -5755,7 +5755,7 @@
       "standard": false,
       "status": "no-index",
       "artifacts": [],
-      "last_updated": "2026-11-05T03:27:10Z",
+      "last_updated": "2026-11-16T01:12:17Z",
       "update_age": "Recent"
     },
     {
@@ -6472,7 +6472,7 @@
       "repository_url": "https://github.com/pharo-graphics/Toplo",
       "project_url": "https://github.com/pharo-graphics/Toplo",
       "organization": "pharo-graphics",
-      "stars": 32,
+      "stars": 33,
       "categories": [
         "Graphics & Visualization"
       ],
