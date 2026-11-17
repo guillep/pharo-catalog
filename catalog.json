@@ -380,7 +380,7 @@
       "standard": false,
       "status": "no-index",
       "artifacts": [],
-      "last_updated": "2026-11-14T04:14:40Z",
+      "last_updated": "2026-11-16T23:36:24Z",
       "update_age": "Recent"
     },
     {
@@ -543,7 +543,7 @@
       "standard": false,
       "status": "no-index",
       "artifacts": [],
-      "last_updated": "2026-11-10T21:01:12Z",
+      "last_updated": "2026-11-16T20:25:03Z",
       "update_age": "Recent"
     },
     {
@@ -1240,8 +1240,8 @@
       "standard": false,
       "status": "no-release",
       "artifacts": [],
-      "last_updated": "2026-10-04T12:24:12Z",
-      "update_age": "3 months"
+      "last_updated": "2026-11-16T21:00:22Z",
+      "update_age": "Recent"
     },
     {
       "name": "Cryptography",
@@ -2024,7 +2024,7 @@
       "standard": false,
       "status": "no-index",
       "artifacts": [],
-      "last_updated": "2026-11-15T01:38:34Z",
+      "last_updated": "2026-11-16T18:12:57Z",
       "update_age": "Recent"
     },
     {
@@ -2521,7 +2521,7 @@
       "standard": false,
       "status": "no-index",
       "artifacts": [],
-      "last_updated": "2026-11-15T20:29:58Z",
+      "last_updated": "2026-11-16T21:25:26Z",
       "update_age": "Recent"
     },
     {
@@ -3283,7 +3283,7 @@
       "standard": false,
       "status": "no-index",
       "artifacts": [],
-      "last_updated": "2026-11-15T20:25:19Z",
+      "last_updated": "2026-11-16T03:05:13Z",
       "update_age": "Recent"
     },
     {
@@ -3898,7 +3898,7 @@
       "standard": false,
       "status": "no-index",
       "artifacts": [],
-      "last_updated": "2026-11-13T22:27:34Z",
+      "last_updated": "2026-11-16T21:55:50Z",
       "update_age": "Recent"
     },
     {
@@ -4160,8 +4160,8 @@
       "standard": false,
       "status": "no-release",
       "artifacts": [],
-      "last_updated": "2025-11-05T15:28:17Z",
-      "update_age": "Over a year"
+      "last_updated": "2026-11-16T09:54:23Z",
+      "update_age": "Recent"
     },
     {
       "name": "pharo-mcp",
@@ -4676,7 +4676,7 @@
       "standard": false,
       "status": "no-index",
       "artifacts": [],
-      "last_updated": "2026-10-23T10:06:15Z",
+      "last_updated": "2026-11-16T15:12:07Z",
       "update_age": "Recent"
     },
     {
@@ -4900,7 +4900,7 @@
       "repository_url": "https://github.com/pharo-graphics/PharoSDL3",
       "project_url": "https://github.com/pharo-graphics/PharoSDL3",
       "organization": "pharo-graphics",
-      "stars": 5,
+      "stars": 6,
       "categories": [
         "Graphics & Visualization"
       ],
@@ -4916,7 +4916,7 @@
       "standard": false,
       "status": "no-index",
       "artifacts": [],
-      "last_updated": "2026-11-13T11:48:39Z",
+      "last_updated": "2026-11-16T21:16:12Z",
       "update_age": "Recent"
     },
     {
@@ -4933,7 +4933,7 @@
       "standard": false,
       "status": "no-release",
       "artifacts": [],
-      "last_updated": "2026-11-13T12:31:16Z",
+      "last_updated": "2026-11-16T09:57:20Z",
       "update_age": "Recent"
     },
     {
@@ -5029,8 +5029,8 @@
       "standard": false,
       "status": "no-index",
       "artifacts": [],
-      "last_updated": "2026-07-18T14:55:28Z",
-      "update_age": "This year"
+      "last_updated": "2026-11-16T19:36:47Z",
+      "update_age": "Recent"
     },
     {
       "name": "Pillar-Archetype",
@@ -5172,7 +5172,7 @@
       "standard": false,
       "status": "no-release",
       "artifacts": [],
-      "last_updated": "2026-11-11T16:54:27Z",
+      "last_updated": "2026-11-13T11:10:58Z",
       "update_age": "Recent"
     },
     {
@@ -5438,7 +5438,7 @@
       "repository_url": "https://github.com/SeasideSt/Seaside",
       "project_url": "https://github.com/SeasideSt/Seaside",
       "organization": "SeasideSt",
-      "stars": 567,
+      "stars": 568,
       "categories": [
         "Web"
       ],
@@ -5755,7 +5755,7 @@
       "standard": false,
       "status": "no-index",
       "artifacts": [],
-      "last_updated": "2026-11-16T01:12:17Z",
+      "last_updated": "2026-11-17T02:31:40Z",
       "update_age": "Recent"
     },
     {
@@ -6482,7 +6482,7 @@
       "standard": false,
       "status": "no-index",
       "artifacts": [],
-      "last_updated": "2026-11-09T16:42:20Z",
+      "last_updated": "2026-11-16T23:25:27Z",
       "update_age": "Recent"
     },
     {
