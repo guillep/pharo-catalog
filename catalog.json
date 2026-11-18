@@ -1240,7 +1240,7 @@
       "standard": false,
       "status": "no-release",
       "artifacts": [],
-      "last_updated": "2026-11-16T21:00:22Z",
+      "last_updated": "2026-11-17T20:58:04Z",
       "update_age": "Recent"
     },
     {
@@ -2092,7 +2092,7 @@
       "standard": false,
       "status": "no-index",
       "artifacts": [],
-      "last_updated": "2026-11-12T09:10:07Z",
+      "last_updated": "2026-11-17T07:01:37Z",
       "update_age": "Recent"
     },
     {
@@ -2521,7 +2521,7 @@
       "standard": false,
       "status": "no-index",
       "artifacts": [],
-      "last_updated": "2026-11-16T21:25:26Z",
+      "last_updated": "2026-11-17T18:42:36Z",
       "update_age": "Recent"
     },
     {
@@ -3266,7 +3266,7 @@
       "repository_url": "https://github.com/pharo-project/pharo",
       "project_url": "https://github.com/pharo-project/pharo",
       "organization": "pharo-project",
-      "stars": 1514,
+      "stars": 1515,
       "categories": [
         "Uncategorized"
       ],
@@ -3283,7 +3283,7 @@
       "standard": false,
       "status": "no-index",
       "artifacts": [],
-      "last_updated": "2026-11-16T03:05:13Z",
+      "last_updated": "2026-11-17T20:44:34Z",
       "update_age": "Recent"
     },
     {
@@ -3898,7 +3898,7 @@
       "standard": false,
       "status": "no-index",
       "artifacts": [],
-      "last_updated": "2026-11-16T21:55:50Z",
+      "last_updated": "2026-11-17T18:20:39Z",
       "update_age": "Recent"
     },
     {
@@ -4160,7 +4160,7 @@
       "standard": false,
       "status": "no-release",
       "artifacts": [],
-      "last_updated": "2026-11-16T09:54:23Z",
+      "last_updated": "2026-11-17T14:03:09Z",
       "update_age": "Recent"
     },
     {
@@ -4710,7 +4710,7 @@
       "standard": false,
       "status": "no-release",
       "artifacts": [],
-      "last_updated": "2026-11-15T07:55:22Z",
+      "last_updated": "2026-11-17T09:22:28Z",
       "update_age": "Recent"
     },
     {
@@ -5029,7 +5029,7 @@
       "standard": false,
       "status": "no-index",
       "artifacts": [],
-      "last_updated": "2026-11-16T19:36:47Z",
+      "last_updated": "2026-11-17T14:44:06Z",
       "update_age": "Recent"
     },
     {
@@ -5716,8 +5716,8 @@
       "standard": false,
       "status": "no-release",
       "artifacts": [],
-      "last_updated": "2026-10-04T15:15:46Z",
-      "update_age": "3 months"
+      "last_updated": "2026-11-17T06:32:26Z",
+      "update_age": "Recent"
     },
     {
       "name": "Spec-QA",
@@ -5755,7 +5755,7 @@
       "standard": false,
       "status": "no-index",
       "artifacts": [],
-      "last_updated": "2026-11-17T02:31:40Z",
+      "last_updated": "2026-11-17T13:58:08Z",
       "update_age": "Recent"
     },
     {
@@ -6482,7 +6482,7 @@
       "standard": false,
       "status": "no-index",
       "artifacts": [],
-      "last_updated": "2026-11-16T23:25:27Z",
+      "last_updated": "2026-11-17T15:14:56Z",
       "update_age": "Recent"
     },
     {
