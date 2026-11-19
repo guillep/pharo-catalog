@@ -380,7 +380,7 @@
       "standard": false,
       "status": "no-index",
       "artifacts": [],
-      "last_updated": "2026-11-16T23:36:24Z",
+      "last_updated": "2026-11-18T23:00:02Z",
       "update_age": "Recent"
     },
     {
@@ -1751,8 +1751,8 @@
       "standard": false,
       "status": "no-index",
       "artifacts": [],
-      "last_updated": "2020-10-23T11:56:20Z",
-      "update_age": "Over a year"
+      "last_updated": "2026-11-18T16:13:40Z",
+      "update_age": "Recent"
     },
     {
       "name": "GitHubMarkdown",
@@ -2505,7 +2505,7 @@
       "name": "Microdown",
       "description": "Microdown is a cleaned and simpler markdown but with more powerful features such as extensions.",
       "repository_url": "https://github.com/pillar-markup/Microdown",
-      "project_url": "https://github.com/pillar-markup/Microdown",
+      "project_url": "projects/pillar-markup/microdown/index.html",
       "organization": "pillar-markup",
       "stars": 44,
       "categories": [
@@ -2518,10 +2518,10 @@
         "document",
         "utilities"
       ],
-      "standard": false,
-      "status": "no-index",
+      "standard": true,
+      "status": "standard",
       "artifacts": [],
-      "last_updated": "2026-11-17T18:42:36Z",
+      "last_updated": "2026-11-18T19:17:17Z",
       "update_age": "Recent"
     },
     {
@@ -2783,7 +2783,7 @@
       "standard": false,
       "status": "no-index",
       "artifacts": [],
-      "last_updated": "2026-11-14T15:28:37Z",
+      "last_updated": "2026-11-18T20:36:15Z",
       "update_age": "Recent"
     },
     {
@@ -3283,7 +3283,7 @@
       "standard": false,
       "status": "no-index",
       "artifacts": [],
-      "last_updated": "2026-11-17T20:44:34Z",
+      "last_updated": "2026-11-18T13:29:21Z",
       "update_age": "Recent"
     },
     {
@@ -3898,7 +3898,7 @@
       "standard": false,
       "status": "no-index",
       "artifacts": [],
-      "last_updated": "2026-11-17T18:20:39Z",
+      "last_updated": "2026-11-18T09:20:08Z",
       "update_age": "Recent"
     },
     {
@@ -4676,7 +4676,7 @@
       "standard": false,
       "status": "no-index",
       "artifacts": [],
-      "last_updated": "2026-11-16T15:12:07Z",
+      "last_updated": "2026-11-18T15:05:42Z",
       "update_age": "Recent"
     },
     {
@@ -5029,7 +5029,7 @@
       "standard": false,
       "status": "no-index",
       "artifacts": [],
-      "last_updated": "2026-11-17T14:44:06Z",
+      "last_updated": "2026-11-18T22:10:45Z",
       "update_age": "Recent"
     },
     {
@@ -5172,7 +5172,7 @@
       "standard": false,
       "status": "no-release",
       "artifacts": [],
-      "last_updated": "2026-11-13T11:10:58Z",
+      "last_updated": "2026-11-18T15:36:54Z",
       "update_age": "Recent"
     },
     {
@@ -5273,7 +5273,7 @@
       "standard": false,
       "status": "no-index",
       "artifacts": [],
-      "last_updated": "2026-11-14T13:32:08Z",
+      "last_updated": "2026-11-18T22:14:40Z",
       "update_age": "Recent"
     },
     {
@@ -5388,8 +5388,8 @@
       "standard": false,
       "status": "no-index",
       "artifacts": [],
-      "last_updated": "2026-05-27T10:07:42Z",
-      "update_age": "This year"
+      "last_updated": "2026-11-18T16:57:24Z",
+      "update_age": "Recent"
     },
     {
       "name": "SDL2",
@@ -5652,7 +5652,7 @@
       "standard": false,
       "status": "no-index",
       "artifacts": [],
-      "last_updated": "2026-11-13T18:26:06Z",
+      "last_updated": "2026-11-18T17:42:24Z",
       "update_age": "Recent"
     },
     {
@@ -5755,7 +5755,7 @@
       "standard": false,
       "status": "no-index",
       "artifacts": [],
-      "last_updated": "2026-11-17T13:58:08Z",
+      "last_updated": "2026-11-18T23:01:19Z",
       "update_age": "Recent"
     },
     {

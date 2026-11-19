@@ -1,0 +1,1266 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="system">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <meta name="pharo-index-format" content="1">
+  <title> — releases</title>
+  <style>
+:root {
+    --pharo-blue: #3297d4;
+    --pharo-blue-soft: #dcedf7;
+    --pharo-orange: #f15a24;
+    --pr-bg: #f7f7f7;
+    --pr-surface: #ffffff;
+    --pr-border: #dddddd;
+    --pr-text: #333333;
+    --pr-text-muted: #777777;
+    --pr-accent: #3297d4;
+    --pr-code-bg: #f4f4f4;
+    --pr-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    color-scheme: light dark;
+}
+
+html[data-theme="dark"] {
+    --pr-bg: #20252a;
+    --pr-surface: #2b3035;
+    --pr-border: #454b50;
+    --pr-text: #f4f4f4;
+    --pr-text-muted: #b8b8b8;
+    --pr-accent: #62b1e3;
+    --pr-code-bg: #353b40;
+    --pr-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --pr-bg: #20252a;
+        --pr-surface: #2b3035;
+        --pr-border: #454b50;
+        --pr-text: #f4f4f4;
+        --pr-text-muted: #b8b8b8;
+        --pr-accent: #62b1e3;
+        --pr-code-bg: #353b40;
+        --pr-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+    }
+    html[data-theme="light"] {
+        --pr-bg: #f7f7f7;
+        --pr-surface: #ffffff;
+        --pr-border: #dddddd;
+        --pr-text: #333333;
+        --pr-text-muted: #777777;
+        --pr-accent: #3297d4;
+        --pr-code-bg: #f4f4f4;
+        --pr-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    }
+}
+
+html {
+    font-size: 16px;
+}
+
+body {
+    margin: 0;
+    background: var(--pr-bg);
+    color: var(--pr-text);
+    font-family: "Open Sans", -apple-system, BlinkMacSystemFont, "Segoe UI",
+        sans-serif;
+    line-height: 1.55;
+}
+
+.pharo-index {
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 2.5rem 1.25rem 4rem;
+}
+
+.pharo-index h1, .pharo-index h2, .pharo-index h3 {
+    color: var(--pr-accent);
+    line-height: 1.2;
+}
+
+.index-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding-bottom: 1.25rem;
+    border-bottom: 5px solid var(--pr-code-bg);
+    margin-bottom: 1.5rem;
+}
+
+.index-header .project-name {
+    margin: 0;
+    font-size: 3.15rem;
+    line-height: 1;
+}
+
+.index-logo {
+    width: 48px;
+    height: 48px;
+    flex: 0 0 48px;
+    object-fit: contain;
+}
+
+.latest-release {
+    background: var(--pr-code-bg);
+    border: 1px solid var(--pr-border);
+    border-radius: 2px;
+    padding: 1rem 1.1rem;
+}
+
+.latest-release h2 {
+    margin: 0;
+    font-size: 1.05rem;
+}
+
+.latest-release p {
+    margin: 0.35rem 0 0;
+}
+
+.table-of-contents ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem 1.25rem;
+    margin: 0;
+    padding-left: 1.2rem;
+}
+
+.section-title {
+    font-size: 0.85rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--pr-text-muted);
+    margin: 2rem 0 0.6rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.section-title::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: var(--pr-border);
+}
+
+.release-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 1.25rem;
+}
+
+.release {
+    background: var(--pr-surface);
+    border: 1px solid var(--pr-border);
+    border-radius: 2px;
+    padding: 1.1rem 1.25rem;
+    box-shadow: var(--pr-shadow);
+}
+
+.release-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.4rem 1rem;
+    margin-bottom: 0.4rem;
+}
+
+.release-version {
+    margin: 0;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 1.35rem;
+}
+
+.release-badge {
+    font-size: 0.72rem;
+    padding: 0.08rem 0.5rem;
+    border-radius: 999px;
+    vertical-align: middle;
+    margin-left: 0.5rem;
+    border: 1px solid var(--pr-border);
+    color: var(--pr-text-muted);
+}
+
+.release-date {
+    color: var(--pr-text-muted);
+    font-size: 0.9rem;
+}
+
+.release-meta {
+    font-size: 0.9rem;
+    padding: 0.6rem 0.8rem;
+    background: var(--pr-code-bg);
+    border-radius: 8px;
+    margin: 0.6rem 0;
+}
+
+.release-meta dt {
+    display: inline-block;
+    min-width: 7.5em;
+    color: var(--pr-text-muted);
+}
+
+.release-meta dd {
+    display: inline;
+    margin: 0;
+    margin-left: 0.4rem;
+    margin-right: 1.4rem;
+}
+
+.release-meta code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    word-break: break-all;
+}
+
+.release-artifacts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1rem;
+    margin: 0.8rem 0;
+}
+
+.release-artifacts a {
+    overflow-wrap: anywhere;
+}
+
+.release-toc ul {
+    columns: 2;
+    margin: 0 0 1rem;
+    padding-left: 1.2rem;
+}
+
+.release-notes {
+    font-size: 0.95rem;
+}
+
+.release-notes code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 0.85em;
+    background: var(--pr-code-bg);
+    border-radius: 4px;
+    padding: 0.1rem 0.35rem;
+    color: var(--pr-accent);
+}
+
+.release-notes pre {
+    background: var(--pr-code-bg);
+    border-radius: 8px;
+    padding: 0.7rem 0.9rem;
+    overflow-x: auto;
+}
+
+.release-notes blockquote {
+    margin: 0.5rem 0;
+    padding-left: 0.8rem;
+    border-left: 3px solid var(--pr-border);
+    color: var(--pr-text-muted);
+}
+
+.release-notes table {
+    border-collapse: collapse;
+    margin: 0.5rem 0;
+}
+
+.release-notes th, .release-notes td {
+    border: 1px solid var(--pr-border);
+    padding: 0.3rem 0.6rem;
+    text-align: left;
+}
+
+.project-readme {
+    background: var(--pr-surface);
+    border: 1px solid var(--pr-border);
+    border-radius: 12px;
+    padding: 1.1rem 1.25rem;
+    box-shadow: var(--pr-shadow);
+    overflow-wrap: break-word;
+}
+
+.project-readme img {
+    max-width: 100%;
+}
+
+.project-readme pre {
+    background: var(--pr-code-bg);
+    border-radius: 8px;
+    padding: 0.7rem 0.9rem;
+    overflow-x: auto;
+}
+
+.project-readme code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 0.85em;
+    background: var(--pr-code-bg);
+    border-radius: 4px;
+    padding: 0.1rem 0.35rem;
+}
+
+.project-readme table {
+    border-collapse: collapse;
+    margin: 0.5rem 0;
+}
+
+.project-readme th, .project-readme td {
+    border: 1px solid var(--pr-border);
+    padding: 0.3rem 0.6rem;
+}
+
+.index-footer {
+    margin-top: 2.5rem;
+    color: var(--pr-text-muted);
+    font-size: 0.8rem;
+    text-align: center;
+}
+
+a {
+    color: var(--pr-accent);
+}
+</style>
+</head>
+<body>
+  <main class="pharo-index" data-project="">
+        
+<header class="index-header">
+        <?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg class="index-logo" xmlns="http://www.w3.org/2000/svg" version="1.1" width="155" height="155" viewBox="0 0 155 155" id="Pharo">
+  <defs>
+<linearGradient x1="0" y1="0" x2="1" y2="0" id="lG_fire" gradientUnits="userSpaceOnUse" gradientTransform="matrix(0,12.7,-12.7,0,640,65)" spreadMethod="pad">
+  <stop style="stop-color:#f7931e;stop-opacity:1" offset="0" />
+  <stop style="stop-color:#ed1c24;stop-opacity:1" offset="1" />
+</linearGradient>
+<linearGradient x1="0.4" y1="0" x2="1" y2="0" id="lG_column" gradientUnits="userSpaceOnUse" gradientTransform="matrix(10.76,-145.87,145.87,10.76,631.57,223.43)" spreadMethod="pad">
+  <stop style="stop-color:#2b98d8;stop-opacity:1" offset="0" />
+  <stop style="stop-color:#a10b0b;stop-opacity:1" offset="1" />
+</linearGradient>
+  </defs>
+  <g id="beacon" transform="translate(-560,-45)">
+<path d="m 628.58,64.64 0,19.22 22.72,0 0,-20.14 -11.16,-2.74 -11.56,3.66 z" id="fire" style="fill:url(#lG_fire);stroke:none" />
+<path d="m 627.39,67.47 c 0.23,-0.63 1.25,-1.52 2.83,-2.36 2.32,-1.24 5.84,-2.38 9.79,-2.43 6.63,-0.1 12.1,2.87 12.7,4.41 l 0.06,0 0,-0.01 c -0.06,-3.58 -5.2,-10.05 -11.7,-10.26 l -3.15,0.11 c -6.05,0.62 -10.64,7.12 -10.59,10.53 l 0,0.01 0.06,0 z" id="cap" style="fill:#164c6c;fill-opacity:1;fill-rule:nonzero;stroke:none" />
+<g id="column" style="fill:url(#lG_column);stroke:none">
+  <path d="m 635.55,75.19 c -6.21,0.44 -11.87,2.99 -11.87,2.99 l 0,0 0,5.38 c 0,0 -0.03,1.36 2.63,2.25 l 0,0 0.13,5.46 c -7.22,0.95 -12.04,2.56 -12.01,4.31 l 0,0 c 0,0.44 2.25,3.62 2.25,3.62 l 0,0 c 0,0 0.78,0.96 1.72,1.1 l 0,0 c 0.94,0.14 2.58,0.95 3.64,1.82 l 0,0 c 1.07,0.87 1.95,2.52 1.97,3.69 l 0,0 c 0.02,1.16 1.2,2.1 2.62,2.07 l 0,0 3.39,-0.05 c -4.06,2.31 -5.35,4.76 -6.55,6.46 l 0,0 c -1.24,1.74 -2.28,16.8 -2.28,16.8 l 0,0 c 0,0 0.57,-1.52 2.88,-5.11 l 0,0 c 2.31,-3.58 11.46,-8.51 18.35,-12.25 l 0,0 c 5.78,-3.14 11.02,-6.26 11.02,-6.26 l 0,0 c 1.34,-0.78 2.55,-1.43 2.55,-2.58 l 0,0 c 0,-1.4 0.59,-3.08 1.35,-3.73 l 0,0 c 0.76,-0.67 2.15,-1.33 3.09,-1.5 l 0,0 c 0.93,-0.16 1.68,-1.15 1.68,-1.15 l 0,0 c 0,0 2.14,-3.25 2.13,-3.69 l 0,0 c -0.02,-1.67 -4.44,-3.07 -11.12,-3.83 l 0,0 -0.13,-5.41 c 1.94,-0.59 3.09,-1.28 3.07,-2.02 l 0,0 0,-5.38 c 0,0 -5.07,-2.81 -11.83,-3.11 l 0,0 c -2.42,0 -6.33,0 -8.67,0.12" id="top" />
+  <path d="m 642.45,128.1 c -15.04,7.24 -22.43,10.89 -23.5,18.67 l 0,0 c -1.07,7.78 -2.22,15.42 -2.22,15.42 l 0,0 c 0.93,-5.6 11.84,-12.19 22.76,-17.5 l 0,0 c 10.92,-5.3 18.74,-8.75 18.23,-14.51 l 0,0 c -0.45,-5.14 -1.54,-12.22 -1.77,-13.67 l 0.08,1.08 c 0.08,1.08 -0.57,5.38 -13.49,11.6" id="middle" />
+  <path d="m 640.26,162.25 c -20.34,9.48 -25.38,12.09 -25.97,17.91 l 0,0 c -0.51,5.01 -1.68,15.57 -2,18.42 l 0,0 c 0.39,-1.55 2.49,-5.54 13.28,-11.4 l 0,0 c 14.1,-7.67 36.69,-14.04 36.14,-22.06 l 0,0 c -0.54,-8.02 -2.06,-18.59 -2.06,-18.59 l 0,0 c 0,0 0.94,6.24 -19.4,15.73" id="bottom" />
+</g>
+<path d="m 698.94,17.83 c -78.62,68.64 -72.74,53.81 -18,45.42 -54.74,8.39 -63.63,-4.87 27.19,40.57 -90.82,-45.44 -74.9,-44.42 -48.75,-3.09 -26.15,-41.33 -16.29,-53.88 -30.19,38.41 13.9,-92.29 17.86,-76.83 -12.12,-47.32 29.99,-29.51 44.96,-24.01 -45.85,-16.84 90.82,-7.17 77.34,1.37 41.26,-26.16 36.08,27.52 35.48,43.47 1.84,-48.82 33.63,92.3 21.35,82.11 37.62,31.17 -16.27,50.94 -31.63,55.3 47,-13.34" id="flare" style="opacity:0.7;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:none" />
+  </g>
+</svg>
+
+  <div>
+    <h1 class="project-name" data-project-name></h1>
+    
+  </div>
+</header>
+
+        
+    <section class="latest-release" id="latest-release" aria-labelledby="latest-release-title">
+        <h2 id="latest-release-title">Latest release</h2>
+        <p><a href="#release-2.11.3">2.11.3</a> (November 18, 2026)</p>
+    </section>
+    
+        
+    <nav class="table-of-contents" aria-label="Table of contents">
+        <h2 class="section-title">Contents</h2>
+        <ul>
+            <li><a href="#releases">All releases</a></li>
+            <li><a href="#readme">README</a></li>
+        </ul>
+    </nav>
+    
+    
+<h2 class="section-title">README</h2>
+<section class="project-readme" data-section="readme" id="readme"
+         aria-label="README"><h1>Microdown Parser and Elements</h1>
+<p><a href="https://www.pharo.org">
+<img alt="Pharo" src="https://img.shields.io/static/v1?style=for-the-badge&message=Pharo&color=3297d4&logo=Harbor&logoColor=FFFFFF&label=" />
+</a></p>
+<p>I'm a parser and object model for Microdown originally implemented by S. Ducasse, L. Dargaud and G. Polito. 
+The implementation is based on the work on markdown of K. Osterbye. 
+Further developments by S. Ducasse and K. Osterbye. </p>
+<p>Microdown is a smaller markdown but it is more extensible. It contains a nice builder and some visitors. 
+Microdown is now the default markup for the Pillar document compilation chain. </p>
+<h2>Install</h2>
+<pre><code class="language-Smalltalk">
+Smalltalk globals
+at: #BaselineOfMicrodown 
+ifPresent: [ :c | c removeFromSystem ].
+
+Metacello new
+baseline: 'Microdown';
+repository: 'github://pillar-markup/Microdown:v2.9.3/src';
+onConflict: [ :ex | ex useIncoming ];
+onUpgrade: [ :ex | ex useIncoming ];
+load: #('All').
+</code></pre>
+<h2>Why should you use Microdown?</h2>
+<p>Microdown is a smaller markdown but it is more extensible.
+It is used to produce books, slides, websites, doc.
+It can be read on GitHub but also on Pharo itself using the DocumentationBrowser</p>
+<p>It supports
+- Header
+- Lists
+- Paragraph
+- Code with arguments: key=val&amp;key2=val2
+...</p>
+<p>But also 
+- Environment with arguments
+- Table
+- Anchor
+- Annotated paragraph
+- Math with arguments
+- and more intra-block elements such as extensible markups, raw, math, and references.</p>
+<p><img alt="Microdown within the Pharo IDE." src="screen.png" /></p>
+<h2>Core Syntax in 2 seconds</h2>
+<pre><code>    # Header
+    @anchor
+% This is a line comment
+
+```language=Pharo&amp;caption=Beautiful&amp;label=Fig1
+code
+```
+
+![Pharo is cool .%anchor=fig:pharo&amp;width=80](http://pharo.org)
+
+- list
+1. ordered list 
+
+`in text` and for Pharo hyperlinks to class, method and package: 
+`Point`, `Point class`, `Point&gt;&gt;#setX:setY:`, `#’Microdown-Tests’ (for packages)
+
+References: *@ref@*
+
+</code></pre>
+<h2>Full Syntax</h2>
+<h3>Headers</h3>
+<p>Similar to markdown headers are composed of <code>#</code> space text on one line.
+The headers can be from 1 to 6.</p>
+<pre><code>### Header Level3
+</code></pre>
+<p>There is no support for other forms of declaration. </p>
+<h3>Anchors</h3>
+<p>In Microdown we can define anchors and reference to them (see References).
+There are three ways to create anchors:</p>
+<ul>
+<li><code>@anchorlabel</code> will create an anchor to the preceding element. </li>
+<li>Figures, mathematical environments, and environment can specify labels as arguments (<code>anchor</code>)</li>
+<li>Code block can specify label as argument (argument named <code>anchor</code>)</li>
+</ul>
+<h3>Various</h3>
+<ul>
+<li>% comments</li>
+<li>*** horizontal line</li>
+<li>File metadata is plain JSON</li>
+</ul>
+<pre><code>{
+&quot;date&quot; : &quot;12 december 2025&quot;
+}
+</code></pre>
+<ul>
+<li>Raw text</li>
+</ul>
+<pre><code>{{ raw text }}
+</code></pre>
+<h3>Math support</h3>
+<ul>
+<li><code>$$</code> mathematical environment with a label for easy referencing.</li>
+</ul>
+<pre><code>$$ %label=refToTheGreatEquation
+V_i = C_0 - C_3 
+$$
+</code></pre>
+<ul>
+<li>Math in text</li>
+</ul>
+<pre><code>'abc$   V_i = C_0 - C_3 $def'.
+</code></pre>
+<p>will generate a LaTeX equivalent and can be referenced using <code>*@refToTheGreatEquation@</code>*</p>
+<h3>Codeblock</h3>
+<p>Microdown offers the same code block that markdown but arguments can be specified and the annotation should be named. The first line after the ``` can be <code>language=pharo&amp;label=code1&amp;caption=this is my great piece of code</code></p>
+<p>The following code is not able to display it because markdown quote blocks are strange and interpret nested blocks. So we cannot use quoteblock for quoting!</p>
+<pre><code>   ```language=pharo&amp;anchor=code1&amp;caption=this is my great piece of code
+codeBlockMarkupString
+^ '```'
+```
+</code></pre>
+<pre><code>```language=pharo&amp;anchor=code1&amp;caption=this is my great piece of code
+codeBlockMarkupString
+   ^ '\`\`\`'
+```
+</code></pre>
+<h3>Extensions</h3>
+<ul>
+<li><code>{! aTag | parameters!}</code> is the way to use an extension with parameters</li>
+<li>Environments are defined using <code>&lt;!tag | parameters !&gt;</code></li>
+</ul>
+<pre><code>&lt;!agenda|title=International Workshop on Smalltalk Technologies
+
+&lt;!day|start=2023 August 29th&amp;title=Monday
+
+&lt;!segment|start=10:30
+
+&lt;!talk|subject=Pharo DataFrame: Past, Present, and Future&amp;length=30&amp;author=Safina, Zaitsev, Ferlicot-Delbecque and Sow&amp;room=Room B!&gt;
+&lt;!talk|subject=Improving Performance Through Object Lifetime Profiling: the DataFrame Case&amp;length=30&amp;author=Jordan-Montaño, Palumbo, Polito, Ducasse and Tesone&amp;room=Room B!&gt; &lt;!talk|subject=Garbage Collector Tuning in Pathological Allocation Pattern Applications&amp;length=30&amp;author=Palumbo, Jordan-Montaño, Polito, Tesone and Ducasse&amp;room=Room B!&gt;
+!&gt;
+!&gt;
+!&gt;
+</code></pre>
+<ul>
+<li>Citations <code>{!citation|ref=Blac09a!}</code> -- note that the bib file should be defined in the pillar.conf file</li>
+</ul>
+<h2>Known limits</h2>
+<h4>Math should be tested</h4>
+<h4>Quote block</h4>
+<p>When a line starts with '&gt; ' it delimits a quoteblock.
+The markup is not interpreted. </p>
+<h4>Codeblock</h4>
+<p>Codeblock does not support more than four backticks.</p>
+<h2>Development in Pharo 13!</h2>
+<h3>Loading specific version</h3>
+<p>To load the latest stable version load the master. If you have trouble loading in the latest Pharo just execute the preloading.st script in the .github folder. This script will remove the existing Microdown package and clear the system.
+You can also execute the script provided below. </p>
+<pre><code class="language-Smalltalk">Metacello new
+  baseline: 'Microdown';
+  repository: 'github://pillar-markup/Microdown:master/src';
+  load.
+</code></pre>
+<p>The process is the following:
+- Development happens dev.
+- When stable dev -&gt; in master.
+- When we can build books master is tagged.
+- Then there is the Pharo integration in dedicated branches.</p>
+<h3>Loading the latest development version</h3>
+<p>The following script loads all groups in the Baseline:</p>
+<pre><code class="language-Smalltalk">
+
+Smalltalk globals
+at: #BaselineOfMicrodown 
+ifPresent: [ :c | c removeFromSystem ].
+
+Metacello new
+baseline: 'Microdown';
+repository: 'github://pillar-markup/Microdown:dev/src';
+onConflict: [ :ex | ex useIncoming ];
+onUpgrade: [ :ex | ex useIncoming ];
+load: #('All').
+</code></pre>
+<p>In addition you may want to execute this before. </p>
+<pre><code>#( 'Microdown' ) do: [ :name |
+    (IceRepository repositoryNamed: name)
+        ifNil: [ self inform: 'Project not found: ' , name ]
+        ifNotNil: [ :found |
+            found
+                unload;
+                forget ] ].
+</code></pre>
+<h2>History</h2>
+<p>We have two sources: 
+- Pharo in one hand (a minimal version managed with the pharo* branches) and
+- Pillar (eg. all the tools and support for slides and books) and both are not totally synchronized. </p>
+<p>Now we also maintain different versions between Pharo versions. Currently the situation is the following:</p>
+<p>Working with Pharo 13: 
+- v2.9.2 a little release to support Foliage v2.1.0 and two new release of Pillar (probably one for P13 and one for P13 dropping pillar format).
+- v2.9.1 provides a better integration with Pillar (the Microdown visitors were not used before even if they worked)
+v2.7.x
+-  v2.7.2 merge pharo 13 changes / added gitbridge / OCompiler migration / cleaning syntax description / Ready for Pillar and Foliage
+-  v2.7.1 LatexQuoteblock-should-not-use-verbatim
+-  v2.7.0 Fix some errors and API/clients of the textualbuilder</p>
+<p>Working with Pharo 12: v2.5.x
+- v2.5.6 - Change html visitor and test for annotated paragraph
+- v2.5.5 - add support for top-level header as slide definition
+- v2.5.4 - add backward compatible anchor in caption + tonel V3 format
+- v2.5.1 - add LaTeX math with reference support for Pharo 12 and Pillar development up to v10.0.0</p>
+<ul>
+<li>v2.4.2 for Pillar 9.0.1</li>
+</ul>
+<p>Watch out v2.6.0 is older than v.2.5.4</p>
+<h3>Extract of Pillar History</h3>
+<p>For Pharo 12
+- v10.0.0 but with some links problems due to new inline parser using MD v2.5.0</p>
+<p>For Pharo 11
+- v9.0.1 Fixing link problems.
+- v9.0.0 loading in Pharo 11. The development will now happen in P11.</p>
+<p>For Pharo 10
+-v8.3.2 fixed baseline and updated readme</p>
+<h2>Implementation</h2>
+<p>The parser follows the design mentioned in <a href="https://github.github.com/gfm">https://github.github.com/gfm</a>, in particular the parsing strategy in Appendix A.</p>
+<p>In short, the strategy is that at any point in time, we might have several children of the root which are ""open"". The deepest in open in the tree is called ""current"". All the parents of the current are open. </p>
+<p>When a new line is read we do the following:</p>
+<ol>
+<li>Check if the new line can be consumed by current.<ul>
+<li>as part of this a child of current can be made which can consume the new line</li>
+</ul>
+</li>
+<li>If current cannot consume the new line, we close current, move current to its parent, and repeat 1.</li>
+<li>The root node can consume anything, for instance by making new nodes for storing the new line.</li>
+<li>The root node is not closed until input is exhausted</li>
+</ol>
+<p>The other packages in this repository are the extensions made to produce Pillar model. 
+Such packages should be moved in the future to other locations (probably pillar itself).</p></section>
+
+        <section id="releases" aria-labelledby="releases-title">
+            <h2 class="section-title" id="releases-title">Releases</h2>
+            
+    <nav class="release-toc" aria-label="Release table of contents">
+        <ul><li><a href="#release-2.11.3">2.11.3</a></li><li><a href="#release-2.11.2">2.11.2</a></li><li><a href="#release-2.11.1">2.11.1</a></li><li><a href="#release-2.11.0">2.11.0</a></li><li><a href="#release-2.10.4">2.10.4</a></li><li><a href="#release-2.10.3">2.10.3</a></li><li><a href="#release-2.10.2">2.10.2</a></li><li><a href="#release-2.10">2.10</a></li><li><a href="#release-2.9.8">2.9.8</a></li><li><a href="#release-2.9.6">2.9.6</a></li><li><a href="#release-2.9.5">2.9.5</a></li><li><a href="#release-2.9.3">2.9.3</a></li><li><a href="#release-2.9.2">2.9.2</a></li><li><a href="#release-2.9.1">2.9.1</a></li><li><a href="#release-2.7.2">2.7.2</a></li><li><a href="#release-2.8.0">2.8.0</a></li><li><a href="#release-2.7.1">2.7.1</a></li><li><a href="#release-2.5.6">2.5.6</a></li><li><a href="#release-2.5.5">2.5.5</a></li><li><a href="#release-2.6.0">2.6.0</a></li><li><a href="#release-2.4.1">2.4.1</a></li><li><a href="#release-2.4.0">2.4.0</a></li><li><a href="#release-2.0.0">2.0.0</a></li></ul>
+    </nav>
+    
+            <ol class="release-list">
+      
+<li>
+  <article class="release"
+           id="release-2.11.3"
+           data-release-version="2.11.3"
+           data-release-index="0"
+           data-prerelease="false">
+    <div class="release-head">
+      <h2 class="release-version">2.11.3</h2>
+      <time class="release-date" datetime="2026-11-18T07:21:21Z">November 18, 2026</time>
+    </div>
+    <div class="release-artifacts" aria-label="Release artifacts"><a class="release-artifact" href="https://github.com/pillar-markup/Microdown/releases/download/v2.11.3/index.html">index.html</a><a class="release-artifact" href="https://github.com/pillar-markup/Microdown/archive/refs/tags/v2.11.3.zip">Source code (zip)</a><a class="release-artifact" href="https://github.com/pillar-markup/Microdown/archive/refs/tags/v2.11.3.tar.gz">Source code (tar.gz)</a></div>
+    <section class="release-notes" aria-label="Release notes"><h3>Release notes</h3><p><strong>Full Changelog</strong>: https://github.com/pillar-markup/Microdown/compare/v2.11.2...v2.11.3</p></section>
+  </article>
+</li>
+
+<li>
+  <article class="release"
+           id="release-2.11.2"
+           data-release-version="2.11.2"
+           data-release-index="1"
+           data-prerelease="false">
+    <div class="release-head">
+      <h2 class="release-version">2.11.2</h2>
+      <time class="release-date" datetime="2026-11-16T17:21:59Z">November 16, 2026</time>
+    </div>
+    <div class="release-artifacts" aria-label="Release artifacts"><a class="release-artifact" href="https://github.com/pillar-markup/Microdown/archive/refs/tags/v2.11.2.zip">Source code (zip)</a><a class="release-artifact" href="https://github.com/pillar-markup/Microdown/archive/refs/tags/v2.11.2.tar.gz">Source code (tar.gz)</a></div>
+    <section class="release-notes" aria-label="Release notes"><h3>Release notes</h3><ul>
+<li>Organization fixed dependencies </li>
+<li>Fixed templatedWriter to be ready for an experience
+<strong>Full Changelog</strong>: https://github.com/pillar-markup/Microdown/compare/v2.11.1...v2.11.2</li>
+</ul></section>
+  </article>
+</li>
+
+<li>
+  <article class="release"
+           id="release-2.11.1"
+           data-release-version="2.11.1"
+           data-release-index="2"
+           data-prerelease="false">
+    <div class="release-head">
+      <h2 class="release-version">2.11.1</h2>
+      <time class="release-date" datetime="2026-11-15T15:37:35Z">November 15, 2026</time>
+    </div>
+    <div class="release-artifacts" aria-label="Release artifacts"><a class="release-artifact" href="https://github.com/pillar-markup/Microdown/archive/refs/tags/v2.11.1.zip">Source code (zip)</a><a class="release-artifact" href="https://github.com/pillar-markup/Microdown/archive/refs/tags/v2.11.1.tar.gz">Source code (tar.gz)</a></div>
+    <section class="release-notes" aria-label="Release notes"><h3>Release notes</h3><p><strong>Full Changelog</strong>: https://github.com/pillar-markup/Microdown/compare/v2.10.4...v2.11.1</p></section>
+  </article>
+</li>
+
+<li>
+  <article class="release"
+           id="release-2.11.0"
+           data-release-version="2.11.0"
+           data-release-index="3"
+           data-prerelease="false">
+    <div class="release-head">
+      <h2 class="release-version">2.11.0</h2>
+      <time class="release-date" datetime="2026-10-07T10:37:06Z">October 07, 2026</time>
+    </div>
+    <div class="release-artifacts" aria-label="Release artifacts"><a class="release-artifact" href="https://github.com/pillar-markup/Microdown/archive/refs/tags/v2.11.0.zip">Source code (zip)</a><a class="release-artifact" href="https://github.com/pillar-markup/Microdown/archive/refs/tags/v2.11.0.tar.gz">Source code (tar.gz)</a></div>
+    <section class="release-notes" aria-label="Release notes"><h3>Release notes</h3><h2>What's Changed</h2>
+<ul>
+<li>Move extensions to package</li>
+<li>Remove stray extension</li>
+</ul>
+<p><strong>Full Changelog</strong>: https://github.com/pillar-markup/Microdown/compare/v2.9.5...v2.11.0</p></section>
+  </article>
+</li>
+
+<li>
+  <article class="release"
+           id="release-2.10.4"
+           data-release-version="2.10.4"
+           data-release-index="4"
+           data-prerelease="false">
+    <div class="release-head">
+      <h2 class="release-version">2.10.4</h2>
+      <time class="release-date" datetime="2026-09-23T07:30:08Z">September 23, 2026</time>
+    </div>
+    <div class="release-artifacts" aria-label="Release artifacts"><a class="release-artifact" href="https://github.com/pillar-markup/Microdown/archive/refs/tags/v2.10.4.zip">Source code (zip)</a><a class="release-artifact" href="https://github.com/pillar-markup/Microdown/archive/refs/tags/v2.10.4.tar.gz">Source code (tar.gz)</a><a class="release-artifact" href="https://github.com/pillar-markup/Microdown/releases/download/v2.10.4/index.html">index.html</a></div>
+    <section class="release-notes" aria-label="Release notes"><h3>Release notes</h3><h2>What's Changed</h2>
+<ul>
+<li>
+<ul>
+<li>Fix isAnchorReferenceBlock by @Ducasse in https://github.com/pillar-markup/Microdown/pull/1110</li>
+</ul>
+</li>
+<li>Post intern fixes by @Ducasse in https://github.com/pillar-markup/Microdown/pull/1111</li>
+</ul>
+<p><strong>Full Changelog</strong>: https://github.com/pillar-markup/Microdown/compare/v2.10.3...v2.10.4</p></section>
+  </article>
+</li>
+
+<li>
+  <article class="release"
+           id="release-2.10.3"
+           data-release-version="2.10.3"
+           data-release-index="5"
+           data-prerelease="false">
+    <div class="release-head">
+      <h2 class="release-version">2.10.3</h2>
+      <time class="release-date" datetime="2026-06-30T12:31:38Z">June 30, 2026</time>
+    </div>
+    <div class="release-artifacts" aria-label="Release artifacts"><a class="release-artifact" href="https://github.com/pillar-markup/Microdown/archive/refs/tags/v2.10.3.zip">Source code (zip)</a><a class="release-artifact" href="https://github.com/pillar-markup/Microdown/archive/refs/tags/v2.10.3.tar.gz">Source code (tar.gz)</a></div>
+    <section class="release-notes" aria-label="Release notes"><h3>Release notes</h3><h2>What's Changed</h2>
+<ul>
+<li>Merge dev in P14 by @jecisc in https://github.com/pillar-markup/Microdown/pull/972</li>
+<li>Merge dev into Pharo14 by @jordanmontt in https://github.com/pillar-markup/Microdown/pull/971</li>
+<li>Integrate extension changes into Pharo14 by @guillep in https://github.com/pillar-markup/Microdown/pull/991</li>
+<li>Feature/references by @Fanirindrainy in https://github.com/pillar-markup/Microdown/pull/1006</li>
+<li>Feature/code indentation by @Fanirindrainy in https://github.com/pillar-markup/Microdown/pull/1007</li>
+<li>Feature/paragraph label by @Fanirindrainy in https://github.com/pillar-markup/Microdown/pull/1008</li>
+<li>Feature/vocabulary by @Fanirindrainy in https://github.com/pillar-markup/Microdown/pull/1012</li>
+<li>Feature/method reference by @Fanirindrainy in https://github.com/pillar-markup/Microdown/pull/1011</li>
+<li>Feature/french typo by @Fanirindrainy in https://github.com/pillar-markup/Microdown/pull/1010</li>
+<li>Fixingnil monospace semantic action by @Ducasse in https://github.com/pillar-markup/Microdown/pull/1013</li>
+<li>Feature/method structure by @Fanirindrainy in https://github.com/pillar-markup/Microdown/pull/1009</li>
+<li>Fix/english typo by @Fanirindrainy in https://github.com/pillar-markup/Microdown/pull/1017</li>
+<li>Add configureFrom: tests and improve checker configuration coverage by @Fanirindrainy in https://github.com/pillar-markup/Microdown/pull/1018</li>
+<li>Feature/vocabulary by @Fanirindrainy in https://github.com/pillar-markup/Microdown/pull/1023</li>
+<li>issue 1026/1028/1029 by @AntoineUsal in https://github.com/pillar-markup/Microdown/pull/1031</li>
+<li>Add tests for MicLatex by @AntoineUsal in https://github.com/pillar-markup/Microdown/pull/1046</li>
+<li>Fix conflict for MicParagraph by @AntoineUsal in https://github.com/pillar-markup/Microdown/pull/1045</li>
+<li>Add test for MicHorizontalLine by @AntoineUsal in https://github.com/pillar-markup/Microdown/pull/1043</li>
+<li>Test for MicAnchorBlock by @AntoineUsal in https://github.com/pillar-markup/Microdown/pull/1041</li>
+<li>Add htmlEscape and fix HTML reporter by @Fanirindrainy in https://github.com/pillar-markup/Microdown/pull/1051</li>
+<li>Enh/header capitalization by @Ducasse in https://github.com/pillar-markup/Microdown/pull/1052</li>
+<li>
+<ul>
+<li>Added a test that checks that the default is to check that the last… by @Ducasse in https://github.com/pillar-markup/Microdown/pull/1055</li>
+</ul>
+</li>
+<li>Add test for doublePeriod by @AntoineUsal in https://github.com/pillar-markup/Microdown/pull/1057</li>
+<li>Add test for issue 1048 by @AntoineUsal in https://github.com/pillar-markup/Microdown/pull/1056</li>
+<li>Moving method to the correct class. Removing method from MicLastPerio… by @Ducasse in https://github.com/pillar-markup/Microdown/pull/1058</li>
+<li>Add 2 more tests by @AntoineUsal in https://github.com/pillar-markup/Microdown/pull/1062</li>
+<li>Remove extra - by @AntoineUsal in https://github.com/pillar-markup/Microdown/pull/1061</li>
+<li>Mic references checker by @AntoineUsal in https://github.com/pillar-markup/Microdown/pull/1067</li>
+<li>MicAnchoredSectionTableFigureChecker by @AntoineUsal in https://github.com/pillar-markup/Microdown/pull/1073</li>
+<li>Add new checker : MicFigureCaption by @AntoineUsal in https://github.com/pillar-markup/Microdown/pull/1070</li>
+<li>Fix error figure by @AntoineUsal in https://github.com/pillar-markup/Microdown/pull/1069</li>
+<li>Revert "Fix error figure" by @Ducasse in https://github.com/pillar-markup/Microdown/pull/1074</li>
+<li>Rename MicFigureCaption by @AntoineUsal in https://github.com/pillar-markup/Microdown/pull/1078</li>
+<li>Change configureFrom from MicAnchoredSectionTableFigureChecker by @AntoineUsal in https://github.com/pillar-markup/Microdown/pull/1079</li>
+<li>Extend the reference checker by @AntoineUsal in https://github.com/pillar-markup/Microdown/pull/1080</li>
+<li>Rename sourceFileReference by @AntoineUsal in https://github.com/pillar-markup/Microdown/pull/1083</li>
+<li>Optimi of the checker MicAnchoredSectionTableFigure by @AntoineUsal in https://github.com/pillar-markup/Microdown/pull/1087</li>
+<li>Feature/html reporter only by @Fanirindrainy in https://github.com/pillar-markup/Microdown/pull/1093</li>
+<li>Change configuration for MicMethodReferenceChecker by @AntoineUsal in https://github.com/pillar-markup/Microdown/pull/1089</li>
+<li>add headerString for MicBook by @AntoineUsal in https://github.com/pillar-markup/Microdown/pull/1095</li>
+<li>Fixing mic entry by @Ducasse in https://github.com/pillar-markup/Microdown/pull/1101</li>
+<li>MicCodeIndentation by @AntoineUsal in https://github.com/pillar-markup/Microdown/pull/1102</li>
+<li>Fix block startLine by @AntoineUsal in https://github.com/pillar-markup/Microdown/pull/1094</li>
+<li>Fixing 2 tests by @AntoineUsal in https://github.com/pillar-markup/Microdown/pull/1105</li>
+<li>Add new checker MicSecondaryRoot by @AntoineUsal in https://github.com/pillar-markup/Microdown/pull/1100</li>
+<li>Mic code indentation checker spec by @AntoineUsal in https://github.com/pillar-markup/Microdown/pull/1104</li>
+<li>Fix setCurrent and add tests by @AntoineUsal in https://github.com/pillar-markup/Microdown/pull/1109</li>
+</ul>
+<h2>New Contributors</h2>
+<ul>
+<li>@Fanirindrainy made their first contribution in https://github.com/pillar-markup/Microdown/pull/1006</li>
+<li>@AntoineUsal made their first contribution in https://github.com/pillar-markup/Microdown/pull/1031</li>
+</ul>
+<p><strong>Full Changelog</strong>: https://github.com/pillar-markup/Microdown/compare/v2.10.2...v2.10.3</p></section>
+  </article>
+</li>
+
+<li>
+  <article class="release"
+           id="release-2.10.2"
+           data-release-version="2.10.2"
+           data-release-index="6"
+           data-prerelease="false">
+    <div class="release-head">
+      <h2 class="release-version">2.10.2</h2>
+      <time class="release-date" datetime="2026-03-15T09:35:25Z">March 15, 2026</time>
+    </div>
+    <div class="release-artifacts" aria-label="Release artifacts"><a class="release-artifact" href="https://github.com/pillar-markup/Microdown/archive/refs/tags/v2.10.2.zip">Source code (zip)</a><a class="release-artifact" href="https://github.com/pillar-markup/Microdown/archive/refs/tags/v2.10.2.tar.gz">Source code (tar.gz)</a></div>
+    <section class="release-notes" aria-label="Release notes"><h3>Release notes</h3><ul>
+<li>Enhance the tree visitor so that it implements the invariant that only visitEach: is calling accept: so that we can get a handle on cutting visit of any nodes.</li>
+<li>Revisit all the visitor logic to work with such logic.</li>
+<li>Fixing accept: method</li>
+</ul></section>
+  </article>
+</li>
+
+<li>
+  <article class="release"
+           id="release-2.10"
+           data-release-version="2.10"
+           data-release-index="7"
+           data-prerelease="false">
+    <div class="release-head">
+      <h2 class="release-version">2.10</h2>
+      <time class="release-date" datetime="2026-03-10T12:58:15Z">March 10, 2026</time>
+    </div>
+    <div class="release-artifacts" aria-label="Release artifacts"><a class="release-artifact" href="https://github.com/pillar-markup/Microdown/archive/refs/tags/v2.10.zip">Source code (zip)</a><a class="release-artifact" href="https://github.com/pillar-markup/Microdown/archive/refs/tags/v2.10.tar.gz">Source code (tar.gz)</a></div>
+    <section class="release-notes" aria-label="Release notes"><h3>Release notes</h3><p>This release 
+- renamed RawParagraph into HTMLTagParagraph
+- introduced MicParser instead of MicrodownParser
+- introduced RawParagraph</p></section>
+  </article>
+</li>
+
+<li>
+  <article class="release"
+           id="release-2.9.8"
+           data-release-version="2.9.8"
+           data-release-index="8"
+           data-prerelease="false">
+    <div class="release-head">
+      <h2 class="release-version">2.9.8</h2>
+      <time class="release-date" datetime="2026-03-01T11:55:31Z">March 01, 2026</time>
+    </div>
+    <div class="release-artifacts" aria-label="Release artifacts"><a class="release-artifact" href="https://github.com/pillar-markup/Microdown/archive/refs/tags/v2.9.8.zip">Source code (zip)</a><a class="release-artifact" href="https://github.com/pillar-markup/Microdown/archive/refs/tags/v2.9.8.tar.gz">Source code (tar.gz)</a></div>
+    <section class="release-notes" aria-label="Release notes"><h3>Release notes</h3><ul>
+<li>Fix HTMNL orderedList</li>
+<li>explicit dependency to Mustache 1.4</li>
+<li>Windows file references</li>
+</ul></section>
+  </article>
+</li>
+
+<li>
+  <article class="release"
+           id="release-2.9.6"
+           data-release-version="2.9.6"
+           data-release-index="9"
+           data-prerelease="false">
+    <div class="release-head">
+      <h2 class="release-version">2.9.6</h2>
+      <time class="release-date" datetime="2026-02-24T15:14:00Z">February 24, 2026</time>
+    </div>
+    <div class="release-artifacts" aria-label="Release artifacts"><a class="release-artifact" href="https://github.com/pillar-markup/Microdown/archive/refs/tags/v2.9.6.zip">Source code (zip)</a><a class="release-artifact" href="https://github.com/pillar-markup/Microdown/archive/refs/tags/v2.9.6.tar.gz">Source code (tar.gz)</a></div>
+    <section class="release-notes" aria-label="Release notes"><h3>Release notes</h3><h2>What's Changed</h2>
+<ul>
+<li>First templating HTML visitor is working. The visitor is looking for templates for each tree element and apply the template instead of the traditional HTML Visitor to which the templating visitor is delegating in case of file absence. </li>
+<li>Using Mustache 1.4. This is important for Foliage. </li>
+</ul>
+<p><strong>Full Changelog</strong>: https://github.com/pillar-markup/Microdown/compare/v2.9.5...v2.9.6</p></section>
+  </article>
+</li>
+
+<li>
+  <article class="release"
+           id="release-2.9.5"
+           data-release-version="2.9.5"
+           data-release-index="10"
+           data-prerelease="false">
+    <div class="release-head">
+      <h2 class="release-version">2.9.5</h2>
+      <time class="release-date" datetime="2026-01-11T20:15:29Z">January 11, 2026</time>
+    </div>
+    <div class="release-artifacts" aria-label="Release artifacts"><a class="release-artifact" href="https://github.com/pillar-markup/Microdown/archive/refs/tags/v2.9.5.zip">Source code (zip)</a><a class="release-artifact" href="https://github.com/pillar-markup/Microdown/archive/refs/tags/v2.9.5.tar.gz">Source code (tar.gz)</a></div>
+    <section class="release-notes" aria-label="Release notes"><h3>Release notes</h3><ul>
+<li>fixing integration with Pillar for the basic LaTeX generation. </li>
+<li>more book checkers in the pipeline.</li>
+<li>getting started with a Toc Builder.</li>
+</ul>
+<h2>What's Changed</h2>
+<ul>
+<li>Merge dev into Pharo 13 by @Ducasse in https://github.com/pillar-markup/Microdown/pull/932</li>
+<li>Update MicAbstractAnnotatedBlock.class.st, use allButFirst by @vonbecmann in https://github.com/pillar-markup/Microdown/pull/973</li>
+<li>Allow MicCSSEntity to overwrite existing file by @AndrzejProchyra in https://github.com/pillar-markup/Microdown/pull/983</li>
+<li>A couple of tiny tidies by @AndrzejProchyra in https://github.com/pillar-markup/Microdown/pull/984</li>
+<li>Elaborating the MicTocBuilder by @AndrzejProchyra in https://github.com/pillar-markup/Microdown/pull/985</li>
+</ul>
+<h2>New Contributors</h2>
+<ul>
+<li>@vonbecmann made their first contribution in https://github.com/pillar-markup/Microdown/pull/973</li>
+<li>@AndrzejProchyra made their first contribution in https://github.com/pillar-markup/Microdown/pull/983</li>
+</ul>
+<p><strong>Full Changelog</strong>: https://github.com/pillar-markup/Microdown/compare/v2.9.4...v2.9.5</p></section>
+  </article>
+</li>
+
+<li>
+  <article class="release"
+           id="release-2.9.3"
+           data-release-version="2.9.3"
+           data-release-index="11"
+           data-prerelease="false">
+    <div class="release-head">
+      <h2 class="release-version">2.9.3</h2>
+      <time class="release-date" datetime="2025-08-08T09:34:44Z">August 08, 2025</time>
+    </div>
+    <div class="release-artifacts" aria-label="Release artifacts"><a class="release-artifact" href="https://github.com/pillar-markup/Microdown/archive/refs/tags/v2.9.3.zip">Source code (zip)</a><a class="release-artifact" href="https://github.com/pillar-markup/Microdown/archive/refs/tags/v2.9.3.tar.gz">Source code (tar.gz)</a></div>
+    <section class="release-notes" aria-label="Release notes"><h3>Release notes</h3><p><strong>Full Changelog</strong>: https://github.com/pillar-markup/Microdown/compare/v2.9.2...v2.9.3</p></section>
+  </article>
+</li>
+
+<li>
+  <article class="release"
+           id="release-2.9.2"
+           data-release-version="2.9.2"
+           data-release-index="12"
+           data-prerelease="false">
+    <div class="release-head">
+      <h2 class="release-version">2.9.2</h2>
+      <time class="release-date" datetime="2025-08-02T16:20:50Z">August 02, 2025</time>
+    </div>
+    <div class="release-artifacts" aria-label="Release artifacts"><a class="release-artifact" href="https://github.com/pillar-markup/Microdown/archive/refs/tags/v2.9.2.zip">Source code (zip)</a><a class="release-artifact" href="https://github.com/pillar-markup/Microdown/archive/refs/tags/v2.9.2.tar.gz">Source code (tar.gz)</a></div>
+    <section class="release-notes" aria-label="Release notes"><h3>Release notes</h3><h2>What's Changed</h2>
+<ul>
+<li>Add package tags as a semantic entity by @iglosiggio in https://github.com/pillar-markup/Microdown/pull/929</li>
+<li>Proposing a simple workaround that add empty columns for short rows by @NicolasAnquetil in https://github.com/pillar-markup/Microdown/pull/927</li>
+</ul>
+<h2>New Contributors</h2>
+<ul>
+<li>@iglosiggio made their first contribution in https://github.com/pillar-markup/Microdown/pull/929</li>
+<li>@NicolasAnquetil made their first contribution in https://github.com/pillar-markup/Microdown/pull/927</li>
+</ul>
+<p>Thanks Kasper Osterbye and Cyril Ferlicot. Yes I redid all your PRs. Thank you.</p>
+<p><strong>Full Changelog</strong>: https://github.com/pillar-markup/Microdown/compare/v2.9.1...v2.9.2</p></section>
+  </article>
+</li>
+
+<li>
+  <article class="release"
+           id="release-2.9.1"
+           data-release-version="2.9.1"
+           data-release-index="13"
+           data-prerelease="false">
+    <div class="release-head">
+      <h2 class="release-version">2.9.1</h2>
+      <time class="release-date" datetime="2025-06-26T14:20:45Z">June 26, 2025</time>
+    </div>
+    <div class="release-artifacts" aria-label="Release artifacts"><a class="release-artifact" href="https://github.com/pillar-markup/Microdown/archive/refs/tags/v2.9.1.zip">Source code (zip)</a><a class="release-artifact" href="https://github.com/pillar-markup/Microdown/archive/refs/tags/v2.9.1.tar.gz">Source code (tar.gz)</a></div>
+    <section class="release-notes" aria-label="Release notes"><h3>Release notes</h3><h2>What's Changed</h2>
+<ul>
+<li>Add pillar dependent methods for HTML exporting by @guillep in https://github.com/pillar-markup/Microdown/pull/950</li>
+</ul>
+<p><strong>Full Changelog</strong>: https://github.com/pillar-markup/Microdown/compare/v2.8.2...v2.9.1</p></section>
+  </article>
+</li>
+
+<li>
+  <article class="release"
+           id="release-2.7.2"
+           data-release-version="2.7.2"
+           data-release-index="14"
+           data-prerelease="false">
+    <div class="release-head">
+      <h2 class="release-version">2.7.2</h2>
+      <time class="release-date" datetime="2025-02-20T12:48:12Z">February 20, 2025</time>
+    </div>
+    <div class="release-artifacts" aria-label="Release artifacts"><a class="release-artifact" href="https://github.com/pillar-markup/Microdown/archive/refs/tags/v2.7.2.zip">Source code (zip)</a><a class="release-artifact" href="https://github.com/pillar-markup/Microdown/archive/refs/tags/v2.7.2.tar.gz">Source code (tar.gz)</a></div>
+    <section class="release-notes" aria-label="Release notes"><h3>Release notes</h3><ul>
+<li>merged pharo 13 changes </li>
+<li>added gitbridge </li>
+<li>OCompiler migration</li>
+<li>cleaning syntax description</li>
+<li>Ready for Pillar and Foliage</li>
+<li>Code cleanup</li>
+</ul></section>
+  </article>
+</li>
+
+<li>
+  <article class="release"
+           id="release-2.8.0"
+           data-release-version="2.8.0"
+           data-release-index="15"
+           data-prerelease="false">
+    <div class="release-head">
+      <h2 class="release-version">2.8.0</h2>
+      <time class="release-date" datetime="2025-05-16T12:15:55Z">May 16, 2025</time>
+    </div>
+    <div class="release-artifacts" aria-label="Release artifacts"><a class="release-artifact" href="https://github.com/pillar-markup/Microdown/archive/refs/tags/v2.8.0.zip">Source code (zip)</a><a class="release-artifact" href="https://github.com/pillar-markup/Microdown/archive/refs/tags/v2.8.0.tar.gz">Source code (tar.gz)</a></div>
+    <section class="release-notes" aria-label="Release notes"><h3>Release notes</h3><h2>What's Changed</h2>
+<ul>
+<li>Some cleanups by @jecisc in https://github.com/pillar-markup/Microdown/pull/917</li>
+<li>Improve preload to not be executed during the Pharo bootstrap by @jecisc in https://github.com/pillar-markup/Microdown/pull/918</li>
+<li>Add GitBridge to Microdown by @jecisc in https://github.com/pillar-markup/Microdown/pull/925</li>
+<li>getting changes from Pharo13 by @Ducasse in https://github.com/pillar-markup/Microdown/pull/931</li>
+<li>Branch: removeExtensionsAlreadyInPharo,  Fixes # by @Ducasse in https://github.com/pillar-markup/Microdown/pull/933</li>
+<li>Merge dev into Pharo 13 by @Ducasse in https://github.com/pillar-markup/Microdown/pull/932</li>
+</ul>
+<p><strong>Full Changelog</strong>: https://github.com/pillar-markup/Microdown/compare/v2.7.1...v2.8.0</p></section>
+  </article>
+</li>
+
+<li>
+  <article class="release"
+           id="release-2.7.1"
+           data-release-version="2.7.1"
+           data-release-index="16"
+           data-prerelease="false">
+    <div class="release-head">
+      <h2 class="release-version">2.7.1</h2>
+      <time class="release-date" datetime="2024-11-03T16:03:59Z">November 03, 2024</time>
+    </div>
+    <div class="release-artifacts" aria-label="Release artifacts"><a class="release-artifact" href="https://github.com/pillar-markup/Microdown/archive/refs/tags/v2.7.1.zip">Source code (zip)</a><a class="release-artifact" href="https://github.com/pillar-markup/Microdown/archive/refs/tags/v2.7.1.tar.gz">Source code (tar.gz)</a></div>
+    <section class="release-notes" aria-label="Release notes"><h3>Release notes</h3><h2>What's Changed</h2>
+<p>This release is ready to build a new version of Pillar and Foliage. 
+It introduces new elements to support Foliage and web generation. 
+It improves the document checker. Now the following analyses are reported:
+- Duplicated anchors,
+- References to unexisting anchors,
+- Unreferenced figures,
+- Missing figure files, and
+- Missing input files.</p>
+<p>It has been tested with the bod-book updated archetype.</p>
+<h3>Merged changes from Pharo 13 and many little cleans</h3>
+<ul>
+<li>Fix deprecated call by @jecisc in https://github.com/pillar-markup/Microdown/pull/741</li>
+<li>Use isNotNil instead of notNil by @astares in https://github.com/pillar-markup/Microdown/pull/753</li>
+<li>754 configuration command line handler not existent anymore in p13 by @astares in https://github.com/pillar-markup/Microdown/pull/755</li>
+<li>Port "Fix unreadable code in Pharo Light theme" to Pharo 13 by @jecisc in https://github.com/pillar-markup/Microdown/pull/872</li>
+<li>Fixing duplicated methods by @Ducasse in https://github.com/pillar-markup/Microdown/pull/904 and https://github.com/pillar-markup/Microdown/pull/905</li>
+<li>Improve postload to not break the Pharo bootstrap by @jecisc in https://github.com/pillar-markup/Microdown/pull/909</li>
+<li>Merge Fix for Baseline in Pharo13 by @tesonep in https://github.com/pillar-markup/Microdown/pull/910</li>
+</ul>
+<h3>Enhanced checker</h3>
+<ul>
+<li>Issue 813 use fileReference in fromfile by @moufort in https://github.com/pillar-markup/Microdown/pull/885</li>
+<li>Issue 810 Duplicated anchor by @moufort in https://github.com/pillar-markup/Microdown/pull/890</li>
+<li>884 the bookchecker does not report on figure with files that do not exist by @moufort in https://github.com/pillar-markup/Microdown/pull/902</li>
+<li>906 even if figures are referenced there are reported as not referenced  by @Ducasse in https://github.com/pillar-markup/Microdown/pull/907</li>
+</ul>
+<h3>New features</h3>
+<ul>
+<li>Introduce raw paragraph by @Ducasse in https://github.com/pillar-markup/Microdown/pull/889</li>
+<li>Annotated paragraph by @moufort in https://github.com/pillar-markup/Microdown/pull/888</li>
+<li>Introduce inline space by @Ducasse in https://github.com/pillar-markup/Microdown/pull/891</li>
+<li>Introduce a new hook to support the contextual redefinition of line m… by @Ducasse in https://github.com/pillar-markup/Microdown/pull/912</li>
+<li>Fix LaTeX quote block generation by @Ducasse in https://github.com/pillar-markup/Microdown/pull/916</li>
+<li>Fix nested code blocks</li>
+</ul>
+<h3>Documentation</h3>
+<ul>
+<li>Full pass on the documentation</li>
+<li>Added several chapters</li>
+</ul>
+<p><strong>Full Changelog</strong>: https://github.com/pillar-markup/Microdown/compare/v2.7.0...v2.7.1</p></section>
+  </article>
+</li>
+
+<li>
+  <article class="release"
+           id="release-2.5.6"
+           data-release-version="2.5.6"
+           data-release-index="17"
+           data-prerelease="false">
+    <div class="release-head">
+      <h2 class="release-version">2.5.6</h2>
+      <time class="release-date" datetime="2024-08-21T07:25:14Z">August 21, 2024</time>
+    </div>
+    <div class="release-artifacts" aria-label="Release artifacts"><a class="release-artifact" href="https://github.com/pillar-markup/Microdown/archive/refs/tags/v2.5.6.zip">Source code (zip)</a><a class="release-artifact" href="https://github.com/pillar-markup/Microdown/archive/refs/tags/v2.5.6.tar.gz">Source code (tar.gz)</a></div>
+    <section class="release-notes" aria-label="Release notes"><h3>Release notes</h3><p>This release is a rolling release waiting for some features such as new syntax for annotated paragraph, raw paragraph and some more features in development. Pay attention due to Pharo stupid naming this version is a lot more recent than v2.6.0.</p>
+<p>This release nevertheless includes some nice features amongst which</p>
+<ul>
+<li>new book tester: checks for undefined or duplicated anchors, bogus inputfile</li>
+<li>notes support <code>!!note</code> pay attention the major release will </li>
+<li>support for slides as extension e.g. <code>&lt;!slide|title=a nice title...</code></li>
+<li>support for slides as header e.g. <code># a nice title</code></li>
+<li>nicer support for extension e.g. <code>{!comment|contents=sd thinks there is something fishy!}</code> now can be expressed as {!comment|sd thinks there is something fishy!}`</li>
+</ul>
+<h2>What's Changed</h2>
+<ul>
+<li>Book tester v4 by @melkiyasser in https://github.com/pillar-markup/Microdown/pull/799</li>
+<li>Refact book tester tests by @Ducasse in https://github.com/pillar-markup/Microdown/pull/803</li>
+<li>Enh explanation by @Ducasse in https://github.com/pillar-markup/Microdown/pull/816</li>
+<li>Better reporting by @Ducasse in https://github.com/pillar-markup/Microdown/pull/820</li>
+<li>MicBookTesterResult merged with MicResult by @melkiyasser in https://github.com/pillar-markup/Microdown/pull/841</li>
+<li>Issue 780 css framework by @moufort in https://github.com/pillar-markup/Microdown/pull/802</li>
+<li>Skip the three tests that are working locally but failing on the GH s… by @Ducasse in https://github.com/pillar-markup/Microdown/pull/807</li>
+<li>update mustache template of blog creator by @moufort in https://github.com/pillar-markup/Microdown/pull/806</li>
+<li>issues 797 Parser handles better metadata broke blog tests  by @moufort in https://github.com/pillar-markup/Microdown/pull/809</li>
+<li>issue 785  Better file handling error by @moufort in https://github.com/pillar-markup/Microdown/pull/808</li>
+<li>Change css style for blog and fix the home link by @moufort in https://github.com/pillar-markup/Microdown/pull/821</li>
+<li>822 figuresfpng is breaking by @Ducasse in https://github.com/pillar-markup/Microdown/pull/824</li>
+<li>832 is metadata well exported by @Ducasse in https://github.com/pillar-markup/Microdown/pull/835</li>
+<li>686-Minimise-package-extension  by @Ducasse in https://github.com/pillar-markup/Microdown/pull/836</li>
+<li>Move all the browser extensions to a separate package + update baseli… by @Ducasse in https://github.com/pillar-markup/Microdown/pull/837</li>
+<li>804 problem runnning the build on the server by @Ducasse in https://github.com/pillar-markup/Microdown/pull/838</li>
+<li>Update README.md by @hernanmd in https://github.com/pillar-markup/Microdown/pull/839</li>
+<li>Add Blog packages to Extensions group in Baseline by @hernanmd in https://github.com/pillar-markup/Microdown/pull/842</li>
+<li>Issue 831 use annotated paragraph for latex outputter by @moufort in https://github.com/pillar-markup/Microdown/pull/843</li>
+<li>Issue 829 introduce notes  configuration by @moufort in https://github.com/pillar-markup/Microdown/pull/849</li>
+<li>Issue 848-Test-failing-in-Annotated by @moufort in https://github.com/pillar-markup/Microdown/pull/852</li>
+<li>Issue 830 extend the extension mechanism by @moufort in https://github.com/pillar-markup/Microdown/pull/851</li>
+<li>Fixing beamer writer by @Ducasse in https://github.com/pillar-markup/Microdown/pull/853</li>
+<li>Fixing fileSystem by @Ducasse in https://github.com/pillar-markup/Microdown/pull/856</li>
+<li>Fix unreadable code in Pharo Light theme by @hernanmd in https://github.com/pillar-markup/Microdown/pull/858</li>
+<li>Issue 845 more annotated paragraph by @moufort in https://github.com/pillar-markup/Microdown/pull/857</li>
+<li>Issue 716 should support blockquote by @moufort in https://github.com/pillar-markup/Microdown/pull/859</li>
+<li>Change html visitor and test for annotated paragraph by @moufort in https://github.com/pillar-markup/Microdown/pull/860</li>
+</ul>
+<p><strong>Full Changelog</strong>: https://github.com/pillar-markup/Microdown/compare/v2.5.5...v2.5.6</p></section>
+  </article>
+</li>
+
+<li>
+  <article class="release"
+           id="release-2.5.5"
+           data-release-version="2.5.5"
+           data-release-index="18"
+           data-prerelease="false">
+    <div class="release-head">
+      <h2 class="release-version">2.5.5</h2>
+      <time class="release-date" datetime="2024-07-28T16:12:47Z">July 28, 2024</time>
+    </div>
+    <div class="release-artifacts" aria-label="Release artifacts"><a class="release-artifact" href="https://github.com/pillar-markup/Microdown/archive/refs/tags/v2.5.5.zip">Source code (zip)</a><a class="release-artifact" href="https://github.com/pillar-markup/Microdown/archive/refs/tags/v2.5.5.tar.gz">Source code (tar.gz)</a></div>
+    <section class="release-notes" aria-label="Release notes"><h3>Release notes</h3><p>This version will be used for the new release of Pillar.</p>
+<p>The main features of this release are:
+- Speed up of the inline parser (not necessary but always nice to get faster)
+- Support for Slide conversion from header level 1 (to support the future migration from pillar)
+- First blog system
+- First book tester version (dandling references)</p>
+<p>Thanks Yasser Melki, Quentin Moutté, Gabriel Barbord for their PRs</p>
+<h2>What's Changed</h2>
+<h3>Beamer</h3>
+<ul>
+<li>Added a first test in full without beamer generation. by @Ducasse in https://github.com/pillar-markup/Microdown/pull/794</li>
+</ul>
+<h3>More robustness</h3>
+<ul>
+<li>Fix 676 notNil -&gt; isNotNil by @Ducasse in https://github.com/pillar-markup/Microdown/pull/792</li>
+<li>fixing https://github.com/pillar-markup/Microdown/issues/665 by @Ducasse in https://github.com/pillar-markup/Microdown/pull/793</li>
+<li>Handle metadata parsing error by @Gabriel-Darbord in https://github.com/pillar-markup/Microdown/pull/761</li>
+<li>Fix #762: avoid empty lines in nested lists by @Gabriel-Darbord in https://github.com/pillar-markup/Microdown/pull/763</li>
+<li>Refresh class comments in Microdown package by @Gabriel-Darbord in https://github.com/pillar-markup/Microdown/pull/769</li>
+<li>try to fix the issue 771 by replace originalString by fullname by @moufort in https://github.com/pillar-markup/Microdown/pull/796</li>
+<li>Issue 698 mic inline delimiter logic can be optimized by @moufort in https://github.com/pillar-markup/Microdown/pull/800</li>
+<li>Issue 698 new optimization of MicInlineDelimiter by @moufort in https://github.com/pillar-markup/Microdown/pull/801</li>
+</ul>
+<h3>MicroBlogger</h3>
+<ul>
+<li>fix bug with the link by @moufort in https://github.com/pillar-markup/Microdown/pull/756</li>
+<li>Fix test by @moufort in https://github.com/pillar-markup/Microdown/pull/757</li>
+<li>fix navigation and link of summary by @moufort in https://github.com/pillar-markup/Microdown/pull/758</li>
+<li>Delete all empty month summary by @moufort in https://github.com/pillar-markup/Microdown/pull/775</li>
+<li>refactoring and test summary contents by @moufort in https://github.com/pillar-markup/Microdown/pull/777</li>
+<li>add test to Microdown-Blog by @moufort in https://github.com/pillar-markup/Microdown/pull/781</li>
+<li>add test for levelPathCSS and update test by @moufort in https://github.com/pillar-markup/Microdown/pull/783</li>
+<li>Refactoring all Microdown-Blog by @moufort in https://github.com/pillar-markup/Microdown/pull/786</li>
+<li>add a root variable for give the root folder of the blog by @moufort in https://github.com/pillar-markup/Microdown/pull/788</li>
+<li>change name of monthBlog by @moufort in https://github.com/pillar-markup/Microdown/pull/789</li>
+<li>add test and verification in Microdown-Blog by @moufort in https://github.com/pillar-markup/Microdown/pull/790</li>
+<li>use mustache in microdown-blog by @moufort in https://github.com/pillar-markup/Microdown/pull/795</li>
+</ul>
+<h3>HTML</h3>
+<ul>
+<li>Fix css download errors by @hernanmd in https://github.com/pillar-markup/Microdown/pull/764</li>
+<li>Add CSS in HTML file in Microdown by @moufort in https://github.com/pillar-markup/Microdown/pull/773</li>
+</ul>
+<h3>BookTester</h3>
+<ul>
+<li>MicrodownBookTester by @melkiyasser in https://github.com/pillar-markup/Microdown/pull/767</li>
+<li>BookTester Tests by @melkiyasser in https://github.com/pillar-markup/Microdown/pull/768</li>
+<li>Book tester v3 by @melkiyasser in https://github.com/pillar-markup/Microdown/pull/782</li>
+</ul>
+<p><strong>Full Changelog</strong>: https://github.com/pillar-markup/Microdown/compare/v2.5.4...v2.5.5</p>
+<h2>Next items on the roadmap</h2>
+<ul>
+<li>Improvements</li>
+<li>New version of BookTester</li>
+<li>Macrodown inclusion</li>
+</ul></section>
+  </article>
+</li>
+
+<li>
+  <article class="release"
+           id="release-2.6.0"
+           data-release-version="2.6.0"
+           data-release-index="19"
+           data-prerelease="false">
+    <div class="release-head">
+      <h2 class="release-version">2.6.0</h2>
+      <time class="release-date" datetime="2024-04-22T20:57:54Z">April 22, 2024</time>
+    </div>
+    <div class="release-artifacts" aria-label="Release artifacts"><a class="release-artifact" href="https://github.com/pillar-markup/Microdown/archive/refs/tags/v2.6.0.zip">Source code (zip)</a><a class="release-artifact" href="https://github.com/pillar-markup/Microdown/archive/refs/tags/v2.6.0.tar.gz">Source code (tar.gz)</a></div>
+    <section class="release-notes" aria-label="Release notes"><h3>Release notes</h3><h2>What's Changed</h2>
+<ul>
+<li>Remove deprecated call by @jecisc in https://github.com/pillar-markup/Microdown/pull/655</li>
+<li>Update usage of Shout by @jecisc in https://github.com/pillar-markup/Microdown/pull/657</li>
+<li>Remove a dead method by @jecisc in https://github.com/pillar-markup/Microdown/pull/658</li>
+<li>Merge dev into Pharo 12 by @jecisc in https://github.com/pillar-markup/Microdown/pull/659</li>
+<li>Fix depreaction warning by @jecisc in https://github.com/pillar-markup/Microdown/pull/660</li>
+<li>Fix deprecated is for #isWorkspace by @MarcusDenker in https://github.com/pillar-markup/Microdown/pull/662</li>
+<li>Move to Tonel v3 by @demarey in https://github.com/pillar-markup/Microdown/pull/666</li>
+<li>Trivial cleanup: Duplicated methods and category by @MarcusDenker in https://github.com/pillar-markup/Microdown/pull/667</li>
+<li>Remove now useless dependency on pillar by @jecisc in https://github.com/pillar-markup/Microdown/pull/668</li>
+<li>Improve the pre loading by @jecisc in https://github.com/pillar-markup/Microdown/pull/669</li>
+<li>Remove dependency to Display by @guillep in https://github.com/pillar-markup/Microdown/pull/673</li>
+</ul>
+<h2>New Contributors</h2>
+<ul>
+<li>@guillep made their first contribution in https://github.com/pillar-markup/Microdown/pull/673</li>
+</ul>
+<p><strong>Full Changelog</strong>: https://github.com/pillar-markup/Microdown/compare/v2.4.1...v2.6.0</p></section>
+  </article>
+</li>
+
+<li>
+  <article class="release"
+           id="release-2.4.1"
+           data-release-version="2.4.1"
+           data-release-index="20"
+           data-prerelease="false">
+    <div class="release-head">
+      <h2 class="release-version">2.4.1</h2>
+      <time class="release-date" datetime="2023-05-02T11:33:55Z">May 02, 2023</time>
+    </div>
+    <div class="release-artifacts" aria-label="Release artifacts"><a class="release-artifact" href="https://github.com/pillar-markup/Microdown/archive/refs/tags/v2.4.1.zip">Source code (zip)</a><a class="release-artifact" href="https://github.com/pillar-markup/Microdown/archive/refs/tags/v2.4.1.tar.gz">Source code (tar.gz)</a></div>
+    <section class="release-notes" aria-label="Release notes"><h3>Release notes</h3><ul>
+<li>add pharoeval block extension</li>
+</ul></section>
+  </article>
+</li>
+
+<li>
+  <article class="release"
+           id="release-2.4.0"
+           data-release-version="2.4.0"
+           data-release-index="21"
+           data-prerelease="false">
+    <div class="release-head">
+      <h2 class="release-version">2.4.0</h2>
+      <time class="release-date" datetime="2023-04-11T11:11:29Z">April 11, 2023</time>
+    </div>
+    <div class="release-artifacts" aria-label="Release artifacts"><a class="release-artifact" href="https://github.com/pillar-markup/Microdown/archive/refs/tags/v2.4.0.zip">Source code (zip)</a><a class="release-artifact" href="https://github.com/pillar-markup/Microdown/archive/refs/tags/v2.4.0.tar.gz">Source code (tar.gz)</a></div>
+    <section class="release-notes" aria-label="Release notes"><h3>Release notes</h3><p>@Ducasse can you complete here? (I have no idea what are the changes ;) )</p></section>
+  </article>
+</li>
+
+<li>
+  <article class="release"
+           id="release-2.0.0"
+           data-release-version="2.0.0"
+           data-release-index="22"
+           data-prerelease="false">
+    <div class="release-head">
+      <h2 class="release-version">2.0.0</h2>
+      <time class="release-date" datetime="2022-06-07T04:53:29Z">June 07, 2022</time>
+    </div>
+    <div class="release-artifacts" aria-label="Release artifacts"><a class="release-artifact" href="https://github.com/pillar-markup/Microdown/archive/refs/tags/v2.0.0.zip">Source code (zip)</a><a class="release-artifact" href="https://github.com/pillar-markup/Microdown/archive/refs/tags/v2.0.0.tar.gz">Source code (tar.gz)</a></div>
+    <section class="release-notes" aria-label="Release notes"><h3>Release notes</h3><p>Several syntax changes, most noticeable:
+- Math block syntax changed from <code>&amp;</code>...<code>&amp;</code> to <code>$$</code>...<code>$$</code>(or <code>$$%arguments ... $$</code>). Also the <code>$$</code> syntax can be extended to handle other inlined languages than Latex.
+- The environment block syntax is now <code>&lt;!...!&gt;</code>
+- The annotation block is now <code>{!...!}</code>.</p>
+<p>Also the internals of relative reference resolution has changed a lot.</p></section>
+  </article>
+</li>
+
+            </ol>
+        </section>
+    <footer class="index-footer">
+      Copyright © 2026 Pharo contributors. Generated on November 18, 2026 by <a href="https://github.com/guillep/pharo-release">guillep/pharo-release</a>.
+    </footer>
+  </main>
+</body>
+</html>
