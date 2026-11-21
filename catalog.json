@@ -380,7 +380,7 @@
       "standard": false,
       "status": "no-index",
       "artifacts": [],
-      "last_updated": "2026-11-18T23:00:02Z",
+      "last_updated": "2026-11-20T16:42:45Z",
       "update_age": "Recent"
     },
     {
@@ -1240,7 +1240,7 @@
       "standard": false,
       "status": "no-release",
       "artifacts": [],
-      "last_updated": "2026-11-19T21:55:03Z",
+      "last_updated": "2026-11-20T18:54:36Z",
       "update_age": "Recent"
     },
     {
@@ -2783,7 +2783,7 @@
       "standard": false,
       "status": "no-index",
       "artifacts": [],
-      "last_updated": "2026-11-18T20:36:15Z",
+      "last_updated": "2026-11-20T13:55:17Z",
       "update_age": "Recent"
     },
     {
@@ -3283,7 +3283,7 @@
       "standard": false,
       "status": "no-index",
       "artifacts": [],
-      "last_updated": "2026-11-19T14:17:23Z",
+      "last_updated": "2026-11-20T16:51:57Z",
       "update_age": "Recent"
     },
     {
@@ -3546,7 +3546,7 @@
       "standard": false,
       "status": "no-release",
       "artifacts": [],
-      "last_updated": "2026-11-13T12:41:13Z",
+      "last_updated": "2026-11-20T08:58:09Z",
       "update_age": "Recent"
     },
     {
@@ -3898,7 +3898,7 @@
       "standard": false,
       "status": "no-index",
       "artifacts": [],
-      "last_updated": "2026-11-19T18:26:57Z",
+      "last_updated": "2026-11-20T18:51:59Z",
       "update_age": "Recent"
     },
     {
@@ -4676,7 +4676,7 @@
       "standard": false,
       "status": "no-index",
       "artifacts": [],
-      "last_updated": "2026-11-19T15:12:03Z",
+      "last_updated": "2026-11-20T09:25:42Z",
       "update_age": "Recent"
     },
     {
@@ -4710,7 +4710,7 @@
       "standard": false,
       "status": "no-release",
       "artifacts": [],
-      "last_updated": "2026-11-19T10:57:57Z",
+      "last_updated": "2026-11-20T08:55:42Z",
       "update_age": "Recent"
     },
     {
@@ -5159,7 +5159,7 @@
       "repository_url": "https://github.com/pharo-pulsar/pulsar",
       "project_url": "https://github.com/pharo-pulsar/pulsar",
       "organization": "pharo-pulsar",
-      "stars": 9,
+      "stars": 10,
       "categories": [
         "Development Environment"
       ],
@@ -5254,6 +5254,28 @@
       "artifacts": [],
       "last_updated": "2025-10-03T07:10:45Z",
       "update_age": "Over a year"
+    },
+    {
+      "name": "Rita",
+      "description": "Tools for understanding code changes using Pharo, Iceberg, Roassal and Spec",
+      "repository_url": "https://github.com/pharo-vcs/Rita",
+      "project_url": "https://github.com/pharo-vcs/Rita",
+      "organization": "pharo-vcs",
+      "stars": 8,
+      "categories": [
+        "Source Code & Version Control",
+        "Graphics & Visualization"
+      ],
+      "tags": [
+        "pharo",
+        "visualization",
+        "version-control"
+      ],
+      "standard": false,
+      "status": "no-release",
+      "artifacts": [],
+      "last_updated": "2026-11-20T18:30:14Z",
+      "update_age": "Recent"
     },
     {
       "name": "Roassal",
@@ -5652,7 +5674,7 @@
       "standard": false,
       "status": "no-index",
       "artifacts": [],
-      "last_updated": "2026-11-19T12:12:16Z",
+      "last_updated": "2026-11-20T14:09:14Z",
       "update_age": "Recent"
     },
     {
@@ -6315,7 +6337,7 @@
       "standard": false,
       "status": "no-index",
       "artifacts": [],
-      "last_updated": "2026-11-19T12:36:32Z",
+      "last_updated": "2026-11-20T10:27:27Z",
       "update_age": "Recent"
     },
     {
@@ -6482,7 +6504,7 @@
       "standard": false,
       "status": "no-index",
       "artifacts": [],
-      "last_updated": "2026-11-17T15:14:56Z",
+      "last_updated": "2026-11-20T16:47:39Z",
       "update_age": "Recent"
     },
     {
