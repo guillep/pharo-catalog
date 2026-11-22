@@ -422,6 +422,25 @@
       "update_age": "Over a year"
     },
     {
+      "name": "Bloc-Plotter",
+      "description": "A little library to play with charts and plot in Bloc",
+      "repository_url": "https://github.com/pharo-graphics/Bloc-Plotter",
+      "project_url": "https://github.com/pharo-graphics/Bloc-Plotter",
+      "organization": "pharo-graphics",
+      "stars": 0,
+      "categories": [
+        "Graphics & Visualization"
+      ],
+      "tags": [
+        "graphics"
+      ],
+      "standard": false,
+      "status": "no-release",
+      "artifacts": [],
+      "last_updated": "2026-11-21T18:19:34Z",
+      "update_age": "Recent"
+    },
+    {
       "name": "BlocBenchs",
       "description": "A set of tools and prototypes to profile, benchmark and optimize Bloc and related projects.",
       "repository_url": "https://github.com/pharo-graphics/BlocBenchs",
@@ -767,7 +786,7 @@
       "status": "no-index",
       "artifacts": [],
       "last_updated": "2026-10-22T08:36:20Z",
-      "update_age": "Recent"
+      "update_age": "3 months"
     },
     {
       "name": "Containers-BinaryIndexedTree",
@@ -965,7 +984,7 @@
       "status": "no-index",
       "artifacts": [],
       "last_updated": "2026-10-22T09:17:52Z",
-      "update_age": "Recent"
+      "update_age": "3 months"
     },
     {
       "name": "Containers-OrderPreservingDictionary",
@@ -1143,7 +1162,7 @@
       "status": "no-index",
       "artifacts": [],
       "last_updated": "2026-10-22T08:51:44Z",
-      "update_age": "Recent"
+      "update_age": "3 months"
     },
     {
       "name": "Containers-Treap",
@@ -1182,7 +1201,7 @@
       "status": "no-index",
       "artifacts": [],
       "last_updated": "2026-10-22T08:58:27Z",
-      "update_age": "Recent"
+      "update_age": "3 months"
     },
     {
       "name": "Containers-UniqueOrdered",
@@ -1203,7 +1222,7 @@
       "status": "no-index",
       "artifacts": [],
       "last_updated": "2026-10-22T08:42:29Z",
-      "update_age": "Recent"
+      "update_age": "3 months"
     },
     {
       "name": "contour-plot",
@@ -1240,7 +1259,7 @@
       "standard": false,
       "status": "no-release",
       "artifacts": [],
-      "last_updated": "2026-11-20T18:54:36Z",
+      "last_updated": "2026-11-21T13:47:57Z",
       "update_age": "Recent"
     },
     {
@@ -2521,7 +2540,7 @@
       "standard": true,
       "status": "standard",
       "artifacts": [],
-      "last_updated": "2026-11-18T19:17:17Z",
+      "last_updated": "2026-11-21T19:32:20Z",
       "update_age": "Recent"
     },
     {
@@ -3266,7 +3285,7 @@
       "repository_url": "https://github.com/pharo-project/pharo",
       "project_url": "https://github.com/pharo-project/pharo",
       "organization": "pharo-project",
-      "stars": 1515,
+      "stars": 1516,
       "categories": [
         "Uncategorized"
       ],
@@ -3303,7 +3322,7 @@
       "status": "no-release",
       "artifacts": [],
       "last_updated": "2026-10-22T16:26:18Z",
-      "update_age": "Recent"
+      "update_age": "3 months"
     },
     {
       "name": "Pharo Release",
@@ -3572,7 +3591,7 @@
       "repository_url": "https://github.com/pharo-cig/pharo-cig",
       "project_url": "https://github.com/pharo-cig/pharo-cig",
       "organization": "pharo-cig",
-      "stars": 23,
+      "stars": 22,
       "categories": [
         "System & OS"
       ],
@@ -4710,7 +4729,7 @@
       "standard": false,
       "status": "no-release",
       "artifacts": [],
-      "last_updated": "2026-11-20T08:55:42Z",
+      "last_updated": "2026-11-21T08:34:39Z",
       "update_age": "Recent"
     },
     {
@@ -5029,7 +5048,7 @@
       "standard": false,
       "status": "no-index",
       "artifacts": [],
-      "last_updated": "2026-11-19T19:16:23Z",
+      "last_updated": "2026-11-21T20:07:06Z",
       "update_age": "Recent"
     },
     {
