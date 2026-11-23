@@ -437,7 +437,7 @@
       "standard": false,
       "status": "no-release",
       "artifacts": [],
-      "last_updated": "2026-11-21T18:19:34Z",
+      "last_updated": "2026-11-22T10:46:50Z",
       "update_age": "Recent"
     },
     {
@@ -785,8 +785,8 @@
       "standard": false,
       "status": "no-index",
       "artifacts": [],
-      "last_updated": "2026-10-22T08:36:20Z",
-      "update_age": "3 months"
+      "last_updated": "2026-11-22T10:44:43Z",
+      "update_age": "Recent"
     },
     {
       "name": "Containers-BinaryIndexedTree",
@@ -983,8 +983,8 @@
       "standard": false,
       "status": "no-index",
       "artifacts": [],
-      "last_updated": "2026-10-22T09:17:52Z",
-      "update_age": "3 months"
+      "last_updated": "2026-11-22T10:52:57Z",
+      "update_age": "Recent"
     },
     {
       "name": "Containers-OrderPreservingDictionary",
@@ -1221,8 +1221,8 @@
       "standard": false,
       "status": "no-index",
       "artifacts": [],
-      "last_updated": "2026-10-22T08:42:29Z",
-      "update_age": "3 months"
+      "last_updated": "2026-11-22T10:53:45Z",
+      "update_age": "Recent"
     },
     {
       "name": "contour-plot",
@@ -1259,7 +1259,7 @@
       "standard": false,
       "status": "no-release",
       "artifacts": [],
-      "last_updated": "2026-11-21T13:47:57Z",
+      "last_updated": "2026-11-22T18:47:31Z",
       "update_age": "Recent"
     },
     {
@@ -3302,7 +3302,7 @@
       "standard": false,
       "status": "no-index",
       "artifacts": [],
-      "last_updated": "2026-11-20T16:51:57Z",
+      "last_updated": "2026-11-22T10:39:18Z",
       "update_age": "Recent"
     },
     {
