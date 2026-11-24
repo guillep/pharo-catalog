@@ -81,7 +81,7 @@
       "standard": false,
       "status": "no-index",
       "artifacts": [],
-      "last_updated": "2026-11-07T19:42:29Z",
+      "last_updated": "2026-11-24T02:44:13Z",
       "update_age": "Recent"
     },
     {
@@ -380,7 +380,7 @@
       "standard": false,
       "status": "no-index",
       "artifacts": [],
-      "last_updated": "2026-11-20T16:42:45Z",
+      "last_updated": "2026-11-24T02:26:47Z",
       "update_age": "Recent"
     },
     {
@@ -437,7 +437,7 @@
       "standard": false,
       "status": "no-release",
       "artifacts": [],
-      "last_updated": "2026-11-22T10:46:50Z",
+      "last_updated": "2026-11-23T17:58:45Z",
       "update_age": "Recent"
     },
     {
@@ -1259,7 +1259,7 @@
       "standard": false,
       "status": "no-release",
       "artifacts": [],
-      "last_updated": "2026-11-22T18:47:31Z",
+      "last_updated": "2026-11-23T21:49:33Z",
       "update_age": "Recent"
     },
     {
@@ -3285,7 +3285,7 @@
       "repository_url": "https://github.com/pharo-project/pharo",
       "project_url": "https://github.com/pharo-project/pharo",
       "organization": "pharo-project",
-      "stars": 1516,
+      "stars": 1518,
       "categories": [
         "Uncategorized"
       ],
@@ -3302,7 +3302,7 @@
       "standard": false,
       "status": "no-index",
       "artifacts": [],
-      "last_updated": "2026-11-22T10:39:18Z",
+      "last_updated": "2026-11-23T17:48:09Z",
       "update_age": "Recent"
     },
     {
@@ -3399,8 +3399,8 @@
       "standard": false,
       "status": "no-release",
       "artifacts": [],
-      "last_updated": "2026-08-26T21:26:09Z",
-      "update_age": "3 months"
+      "last_updated": "2026-11-23T17:44:58Z",
+      "update_age": "Recent"
     },
     {
       "name": "pharo-archive",
@@ -3607,6 +3607,26 @@
       "artifacts": [],
       "last_updated": "2026-09-01T08:41:14Z",
       "update_age": "3 months"
+    },
+    {
+      "name": "pharo-cloud",
+      "description": "A Backend using pharo-infer",
+      "repository_url": "https://github.com/pharo-llm/pharo-cloud",
+      "project_url": "https://github.com/pharo-llm/pharo-cloud",
+      "organization": "pharo-llm",
+      "stars": 0,
+      "categories": [
+        "AI"
+      ],
+      "tags": [
+        "ai",
+        "llm"
+      ],
+      "standard": false,
+      "status": "no-release",
+      "artifacts": [],
+      "last_updated": "2026-11-23T17:06:33Z",
+      "update_age": "Recent"
     },
     {
       "name": "pharo-copilot",
@@ -3881,26 +3901,6 @@
       "update_age": "3 months"
     },
     {
-      "name": "pharo-labels",
-      "description": "No description provided.",
-      "repository_url": "https://github.com/pharo-llm/pharo-labels",
-      "project_url": "https://github.com/pharo-llm/pharo-labels",
-      "organization": "pharo-llm",
-      "stars": 0,
-      "categories": [
-        "AI"
-      ],
-      "tags": [
-        "ai",
-        "llm"
-      ],
-      "standard": false,
-      "status": "no-release",
-      "artifacts": [],
-      "last_updated": "2026-10-20T20:20:17Z",
-      "update_age": "3 months"
-    },
-    {
       "name": "pharo-launcher",
       "description": "Lets you manage your pharo images and download new ones",
       "repository_url": "https://github.com/pharo-project/pharo-launcher",
@@ -4098,8 +4098,8 @@
       "standard": false,
       "status": "no-release",
       "artifacts": [],
-      "last_updated": "2026-07-10T19:48:27Z",
-      "update_age": "This year"
+      "last_updated": "2026-11-23T14:05:56Z",
+      "update_age": "Recent"
     },
     {
       "name": "pharo-llm-icon",
@@ -4122,26 +4122,6 @@
       "artifacts": [],
       "last_updated": "2026-04-16T09:31:16Z",
       "update_age": "This year"
-    },
-    {
-      "name": "pharo-llm-server",
-      "description": "A Backend using pharo-infer",
-      "repository_url": "https://github.com/pharo-llm/pharo-llm-server",
-      "project_url": "https://github.com/pharo-llm/pharo-llm-server",
-      "organization": "pharo-llm",
-      "stars": 0,
-      "categories": [
-        "AI"
-      ],
-      "tags": [
-        "ai",
-        "llm"
-      ],
-      "standard": false,
-      "status": "no-release",
-      "artifacts": [],
-      "last_updated": "2026-10-12T18:53:08Z",
-      "update_age": "3 months"
     },
     {
       "name": "pharo-llmstudio",
@@ -4695,7 +4675,7 @@
       "standard": false,
       "status": "no-index",
       "artifacts": [],
-      "last_updated": "2026-11-20T09:25:42Z",
+      "last_updated": "2026-11-23T18:48:51Z",
       "update_age": "Recent"
     },
     {
@@ -4729,7 +4709,7 @@
       "standard": false,
       "status": "no-release",
       "artifacts": [],
-      "last_updated": "2026-11-21T08:34:39Z",
+      "last_updated": "2026-11-23T09:13:55Z",
       "update_age": "Recent"
     },
     {
@@ -4935,7 +4915,7 @@
       "standard": false,
       "status": "no-index",
       "artifacts": [],
-      "last_updated": "2026-11-20T02:38:21Z",
+      "last_updated": "2026-11-23T21:34:40Z",
       "update_age": "Recent"
     },
     {
@@ -5796,7 +5776,7 @@
       "standard": false,
       "status": "no-index",
       "artifacts": [],
-      "last_updated": "2026-11-19T14:48:20Z",
+      "last_updated": "2026-11-24T02:49:22Z",
       "update_age": "Recent"
     },
     {
@@ -6523,7 +6503,7 @@
       "standard": false,
       "status": "no-index",
       "artifacts": [],
-      "last_updated": "2026-11-20T16:47:39Z",
+      "last_updated": "2026-11-24T02:47:13Z",
       "update_age": "Recent"
     },
     {
