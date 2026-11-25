@@ -435,9 +435,9 @@
         "graphics"
       ],
       "standard": false,
-      "status": "no-release",
+      "status": "no-index",
       "artifacts": [],
-      "last_updated": "2026-11-23T17:58:45Z",
+      "last_updated": "2026-11-24T15:33:26Z",
       "update_age": "Recent"
     },
     {
@@ -1899,7 +1899,7 @@
       "status": "no-index",
       "artifacts": [],
       "last_updated": "2026-10-25T14:59:35Z",
-      "update_age": "Recent"
+      "update_age": "3 months"
     },
     {
       "name": "group-entries",
@@ -2111,7 +2111,7 @@
       "standard": false,
       "status": "no-index",
       "artifacts": [],
-      "last_updated": "2026-11-17T07:01:37Z",
+      "last_updated": "2026-11-24T16:45:49Z",
       "update_age": "Recent"
     },
     {
@@ -2802,7 +2802,7 @@
       "standard": false,
       "status": "no-index",
       "artifacts": [],
-      "last_updated": "2026-11-20T13:55:17Z",
+      "last_updated": "2026-11-24T18:33:21Z",
       "update_age": "Recent"
     },
     {
@@ -3302,7 +3302,7 @@
       "standard": false,
       "status": "no-index",
       "artifacts": [],
-      "last_updated": "2026-11-23T17:48:09Z",
+      "last_updated": "2026-11-24T20:27:14Z",
       "update_age": "Recent"
     },
     {
@@ -3460,8 +3460,8 @@
       "standard": false,
       "status": "no-index",
       "artifacts": [],
-      "last_updated": "2026-07-26T08:46:06Z",
-      "update_age": "This year"
+      "last_updated": "2026-11-24T21:11:53Z",
+      "update_age": "Recent"
     },
     {
       "name": "pharo-bench-tester",
@@ -3917,7 +3917,7 @@
       "standard": false,
       "status": "no-index",
       "artifacts": [],
-      "last_updated": "2026-11-20T18:51:59Z",
+      "last_updated": "2026-11-24T13:00:35Z",
       "update_age": "Recent"
     },
     {
@@ -4675,7 +4675,7 @@
       "standard": false,
       "status": "no-index",
       "artifacts": [],
-      "last_updated": "2026-11-23T18:48:51Z",
+      "last_updated": "2026-11-24T13:49:20Z",
       "update_age": "Recent"
     },
     {
@@ -4799,7 +4799,7 @@
       "standard": false,
       "status": "no-release",
       "artifacts": [],
-      "last_updated": "2026-11-10T10:59:12Z",
+      "last_updated": "2026-11-24T15:13:29Z",
       "update_age": "Recent"
     },
     {
@@ -5673,7 +5673,7 @@
       "standard": false,
       "status": "no-index",
       "artifacts": [],
-      "last_updated": "2026-11-20T14:09:14Z",
+      "last_updated": "2026-11-24T15:08:35Z",
       "update_age": "Recent"
     },
     {
@@ -5776,7 +5776,7 @@
       "standard": false,
       "status": "no-index",
       "artifacts": [],
-      "last_updated": "2026-11-24T02:49:22Z",
+      "last_updated": "2026-11-24T21:33:11Z",
       "update_age": "Recent"
     },
     {
@@ -6503,7 +6503,7 @@
       "standard": false,
       "status": "no-index",
       "artifacts": [],
-      "last_updated": "2026-11-24T02:47:13Z",
+      "last_updated": "2026-11-24T17:20:56Z",
       "update_age": "Recent"
     },
     {
