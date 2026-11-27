@@ -437,7 +437,7 @@
       "standard": false,
       "status": "no-index",
       "artifacts": [],
-      "last_updated": "2026-11-24T15:33:26Z",
+      "last_updated": "2026-11-26T11:27:08Z",
       "update_age": "Recent"
     },
     {
@@ -2111,7 +2111,7 @@
       "standard": false,
       "status": "no-index",
       "artifacts": [],
-      "last_updated": "2026-11-25T17:26:28Z",
+      "last_updated": "2026-11-26T10:30:33Z",
       "update_age": "Recent"
     },
     {
@@ -3302,7 +3302,7 @@
       "standard": false,
       "status": "no-index",
       "artifacts": [],
-      "last_updated": "2026-11-25T19:39:30Z",
+      "last_updated": "2026-11-26T19:35:58Z",
       "update_age": "Recent"
     },
     {
@@ -3399,7 +3399,7 @@
       "standard": false,
       "status": "no-release",
       "artifacts": [],
-      "last_updated": "2026-11-23T17:44:58Z",
+      "last_updated": "2026-11-26T16:33:52Z",
       "update_age": "Recent"
     },
     {
@@ -4664,7 +4664,7 @@
       "repository_url": "https://github.com/pharo-project/pharo-vm",
       "project_url": "https://github.com/pharo-project/pharo-vm",
       "organization": "pharo-project",
-      "stars": 145,
+      "stars": 146,
       "categories": [
         "Language & Compiler"
       ],
@@ -4675,7 +4675,7 @@
       "standard": false,
       "status": "no-index",
       "artifacts": [],
-      "last_updated": "2026-11-24T13:49:20Z",
+      "last_updated": "2026-11-26T18:49:15Z",
       "update_age": "Recent"
     },
     {
@@ -4744,7 +4744,7 @@
       "status": "no-release",
       "artifacts": [],
       "last_updated": "2026-10-27T09:23:35Z",
-      "update_age": "Recent"
+      "update_age": "3 months"
     },
     {
       "name": "pharo5-vm",
@@ -4915,7 +4915,7 @@
       "standard": false,
       "status": "no-index",
       "artifacts": [],
-      "last_updated": "2026-11-25T18:57:55Z",
+      "last_updated": "2026-11-27T00:29:15Z",
       "update_age": "Recent"
     },
     {
@@ -5673,7 +5673,7 @@
       "standard": false,
       "status": "no-index",
       "artifacts": [],
-      "last_updated": "2026-11-24T15:08:35Z",
+      "last_updated": "2026-11-26T10:06:20Z",
       "update_age": "Recent"
     },
     {
@@ -6592,7 +6592,7 @@
       "status": "no-index",
       "artifacts": [],
       "last_updated": "2026-10-27T14:08:43Z",
-      "update_age": "Recent"
+      "update_age": "3 months"
     },
     {
       "name": "UnigramCompletionSorter",
